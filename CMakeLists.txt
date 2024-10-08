@@ -2,21 +2,28 @@
 cmake_minimum_required(VERSION 3.24)
 project(project1)
 
+set(PROJECT_NAME project1)
+set(APPLICATION_LIBRARY project1Lib)
+
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(project1 main.cpp
-        Gate.cpp
-        Gate.h
+set(SOURCE_FILES main.cpp
         pch.h
-        Sensor.cpp
-        Sensor.h
-        Item.cpp
-        Item.h)
+        SpartyAPP.cpp
+        SpartyAPP.h
+        )
+
 # Find wxWidgets package
+set(wxBUILD_PRECOMP OFF)
 find_package(wxWidgets COMPONENTS core base xrc html xml REQUIRED)
 
-
-# Include wxWidgets macros for setting up your project
 include(${wxWidgets_USE_FILE})
-target_link_libraries(project1 ${wxWidgets_LIBRARIES})
+
+add_subdirectory(${APPLICATION_LIBRARY})
+include_directories(${APPLICATION_LIBRARY})
+
+add_executable(${PROJECT_NAME} WIN32 MACOSX_BUNDLE ${SOURCE_FILES})
+
+target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES} ${APPLICATION_LIBRARY})
+
 target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h)

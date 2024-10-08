@@ -2,7 +2,7 @@
  * @file Gate.cpp
  * @author Praseedha Vinukonda
  */
- 
+
 #include "Gate.h"
 
 States ORGate::ComputeOutput() {
