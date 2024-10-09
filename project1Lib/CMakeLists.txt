@@ -1,14 +1,15 @@
 project(project1Lib)
 
-set(SOURCE_FILES Gate.cpp
+set(SOURCE_FILES
+        Gate.cpp
         Gate.h
         Item.cpp
         Item.h
         MainFrame.cpp
         MainFrame.h
         pch.h
-        Sensor.cpp
-        Sensor.h
+#        Sensor.cpp
+#        Sensor.h
 )
 
 set(wxBUILD_PRECOMP OFF)
@@ -21,3 +22,5 @@ add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

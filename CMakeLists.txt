@@ -17,7 +17,7 @@ set(SOURCE_FILES main.cpp
         pch.h
         SpartyAPP.cpp
         SpartyAPP.h
-        )
+)
 
 # Find wxWidgets package
 set(wxBUILD_PRECOMP OFF)
