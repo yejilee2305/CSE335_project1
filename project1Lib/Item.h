@@ -17,8 +17,11 @@ protected:
     Item(const std::wstring& filename); // probably need to add the "Aquarium" class equivalent 🚧🚧🚧🚧🚧
 
 private:
-    /// the item location
-    wxPoint mPosition;
+    /// path of the image file
+    std::wstring mPath;
+
+    int mX = 0; ///< X location
+    int mY = 0; ///< Y location
 
     /// the item image
     std::unique_ptr<wxImage> mItemImage;
@@ -49,19 +52,19 @@ public:
      *  getter for x of item
      * @return x location
      */
-    int GetX() const { return mPosition.x; }
+    int GetX() const { return mX; }
     /**
      *  getter for y of item
      * @return y location
      */
-    int GetY() const { return mPosition.y; }
+    int GetY() const { return mY; }
 
     /**
      * set the item location
      * @param x x location
      * @param y y location
      */
-    virtual void SetLocation(double x, double y) { mPosition = wxPoint(x, y); }
+    virtual void SetLocation(int x, int y) { mX = x; mY = y; }
 
     /**
      * draw this item
@@ -84,6 +87,17 @@ public:
      * @return true if clicked on item
      */
     virtual bool HitTest(int x, int y);
+
+    /**
+     * getter for width
+     * @return width
+     */
+    double GetWidth() { return mWidth; }
+    /**
+     * getter for height
+     * @return height
+     */
+    double GetHeight() { return mHeight; }
 };
 
 
