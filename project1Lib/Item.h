@@ -8,7 +8,6 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "pch.h"
 #include <vector>
 
 class Item

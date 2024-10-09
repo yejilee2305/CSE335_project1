@@ -3,6 +3,7 @@
  * @author Praseedha Vinukonda
  */
 
+#include "pch.h"
 #include "Gate.h"
 
 States ORGate::ComputeOutput() {
