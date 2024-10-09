@@ -5,6 +5,8 @@
 #include "pch.h"
 #include "Item.h"
 
+#include <wx/graphics.h>
+
 /**
  * constructor 🚧🚧🚧 probably need the underlying class like "aquarium"
  * @param filename the name of the file for this item
@@ -46,7 +48,15 @@ bool Item::HitTest(int x, int y)
     return !mItemImage->IsTransparent((int)testX, (int)testY);
 }
 
+/**
+ * draws the item
+ * @param graphics graphic object
+ */
 void Item::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
-    // need to implement this later, read the implementation in wxGraphicsDemo
+    double width = mItemBitmap->GetWidth();
+    double height = mItemBitmap->GetHeight();
+
+    // the x: and y: is calculating the top left
+    graphics->DrawBitmap(*mItemBitmap, int(GetX() - width / 2), int(GetY() - height / 2), width, height);
 }
