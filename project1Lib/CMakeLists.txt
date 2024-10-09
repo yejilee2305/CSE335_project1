@@ -9,6 +9,8 @@ set(SOURCE_FILES Gate.cpp
         pch.h
         Sensor.cpp
         Sensor.h
+        Scoreboard.cpp
+        Scoreboard.h
 )
 
 set(wxBUILD_PRECOMP OFF)

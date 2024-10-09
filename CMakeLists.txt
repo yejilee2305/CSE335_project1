@@ -11,7 +11,9 @@ set(SOURCE_FILES main.cpp
         pch.h
         SpartyAPP.cpp
         SpartyAPP.h
-        )
+        project1Lib/Scoreboard.cpp
+        project1Lib/Scoreboard.h
+)
 
 # Find wxWidgets package
 set(wxBUILD_PRECOMP OFF)
