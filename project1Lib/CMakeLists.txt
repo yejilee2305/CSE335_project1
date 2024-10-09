@@ -12,6 +12,8 @@ set(SOURCE_FILES
         Sensor.h
         Scoreboard.cpp
         Scoreboard.h
+        Conveyor.cpp
+        Conveyor.h
 )
 
 set(wxBUILD_PRECOMP OFF)
