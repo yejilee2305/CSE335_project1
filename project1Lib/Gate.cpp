@@ -4,6 +4,7 @@
  */
 
 #include "Gate.h"
+#include "Item.h"
 
 States ORGate::ComputeOutput() {
     if (inputA == States::Unknown || inputB == States::Unknown) {

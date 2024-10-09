@@ -8,6 +8,7 @@
 #ifndef GATE_H
 #define GATE_H
 #include "pch.h"
+#include "Item.h"
 #include <wx/graphics.h>
 #include <wx/pen.h>
 #include <wx/brush.h>
