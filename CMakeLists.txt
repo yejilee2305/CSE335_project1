@@ -7,6 +7,12 @@ set(APPLICATION_LIBRARY project1Lib)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# import resources
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources/images DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/images/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources/levels DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/levels/)
+
+
+
 set(SOURCE_FILES main.cpp
         pch.h
         SpartyAPP.cpp
