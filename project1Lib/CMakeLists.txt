@@ -8,8 +8,8 @@ set(SOURCE_FILES
         MainFrame.cpp
         MainFrame.h
         pch.h
-#        Sensor.cpp
-#        Sensor.h
+        Sensor.cpp
+        Sensor.h
 )
 
 set(wxBUILD_PRECOMP OFF)
