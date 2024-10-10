@@ -11,6 +11,8 @@
 
 #include <map>
 #include <string>
+#include <Sparty.h>
+#include <Item.h>
 
 class Product {
 public:

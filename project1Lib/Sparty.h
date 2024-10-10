@@ -12,6 +12,8 @@
 
 #include <wx/graphics.h>
 #include <wx/wx.h>
+#include <Product.h>
+#include <Item.h>
 
 class Product;
 
@@ -27,22 +29,22 @@ public:
     bool CheckProductLocation(Product* product);
 
 private:
-    int mX, mY;                 // Position (center of Sparty)
-    int mHeight, mWidth;         // Height and calculated width of Sparty
-    wxPoint2DDouble mPin;        // Location of input pin
-    double mKickDuration;        // Duration of kick animation in seconds
-    double mKickSpeed;           // Speed of kick in pixels per second
-    double mRotation = 0;        // Boot rotation state
+    int mX, mY;                 // position (center of Sparty)
+    int mHeight, mWidth;         // height and calculated width of Sparty
+    wxPoint2DDouble mPin;        // location of input pin
+    double mKickDuration;        // duration of kick animation in seconds
+    double mKickSpeed;           // speed of kick in pixels per second
+    double mRotation = 0;        // boot rotation state
 
     // Constants
-    const double AspectRatio = 1.2;  // Example aspect ratio
-    const double SpartyBootPercentage = 0.80;  // Percentage of the way down Sparty for the boot
-    const double MaxBootRotation = 0.8;        // Maximum boot rotation
+    const double AspectRatio;
+    const double SpartyBootPercentage; // Percentage of the way down Sparty for the boot
+    const double SpartyBootMaxRotation;      // Maximum boot rotation
 
     // Images
-    const std::wstring SpartyBackImage = L"sparty-back.png";
-    const std::wstring SpartyBootImage = L"sparty-boot.png";
-    const std::wstring SpartyFrontImage = L"sparty-front.png";
+    const std::wstring SpartyBackImage;
+    const std::wstring SpartyBootImage;
+    const std::wstring SpartyFrontImage;
 };
 
 #endif //SPARTY_H
