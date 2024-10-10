@@ -12,9 +12,16 @@
 
 class GameView : public wxWindow {
 private:
+    /// The game
+    //Game mGame;
+
 
 public:
+    GameView();
 
+    void OnPaint(wxPaintEvent& event);
+
+    void Initialize(wxFrame *mainFrame);
 };
 
 
