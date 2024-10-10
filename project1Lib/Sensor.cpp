@@ -52,18 +52,17 @@ Sensor::~Sensor()
  * @param product the product to check
  * @return true if in range, else false
  */
-// bool Sensor::IsProductInRange(const Product* product)
-// {
-//     // add logic here
-//     return false;
-// }
+bool Sensor::IsProductInRange(const Product* product)
+{
+    // add logic here
+    return false;
+}
 
 /**
  *
  * @param property
  */
-// void Sensor::AddOutputPin(Product::Properties property)
-// {
-//  mOutputPins.push_back(property);
-// }
-//
+void Sensor::AddOutputPin(Product::Properties property)
+{
+    mOutputPins.push_back(property);
+}
