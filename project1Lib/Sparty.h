@@ -11,7 +11,7 @@
 #define SPARTY_H
 
 #include <string>
-#include <wx/point.h>
+#include <wx/gdicmn.h>
 
 class Sparty {
 private:

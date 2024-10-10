@@ -14,12 +14,6 @@
 #include <wx/colour.h>
 
 class Product {
-private:
-    int mPlacement;
-    Properties mShape;
-    Properties mColor;
-    Properties mContent;
-    bool mKick;
 
 public:
     enum class Properties {None, Red, Green, Blue, White, Square, Circle, Diamond, Izzo, Smith, Football, Basketball};
@@ -45,6 +39,13 @@ public:
     static const std::map<std::wstring, Properties> NamesToProperties;
     static const std::map<Properties, Types> PropertiesToTypes;
     static const std::map<Properties, std::wstring> PropertiesToContentImages;
+
+private:
+    int mPlacement;
+    Properties mShape;
+    Properties mColor;
+    Properties mContent;
+    bool mKick;
 
 };
 

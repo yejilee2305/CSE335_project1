@@ -14,6 +14,10 @@ set(SOURCE_FILES
         Scoreboard.h
         Conveyor.cpp
         Conveyor.h
+        Sparty.cpp
+        Sparty.h
+        Product.cpp
+        Product.h
 )
 
 set(wxBUILD_PRECOMP OFF)
