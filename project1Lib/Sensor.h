@@ -11,7 +11,7 @@
 #include "pch.h"
 #include "Item.h"
 #include <memory.h>
-//#include "Product.h" // not implement when i'm writing this
+#include "Product.h"
 
 class Sensor : public Item
 {
@@ -23,7 +23,7 @@ private:
     double mY = 0;
 
     /// vector to store the active pins
-    //    std::vector<Product::Properties> mOutputPins;
+    std::vector<Product::Properties> mOutputPins;
 
     /// camera image
     std::unique_ptr<wxImage> mCameraImage;
@@ -54,9 +54,8 @@ public:
 
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
-    // need product to be implemented
-    // void AddOutputPin(Product::Properties property);
-    // bool IsProductInRange(const Product* product);
+    void AddOutputPin(Product::Properties property);
+    bool IsProductInRange(const Product* product);
 
     /**
      * updates the sensor state
