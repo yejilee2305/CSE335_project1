@@ -18,6 +18,8 @@ set(SOURCE_FILES
         Sparty.h
         Product.cpp
         Product.h
+		GameView.cpp
+		GameView.h
 )
 
 set(wxBUILD_PRECOMP OFF)
