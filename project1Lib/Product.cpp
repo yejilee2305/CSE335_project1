@@ -8,6 +8,25 @@
 #include "pch.h"
 #include "Product.h"
 
+/// Default product size in pixels
+std::wstring ProductDefaultSize = L"80";
+
+/// Size to draw content relative to the product size
+double ContentScale = 0.8;
+
+/// Color to use for "red"
+const wxColour OhioStateRed(187, 0, 0);
+
+/// Color to use for "green"
+const wxColour MSUGreen(24, 69, 59);
+
+/// Color to use for "blue"
+const wxColor UofMBlue(0, 39, 76);
+
+/// Delay after last product has left beam or
+/// been kicked before we end the level.
+const double LastProductDelay = 3;
+
 const std::map<std::wstring, Product::Properties> Product::NamesToProperties = {
  {L"red", Product::Properties::Red},
  {L"green", Product::Properties::Green},
@@ -45,12 +64,29 @@ const std::map<Product::Properties, std::wstring> Product::PropertiesToContentIm
  {Product::Properties::Basketball, L"basketball.png"}
 };
 
+
+// Constructor
 Product::Product(int placement, Properties shape, Properties color, Properties content, bool kick)
-    : mPlacement(placement), mShape(shape), mColor(color), mContent(content), mKick(kick) {
+    : mPlacement(placement), mShape(shape), mColor(color), mContent(content), mKick(kick), mX(0), mY(0) {}
+
+// Method to move product based on the conveyor speed
+void Product::Move(int conveyorSpeed) {
+ mX -= conveyorSpeed; // Update X position
 }
 
-int Product::GetPlacement() const { return mPlacement; }
-Product::Properties Product::GetShape() const { return mShape; }
-Product::Properties Product::GetColor() const { return mColor; }
-Product::Properties Product::GetContent() const { return mContent; }
-bool Product::ShouldKick() const { return mKick; }
+// Getters
+int Product::GetPlacement() const {
+ return mPlacement;
+}
+
+Product::Properties Product::GetShape() const {
+ return mShape;
+}
+
+Product::Properties Product::GetColor() const {
+ return mColor;
+}
+
+bool Product::ShouldKick() const {
+ return mKick;
+}

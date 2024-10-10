@@ -9,46 +9,45 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
-#include <string>
 #include <map>
-#include <wx/colour.h>
+#include <string>
 
 class Product {
-
 public:
-    enum class Properties {None, Red, Green, Blue, White, Square, Circle, Diamond, Izzo, Smith, Football, Basketball};
+    /// The possible product properties.
+    /// The None properties allows us to indicate that
+    /// the product has no content.
+    enum class Properties {None, Red, Green, Blue, White, Square, Circle, Diamond,
+        Izzo, Smith, Football, Basketball};
 
-    // property types
+    /// The property types
     enum class Types {Color, Shape, Content};
 
-    // constructor
-    Product(int placement, Properties shape, Properties color, Properties content = Properties::None, bool kick = false);
+    // Constructor
+    Product(int placement, Properties shape, Properties color, Properties content, bool kick);
 
-    // getters
+    // Getters
     int GetPlacement() const;
-
     Properties GetShape() const;
-
     Properties GetColor() const;
-
-    Properties GetContent() const;
-
     bool ShouldKick() const;
 
-    // Sstatic map - properties
-    static const std::map<std::wstring, Properties> NamesToProperties;
-    static const std::map<Properties, Types> PropertiesToTypes;
-    static const std::map<Properties, std::wstring> PropertiesToContentImages;
+    // Moves the product based on the conveyor's speed
+    void Move(int conveyorSpeed);
 
 private:
-    int mPlacement;
-    Properties mShape;
-    Properties mColor;
-    Properties mContent;
-    bool mKick;
+    int mPlacement;               // Placement on conveyor
+    Properties mShape;             // Shape of the product
+    Properties mColor;             // Color of the product
+    Properties mContent;           // Content inside the product
+    bool mKick;                    // Should the product be kicked?
+    double mWidth = 80;            // Default width in pixels
+    double mContentScale = 0.8;    // Scale of content relative to the product size
+    int mX, mY;                    // Position on conveyor
 
+    // Maps for product properties
+    static const std::map<std::wstring, Properties> NamesToProperties;
+    static const std::map<Properties, std::wstring> PropertiesToContentImages;
 };
-
-
 
 #endif //PRODUCT_H
