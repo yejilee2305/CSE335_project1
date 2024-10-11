@@ -20,6 +20,9 @@ set(SOURCE_FILES
         Product.h
 		GameView.cpp
 		GameView.h
+		ids.h
+		Beam.cpp
+		Beam.h
 )
 
 set(wxBUILD_PRECOMP OFF)
