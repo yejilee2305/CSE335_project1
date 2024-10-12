@@ -2,18 +2,26 @@
  * @file GameView.h
  * @author Nicolas Roberts
  *
- *
+ *  Class that implements the child window our program draws in.
  */
  
 #ifndef GAMEVIEW_H
 #define GAMEVIEW_H
 
+#include "Game.h"
 
-
+/**
+* View class for our game
+*/
 class GameView : public wxWindow {
 private:
+    /// The timer that allows for animation
+    wxTimer mTimer;
+
     /// The game
-    //Game mGame;
+    Game mGame;
+
+    int mCurrentLevel = 1; ///< Current level of the game
 
 
 public:

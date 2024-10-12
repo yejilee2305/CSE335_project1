@@ -15,7 +15,7 @@ class MainFrame : public wxFrame
 private:
     void OnFileOpen(wxCommandEvent &event);
 
-    wxDECLARE_EVENT_TABLE();
+    //wxDECLARE_EVENT_TABLE();
 
 public:
     void Initialize();
