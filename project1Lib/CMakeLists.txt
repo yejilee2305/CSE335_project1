@@ -18,6 +18,8 @@ set(SOURCE_FILES
         Sparty.h
         Product.cpp
         Product.h
+		Game.cpp
+		Game.h
 		GameView.cpp
 		GameView.h
 		ids.h
