@@ -8,8 +8,9 @@
 
 #include <wx/wx.h>
 #include <string>
+#include "Item.h"  // Inherit from Item
 
-class Conveyor {
+class Conveyor : public Item {
 private:
  // Positions and dimensions of the conveyor
  int mX;
@@ -59,4 +60,5 @@ public:
 };
 
 #endif // CONVEYOR_H
+
 
