@@ -7,6 +7,15 @@
 #include "MainFrame.h"
 #include "Gate.h"
 
+MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, "Sparty's Boots", wxDefaultPosition, wxDefaultSize)
+{
+
+}
+
+MainFrame::~MainFrame()
+{
+
+}
 
 void MainFrame::Initialize()
 {

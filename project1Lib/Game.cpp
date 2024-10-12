@@ -89,3 +89,31 @@ bool Game::IsGameOver() const {
 //  //beam.Reset();
 //  gates.clear();
 // }
+
+void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
+{
+ // Convert shared_ptr to raw pointer for wxGraphicsContext
+ wxGraphicsContext* rawGc = gc.get();
+
+ // Set the background to a specific color (you can adjust as necessary)
+ rawGc->SetBrush(*wxBLACK_BRUSH);
+ rawGc->DrawRectangle(0, 0, width, height);
+
+ // Draw the conveyor (assuming Conveyor has a Draw method)
+ conveyor.Draw(rawGc);
+
+ // Draw Sparty (assuming Sparty has a Draw method)
+ sparty.Draw(rawGc);
+
+ // Draw products on the conveyor (assuming Product has a Draw method)
+ for (const auto& product : conveyor.GetProducts())
+ {
+  product->Draw(rawGc);
+ }
+
+ // Optionally draw any gates or other game elements
+ for (const auto& gate : gates)
+ {
+  gate->Draw(rawGc);
+ }
+}

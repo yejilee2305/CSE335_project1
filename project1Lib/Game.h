@@ -43,6 +43,8 @@ public:
  // check if game has ended
  bool IsGameOver() const;
 
+ void OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height);
+
 private:
  int currentLevel;
  Sparty sparty;

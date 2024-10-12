@@ -18,6 +18,9 @@ private:
     //wxDECLARE_EVENT_TABLE();
 
 public:
+    MainFrame();
+    virtual ~MainFrame();
+
     void Initialize();
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
