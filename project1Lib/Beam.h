@@ -13,17 +13,22 @@
 class Beam : public Item
 {
 private:
-    int mX;
-    int mY;
-    int mSenderOffset;
-    bool mBroken = false;
+    int mX; ///< x location
+    int mY; ///< y location
+    int mSenderOffset; ///< x sender offset
+    bool mBroken = false; ///< state of beam
 
-    std::unique_ptr<wxImage> mRedImage;
-    std::unique_ptr<wxImage> mGreenImage;
+    std::unique_ptr<wxImage> mRedImage; ///< red image
+    std::unique_ptr<wxImage> mGreenImage; ///< green image
 
 public:
+    /// default constructor (disabled)
     Beam() = delete;
+
+    /// copy consturctor (disabled)
     Beam(const Beam&) = delete;
+
+    /// asignment operator (disabled)
     void operator=(const Beam&) = delete;
 
     Beam(int x, int y, int senderOffset);
@@ -36,7 +41,16 @@ public:
 
     void SetBroken(bool broken) { mBroken = broken; }
 
+    /**
+     * getter for x location
+     * @return x location
+     */
     int GetX() const { return mX; }
+
+    /**
+     * getter for y location
+     * @return y location
+     */
     int GetY() const { return mY; }
 };
 
