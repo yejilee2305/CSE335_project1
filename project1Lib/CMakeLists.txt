@@ -20,6 +20,8 @@ set(SOURCE_FILES
         Product.h
 		GameView.cpp
 		GameView.h
+        Game.cpp
+        Game.h
 )
 
 set(wxBUILD_PRECOMP OFF)
