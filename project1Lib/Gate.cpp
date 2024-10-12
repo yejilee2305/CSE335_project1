@@ -7,6 +7,10 @@
 #include "Gate.h"
 #include "Item.h"
 
+ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {}
+
+ANDGate::ANDGate() : inputA(States::Unknown), inputB(States::Unknown) {}
+
 States ORGate::ComputeOutput() {
     if (inputA == States::Unknown || inputB == States::Unknown) {
         return States::Unknown;

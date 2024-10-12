@@ -17,6 +17,14 @@ public:
     void Initialize();
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+    void OnAddORGate(wxCommandEvent& event);
+    void OnAddANDGate(wxCommandEvent& event);
+    enum
+    {
+        ID_ORGate = 1001,
+        ID_ANDGate = 1002,
+        ID_NOTGate = 1003
+    };
 };
 
 

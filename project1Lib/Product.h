@@ -25,6 +25,7 @@ public:
     /// The property types
     enum class Types {Color, Shape, Content};
 
+    static const std::map<Product::Properties, Product::Types> PropertiesToTypes;
     // Constructor
     Product(int placement, Properties shape, Properties color, Properties content, bool kick);
 
