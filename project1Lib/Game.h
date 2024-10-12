@@ -16,33 +16,42 @@
 #include "Conveyor.h"
 
 class Game {
+public:
+ Game();
+
+ // starting game
+ void StartGame();
+
+ // starting level ____
+ void StartLevel(int Number);
+
+ //game update
+ void Update();
+
+ // connecting gates
+ void ConnectGates(Gate* outputGate, Gate* inputGate);
+
+ // score
+ int GetScore() const;
+
+ // next level
+ void NextLevel();
+
+ // new gate
+ void AddGate(Gate* gate);
+
+ // check if game has ended
+ bool IsGameOver() const;
+
 private:
  int currentLevel;
  Sparty sparty;
  Conveyor conveyor;
  Sensor sensor;
  //Beam beam;
- std::vector<Gate*> gates;
+ //std::vector<Gate* gates>;
  int score;
  bool gameOver;
-
- void ResetGameState();
-
-public:
- void StartGame();
- void StartLevel(int levelNumber);
-
- void Update();
-
- void ConnectGates(Gate* outputGate, Gate* inputGate);
-
- int GetScore() const;
-
- void NextLevel();
-
- void AddGate(Gate* gate);
-
- bool IsGameOver() const;
 
 };
 

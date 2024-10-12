@@ -6,9 +6,15 @@
 #include "pch.h"
 #include "Game.h"
 
-// Game::Game() : sensor(), currentLevel(0), score(0), gameOver(false) {
-//  ResetGameState();
-// }
+Game::Game() : currentLevel(0),
+ score(0),
+ gameOver(false),
+ sparty(100, 200, 50, wxPoint2DDouble(0.0, 0.0), 1.5, 2.0),
+ conveyor(0, 300, 5, 100, wxPoint(0,0)),
+ sensor(50.0, 20.0)  // Pass double values for Sensor initialization
+{
+ // resetting game
+}
 
 void Game::StartGame()
 {
@@ -17,12 +23,7 @@ void Game::StartGame()
 
 void Game::StartLevel(int levelNumber)
 {
- currentLevel = levelNumber;
- //sparty.Reset();
- conveyor.ResetProducts();
- //sensor.Reset();
- //beam.Reset();
- gates.clear();
+//starting certain level
 }
 
 void Game::Update()
@@ -34,7 +35,7 @@ void Game::Update()
   //sensor.Update(conveyor.GetCurrentProduct());
   //beam.Update(conveyor.GetCurrentProduct());
 
-  for (auto& gate : gates) {
+  //for (auto& gate : gates) {
    //gate->Update();
   }
 
@@ -50,7 +51,7 @@ void Game::Update()
    NextLevel();
   }
  }
-}
+
 
 void Game::ConnectGates(Gate* outputGate, Gate* inputGate) {
  if (outputGate && inputGate) {
@@ -69,7 +70,7 @@ void Game::NextLevel() {
 
 void Game::AddGate(Gate* gate) {
  if (gate) {
-  gates.push_back(gate);  // 게이트 목록에 추가
+  //gates.push_back(gate);  // 게이트 목록에 추가
  }
 }
 
@@ -77,14 +78,14 @@ bool Game::IsGameOver() const {
  return gameOver;
 }
 
-void Game::ResetGameState() {
- score = 0;
- currentLevel = 0;
- gameOver = false;
-
- //sparty.Reset();
- conveyor.ResetProducts();
- //sensor.Reset();
- //beam.Reset();
- gates.clear();
-}
+// void Game::ResetGameState() {
+//  score = 0;
+//  currentLevel = 0;
+//  gameOver = false;
+//
+//  //sparty.Reset();
+//  conveyor.ResetProducts();
+//  //sensor.Reset();
+//  //beam.Reset();
+//  gates.clear();
+// }

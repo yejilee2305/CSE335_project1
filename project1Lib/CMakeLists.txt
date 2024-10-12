@@ -25,6 +25,7 @@ set(SOURCE_FILES
 		ids.h
 		Beam.cpp
 		Beam.h
+		Game.h
 )
 
 set(wxBUILD_PRECOMP OFF)

@@ -16,26 +16,63 @@
 
 class Product {
 public:
-    /// The possible product properties.
-    /// The None properties allows us to indicate that
-    /// the product has no content.
+    /**
+     * possible product properties
+     * None property allows to indicate that the product has no content
+     */
     enum class Properties {None, Red, Green, Blue, White, Square, Circle, Diamond,
         Izzo, Smith, Football, Basketball};
 
-    /// The property types
+    /**
+     * property types
+     */
     enum class Types {Color, Shape, Content};
 
     static const std::map<Product::Properties, Product::Types> PropertiesToTypes;
-    // Constructor
+
+    /**
+     * Constructor for the product
+     *
+     * @param placement the placement of the product on the conveyor
+     * @param shape shape of the product
+     * @param color color of the product
+     * @param content  content inside the product
+     * @param kick  whether the product should be kicked
+     */
     Product(int placement, Properties shape, Properties color, Properties content, bool kick);
 
-    // Getters
+    /**
+     * get the placement of the product on the conveyor
+     *
+     * @return the placement as an integer
+     */
     int GetPlacement() const;
+
+    /**
+     * get the shape of the product
+     *
+     * @return the shape property
+     */
     Properties GetShape() const;
+
+    /**
+     * get the color of the product
+     *
+     * @return the color property
+     */
     Properties GetColor() const;
+
+    /**
+     * check if the procut should be kicked
+     *
+     * @return Trye if the product should be kicked
+     */
     bool ShouldKick() const;
 
-    // Moves the product based on the conveyor's speed
+    /**
+     * move the product based on the conveyor speed
+     * @param conveyorSpeed the speed of the conveyor belt
+     */
     void Move(int conveyorSpeed);
 
 private:
