@@ -31,7 +31,7 @@ public:
     /// asignment operator (disabled)
     void operator=(const Beam&) = delete;
 
-    Beam(int x, int y, int senderOffset);
+    Beam(Game* game, int x, int y, int senderOffset);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     void Update(double elpased) override;
 

@@ -20,7 +20,7 @@ const int BeamPinOffset = 80;
  * @param y y location
  * @param senderOffset offset for the beam sender
  */
-Beam::Beam(int x, int y, int senderOffset) : Item(BeamGreenImage)
+Beam::Beam(Game* game, int x, int y, int senderOffset) : Item(game, BeamGreenImage)
 {
     mX = x;
     mY = y;

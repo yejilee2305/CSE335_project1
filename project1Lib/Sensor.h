@@ -31,7 +31,13 @@ private:
     /// cable image
     std::unique_ptr<wxImage> mCableImage;
 
+protected:
+
 public:
+    /**
+    * constructor
+    */
+    Sensor(Game* game, double x, double y);
     /// default constructor (disabled)
     Sensor() = delete;
 
@@ -42,10 +48,6 @@ public:
     Sensor& operator=(const Sensor&) = delete;
 
 
-    /**
-    * constructor
-    */
-    Sensor(double x, double y);
 
     /**
      * destructor
