@@ -39,10 +39,16 @@ public:
 
     void AddItem(std::shared_ptr<Item> item);
 
- // check if game has ended
- bool IsGameOver() const;
+    // check if game has ended
+    bool IsGameOver() const;
 
     void OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height);
+
+    std::shared_ptr<Item> HitTest(int x, int y);
+
+    void Clear();
+
+    void Add(std::shared_ptr<Item> item);
 
 private:
     /**

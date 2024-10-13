@@ -125,3 +125,39 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
 
     gc->PopState();
 }
+
+/**
+ * test x,y click location to see if it we clicked on a item
+ * @param x x location in pixel
+ * @param y y location in pixel
+ * @return pointer to the item we clicked on or nullptr if none
+ */
+std::shared_ptr<Item> Game::HitTest(int x, int y)
+{
+    for (auto i = mItems.begin(); i != mItems.end(); i++)
+    {
+        if ((*i)->HitTest(x, y))
+        {
+            return *i;
+        }
+    }
+
+    return nullptr;
+}
+
+/**
+ * deletes all the known items in the aquarium
+ */
+void Game::Clear()
+{
+    mItems.clear();
+}
+
+/**
+ * adds the item to the game
+ * @param item new item to add
+ */
+void Game::Add(std::shared_ptr<Item> item)
+{
+    mItems.push_back(item);
+}
