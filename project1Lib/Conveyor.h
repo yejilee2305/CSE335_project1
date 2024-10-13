@@ -33,7 +33,7 @@ private:
 
 public:
  // Constructor
- Conveyor(int x, int y, int speed, int height, const wxPoint& panelLocation);
+ Conveyor(Game* game, int x, int y, int speed, int height, const wxPoint& panelLocation);
 
  // Starts the conveyor and resets the products' positions
  void Start();

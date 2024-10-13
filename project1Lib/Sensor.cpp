@@ -4,6 +4,7 @@
   */
 #include "pch.h"
 #include "Sensor.h"
+#include "Game.h"
 
 /// The image file for the sensor cable
 const std::wstring SensorCableImage = L"sensor-cable.png";
@@ -33,7 +34,7 @@ const wxColour PanelBackgroundColor(128, 128, 128);
  * @param x X location of the sensor
  * @param y Y location of the sensor
  */
-Sensor::Sensor(double x, double y) : Item(SensorCameraImage)
+Sensor::Sensor(Game* game, double x, double y) : Item(game, SensorCameraImage)
 {
     Item::SetLocation(x, y); // this is using item's default setlocation
     mCableImage = std::make_unique<wxImage>(SensorCableImage);

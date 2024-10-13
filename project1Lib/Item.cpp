@@ -8,10 +8,10 @@
 #include <wx/graphics.h>
 
 /**
- * constructor 🚧🚧🚧 probably need the underlying class like "aquarium"
+ * @param game the game this item is memeber of
  * @param filename the name of the file for this item
  */
-Item::Item(const std::wstring& filename)
+Item::Item(Game* game, const std::wstring& filename) : mGame(game)
 {
     mItemImage = std::make_unique<wxImage>(filename, wxBITMAP_TYPE_ANY);
     mItemBitmap = std::make_unique<wxBitmap>(*mItemImage);
@@ -57,6 +57,13 @@ void Item::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     double width = mItemBitmap->GetWidth();
     double height = mItemBitmap->GetHeight();
 
-    // the x: and y: is calculating the top left
+    // the x: and y: (from clion) is calculating the top left
     graphics->DrawBitmap(*mItemBitmap, int(GetX() - width / 2), int(GetY() - height / 2), width, height);
+}
+
+/**
+ * destructor
+ */
+Item::~Item()
+{
 }

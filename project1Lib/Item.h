@@ -10,12 +10,17 @@
 
 #include <vector>
 
+class Game;
+
 class Item
 {
 protected:
-    Item(const std::wstring& filename); // probably need to add the "Aquarium" class equivalent 🚧🚧🚧🚧🚧
+    Item(Game* game, const std::wstring& filename);
 
 private:
+    /// The game this item is contained in
+    Game* mGame;
+
     /// path of the image file
     std::wstring mPath;
 
@@ -43,9 +48,7 @@ public:
     /**
      * destructor
      */
-    virtual ~Item()
-    {
-    };
+    ~Item();
 
     /**
      *  getter for x of item
@@ -63,7 +66,11 @@ public:
      * @param x x location
      * @param y y location
      */
-    virtual void SetLocation(int x, int y) { mX = x; mY = y; }
+    virtual void SetLocation(int x, int y)
+    {
+        mX = x;
+        mY = y;
+    }
 
     /**
      * draw this item

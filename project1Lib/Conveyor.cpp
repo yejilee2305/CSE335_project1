@@ -13,8 +13,8 @@ const wxRect Conveyor::StopButtonRect(35, 87, 95, 36);
 // Define XML level path as a constant (adjust based on user level)
 const std::wstring LevelXMLFile = L"resources/levels/level1.xml";  // Example level file
 
-Conveyor::Conveyor(int x, int y, int speed, int height, const wxPoint& panelLocation)
-    : Item(LevelXMLFile),  // Pass the appropriate XML file to the Item constructor
+Conveyor::Conveyor(Game* game,int x, int y, int speed, int height, const wxPoint& panelLocation)
+    : Item(game, LevelXMLFile),  // Pass the appropriate XML file to the Item constructor
       mX(x), mY(y), mSpeed(speed), mHeight(height), mPanelLocation(panelLocation), mIsRunning(false) {
     // Calculate mWidth here based on the aspect ratio of the conveyor image if needed.
 }
