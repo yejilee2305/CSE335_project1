@@ -23,7 +23,9 @@ GameView::GameView()
  */
 void GameView::Initialize(wxFrame* mainFrame)
 {
-    Create(mainFrame, wxID_ANY);
+    Create(mainFrame, wxID_ANY,
+       wxDefaultPosition, wxDefaultSize,
+       wxFULL_REPAINT_ON_RESIZE);
 
     // Allows ability to paint on background
     SetBackgroundStyle(wxBG_STYLE_PAINT);

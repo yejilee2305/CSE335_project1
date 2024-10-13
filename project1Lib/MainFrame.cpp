@@ -6,21 +6,28 @@
 #include "pch.h"
 #include "MainFrame.h"
 #include "Gate.h"
-
-MainFrame::MainFrame() : wxFrame(nullptr, wxID_ANY, "Sparty's Boots", wxDefaultPosition, wxDefaultSize)
-{
-
-}
-
-MainFrame::~MainFrame()
-{
-
-}
+#include "GameView.h"
 
 void MainFrame::Initialize()
 {
     Create(nullptr, wxID_ANY, L"Sparty's Boots", wxDefaultPosition, wxDefaultSize,
            wxFULL_REPAINT_ON_RESIZE | wxDEFAULT_FRAME_STYLE);
+
+    // Create a sizer that will lay out child windows vertically
+    // one above each other
+    auto sizer = new wxBoxSizer(wxVERTICAL);
+
+    mGameView = new GameView();
+    mGameView->Initialize(this);
+
+    // Add it to the sizer
+    sizer->Add(mGameView, 1, wxEXPAND | wxALL);
+
+    // Set the sizer for this frame
+    SetSizer(sizer);
+
+    // Layout (place) the child windows.
+    Layout();
 
     auto menuBar = new wxMenuBar();
     auto gateMenu = new wxMenu;

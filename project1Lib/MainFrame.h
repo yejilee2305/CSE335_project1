@@ -10,17 +10,20 @@
 
 #include <wx/wx.h>
 
+class GameView;
+
 class MainFrame : public wxFrame
 {
 private:
     void OnFileOpen(wxCommandEvent &event);
 
+    /// View class for our Game
+    GameView *mGameView;
+
+
     //wxDECLARE_EVENT_TABLE();
 
 public:
-    MainFrame();
-    virtual ~MainFrame();
-
     void Initialize();
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);

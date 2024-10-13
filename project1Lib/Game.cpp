@@ -5,15 +5,14 @@
 
 #include "pch.h"
 #include "Game.h"
+#include "Sensor.h"
 
-Game::Game() : currentLevel(0),
- score(0),
- gameOver(false),
- sparty(100, 200, 50, wxPoint2DDouble(0.0, 0.0), 1.5, 2.0),
- conveyor(0, 300, 5, 100, wxPoint(0,0)),
- sensor(50.0, 20.0)  // Pass double values for Sensor initialization
+/**
+ * Constructor
+ */
+Game::Game()
 {
- // resetting game
+
 }
 
 void Game::StartGame()
@@ -28,7 +27,7 @@ void Game::StartLevel(int levelNumber)
 
 void Game::Update()
 {
- if (!gameOver)
+ //if (!gameOver)
  {
   //conveyor.Update();
 
@@ -48,7 +47,7 @@ void Game::Update()
 
   //if (conveyor.IsFinished())
   {
-   NextLevel();
+   //NextLevel();
   }
  }
 
@@ -59,24 +58,24 @@ void Game::ConnectGates(Gate* outputGate, Gate* inputGate) {
  }
 }
 
-int Game::GetScore() const {
- return score;
+//int Game::GetScore() const {
+ //return score;
+//}
+
+//void Game::NextLevel() {
+ //currentLevel++;
+ //StartLevel(currentLevel);
+//}
+
+void Game::AddItem(std::shared_ptr<Item> item)
+{
+    mItems.push_back(item);
 }
 
-void Game::NextLevel() {
- currentLevel++;
- StartLevel(currentLevel);
-}
 
-void Game::AddGate(Gate* gate) {
- if (gate) {
-  //gates.push_back(gate);  // 게이트 목록에 추가
- }
-}
-
-bool Game::IsGameOver() const {
- return gameOver;
-}
+//bool Game::IsGameOver() const {
+ //return gameOver;
+//}
 
 // void Game::ResetGameState() {
 //  score = 0;
@@ -92,28 +91,37 @@ bool Game::IsGameOver() const {
 
 void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
 {
- // Convert shared_ptr to raw pointer for wxGraphicsContext
- wxGraphicsContext* rawGc = gc.get();
+    // Determine the size of the playing area in pixels
+    // This is up to you...
+    int pixelWidth = 1304;
+    int pixelHeight = 900;
 
- // Set the background to a specific color (you can adjust as necessary)
- rawGc->SetBrush(*wxBLACK_BRUSH);
- rawGc->DrawRectangle(0, 0, width, height);
+    //
+    // Automatic Scaling
+    //
+    auto scaleX = double(width) / double(pixelWidth);
+    auto scaleY = double(height) / double(pixelHeight);
+    mScale = std::min(scaleX, scaleY);
 
- // Draw the conveyor (assuming Conveyor has a Draw method)
- conveyor.Draw(rawGc);
+    mXOffset = (width - pixelWidth * mScale) / 2.0;
+    mYOffset = 0;
+    if (height > pixelHeight * mScale)
+    {
+        mYOffset = (double)((height - pixelHeight * mScale) / 2.0);
+    }
 
- // Draw Sparty (assuming Sparty has a Draw method)
- sparty.Draw(rawGc);
+    gc->PushState();
 
- // Draw products on the conveyor (assuming Product has a Draw method)
- for (const auto& product : conveyor.GetProducts())
- {
-  product->Draw(rawGc);
- }
+    gc->Translate(mXOffset, mYOffset);
+    gc->Scale(mScale, mScale);
 
- // Optionally draw any gates or other game elements
- for (const auto& gate : gates)
- {
-  gate->Draw(rawGc);
- }
+    //
+    // Drawing a rectangle that is the playing area size
+    //
+    wxBrush background(*wxRED);
+
+    gc->SetBrush(background);
+    gc->DrawRectangle(0, 0, pixelWidth, pixelHeight);
+
+    gc->PopState();
 }
