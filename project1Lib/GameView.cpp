@@ -24,15 +24,19 @@ GameView::GameView()
 void GameView::Initialize(wxFrame* mainFrame)
 {
     Create(mainFrame, wxID_ANY,
-       wxDefaultPosition, wxDefaultSize,
-       wxFULL_REPAINT_ON_RESIZE);
+           wxDefaultPosition, wxDefaultSize,
+           wxFULL_REPAINT_ON_RESIZE);
 
     // Allows ability to paint on background
     SetBackgroundStyle(wxBG_STYLE_PAINT);
 
     // Binds paint function with event
     Bind(wxEVT_PAINT, &GameView::OnPaint, this);
-    
+
+    // mouse events
+    Bind(wxEVT_LEFT_DOWN, &GameView::OnLeftDown, this);
+    Bind(wxEVT_LEFT_UP, &GameView::OnLeftUp, this);
+    Bind(wxEVT_MOTION, &GameView::OnMouseMove, this);
 }
 
 /**
@@ -42,8 +46,7 @@ void GameView::Initialize(wxFrame* mainFrame)
  *
  * @param event The paint event.
  */
-
-void GameView::OnPaint(wxPaintEvent &event)
+void GameView::OnPaint(wxPaintEvent& event)
 {
     // Create a double-buffered display context
     wxAutoBufferedPaintDC dc(this);
@@ -60,4 +63,55 @@ void GameView::OnPaint(wxPaintEvent &event)
     // Tell the game class to draw
     wxRect rect = GetRect();
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
+}
+
+/**
+ * handles the left mosue button down event
+ * @param event
+ */
+void GameView::OnLeftDown(wxMouseEvent& event)
+{
+    mGrabbedItem = mGame.HitTest(event.GetX(), event.GetY());
+
+    if (mGrabbedItem != nullptr)
+    {
+        Refresh();
+    }
+}
+
+/**
+ * Handle the left mouse button down event
+ * @param event
+ */
+void GameView::OnLeftUp(wxMouseEvent& event)
+{
+    OnMouseMove(event);
+}
+
+/**
+ * implemented from "aquarium" steps
+ * Handles left mouse button down event
+ * @param event
+ */
+void GameView::OnMouseMove(wxMouseEvent& event)
+{
+    // See if an item is currently being moved by the mouse
+    if (mGrabbedItem != nullptr)
+    {
+        // If an item is being moved, we only continue to
+        // move it while the left button is down.
+        if (event.LeftIsDown())
+        {
+            mGrabbedItem->SetLocation(event.GetX(), event.GetY());
+        }
+        else
+        {
+            // When the left button is released, we release the
+            // item.
+            mGrabbedItem = nullptr;
+        }
+
+        // Force the screen to redraw
+        Refresh();
+    }
 }
