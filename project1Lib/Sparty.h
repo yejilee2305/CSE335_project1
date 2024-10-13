@@ -17,10 +17,10 @@
 
 class Product;
 
-class Sparty {
+class Sparty : public Item {
 public:
     // Constructor
-    Sparty(int x, int y, int height, wxPoint2DDouble pin, double kickDuration, double kickSpeed);
+    Sparty(Game* game, int x, int y, int height, wxPoint2DDouble pin, double kickDuration, double kickSpeed);
 
     // Method to trigger the kick
     void Kick(wxGraphicsContext* graphics);
