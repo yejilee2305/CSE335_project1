@@ -10,6 +10,7 @@
 #include "Sparty.h"
 #include <wx/graphics.h>
 #include <wx/wx.h>
+#include <Team.h>
 
 
 /// Image for the sparty background, what is behind the boot
@@ -51,7 +52,10 @@ void Sparty::Kick(wxGraphicsContext* graphics) {
     int bootY = int(mHeight * SpartyBootPercentage);  // Y location for boot
     wxPen bootablePen(*wxGREEN, 3);
     graphics->SetPen(bootablePen);
-    graphics->StrokeLine(mX - mWidth / 2, mY - mHeight / 2 + bootY, mX + mWidth / 2, mY - mHeight / 2 + bootY);
+    graphics->StrokeLine(mX - mWidth / 2, mY - mHeight / 2 + bootY,
+        mX + mWidth / 2, mY - mHeight / 2 + bootY);
+    Team team;
+    team.TriggerNoise();
 }
 
 // Method to check if a product is in the correct position to be kicked

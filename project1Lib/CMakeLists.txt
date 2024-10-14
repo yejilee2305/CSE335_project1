@@ -26,6 +26,10 @@ set(SOURCE_FILES
 		Beam.cpp
 		Beam.h
 		Game.h
+		XMLParser.cpp
+		XMLParser.h
+		Team.cpp
+		Team.h
 )
 
 set(wxBUILD_PRECOMP OFF)

@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "SpartyApp.h"
 #include <MainFrame.h>
+#include <XMLParser.h>
 
 
 bool SpartyApp::OnInit()
@@ -21,5 +22,9 @@ bool SpartyApp::OnInit()
     auto frame = new MainFrame();
     frame->Initialize();
     frame->Show(true);
+
+    XMLParser parser;
+    parser.ParseConfiguration("config.xml");
+
     return true;
 }
