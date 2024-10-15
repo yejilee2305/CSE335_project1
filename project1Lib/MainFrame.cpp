@@ -10,7 +10,7 @@
 
 void MainFrame::Initialize()
 {
-    Create(nullptr, wxID_ANY, L"Sparty's Boots", wxDefaultPosition, wxSize(1150, 800),
+    Create(nullptr, wxID_ANY, L"Sparty's Boots", wxDefaultPosition, wxSize(1000, 800),
            wxFULL_REPAINT_ON_RESIZE | wxDEFAULT_FRAME_STYLE);
 
     // Create a sizer that will lay out child windows vertically
@@ -61,13 +61,13 @@ void MainFrame::OnAddANDGate(wxCommandEvent& event)
 
 void MainFrame::OnFileOpen(wxCommandEvent& event)
 {
-    wxFileDialog loadFileDialog(this, L"Load Aquarium file", L"", L"",
-        L"Sparty Files (*.sparty)|*.sparty",wxFD_OPEN);
-    if (loadFileDialog.ShowModal() == wxID_CANCEL)
-    {
-        return;
-    }
-    auto filename = loadFileDialog.GetPath();
+//    wxFileDialog loadFileDialog(this, L"Load Game file", L"", L"",
+//        L"Sparty Files (*.sparty)|*.sparty",wxFD_OPEN);
+//    if (loadFileDialog.ShowModal() == wxID_CANCEL)
+//    {
+//        return;
+//    }
+//    auto filename = loadFileDialog.GetPath();
     //mSparty.Load(filename);
-    Refresh();
+//    Refresh();
 }

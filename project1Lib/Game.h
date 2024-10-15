@@ -48,8 +48,6 @@ public:
 
     void Clear();
 
-    void Add(std::shared_ptr<Item> item);
-
 private:
     /**
     * Represents the width of the virtual playing area.

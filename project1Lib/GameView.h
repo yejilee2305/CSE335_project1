@@ -37,6 +37,8 @@ public:
     void OnMouseMove(wxMouseEvent& event);
     void OnLeftDown(wxMouseEvent& event);
     void OnLeftUp(wxMouseEvent& event);
+
+    void OnLevelOption(wxCommandEvent& event);
 };
 
 

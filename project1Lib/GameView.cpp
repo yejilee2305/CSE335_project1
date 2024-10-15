@@ -7,6 +7,7 @@
 #include "GameView.h"
 #include <wx/stdpaths.h>
 #include <wx/dcbuffer.h>
+#include "ids.h"
 
 using namespace std;
 
@@ -113,5 +114,31 @@ void GameView::OnMouseMove(wxMouseEvent& event)
 
         // Force the screen to redraw
         Refresh();
+    }
+}
+
+/**
+ * Handle level choosing event
+ * @param event
+ */
+void GameView::OnLevelOption(wxCommandEvent& event)
+{
+    wxString filename;
+    int levelNumber = 0;
+
+    switch(event.GetId())
+    {
+    case IDM_LEVEL0:filename = L"levels/level0.xml";
+        levelNumber = 0;
+        break;
+    case IDM_LEVEL1:filename = L"levels/level1.xml";
+        levelNumber = 1;
+        break;
+    case IDM_LEVEL2:filename = L"levels/level2.xml";
+        levelNumber = 2;
+        break;
+    case IDM_LEVEL3:filename = L"levels/level3.xml";
+        levelNumber = 3;
+        break;
     }
 }

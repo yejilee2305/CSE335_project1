@@ -152,12 +152,3 @@ void Game::Clear()
 {
     mItems.clear();
 }
-
-/**
- * adds the item to the game
- * @param item new item to add
- */
-void Game::Add(std::shared_ptr<Item> item)
-{
-    mItems.push_back(item);
-}
