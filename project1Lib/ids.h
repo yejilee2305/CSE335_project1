@@ -20,6 +20,8 @@ enum IDs
     IDM_LEVEL3,
     IDM_LEVEL4,
     IDM_SENSOR,
+    IDM_OR_GATE,
+    IDM_AND_GATE,
 };
 
 #endif //IDS_H
