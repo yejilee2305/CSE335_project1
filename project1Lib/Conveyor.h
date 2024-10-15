@@ -45,7 +45,7 @@ public:
  void ResetProducts();
 
  // Draws the conveyor and its panel
- void Draw(wxGraphicsContext* graphics);
+ void Draw(wxGraphicsContext* graphics, int mouseX, int mouseY);
 
  // Checks if the Start button or Stop button is clicked
  bool CheckStartButtonClick(int mouseX, int mouseY) const;

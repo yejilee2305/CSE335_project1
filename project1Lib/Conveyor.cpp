@@ -5,6 +5,7 @@
 
 #include "Conveyor.h"
 #include <wx/graphics.h>
+#include <wx/bitmap.h>
 
 // Initialize static button rectangles
 const wxRect Conveyor::StartButtonRect(35, 29, 95, 36);
@@ -32,8 +33,45 @@ void Conveyor::ResetProducts() {
     // Logic to reset product positions to their initial placement as defined in the XML.
 }
 
-void Conveyor::Draw(wxGraphicsContext* graphics) {
-    // Drawing logic here remains the same as before
+void Conveyor::Draw(wxGraphicsContext* graphics, int mouseX, int mouseY)
+{
+        // Load and draw the conveyor background image
+    wxBitmap conveyorBackground(L"images/conveyor-back.png", wxBITMAP_TYPE_PNG);
+    graphics->DrawBitmap(conveyorBackground, mX - (conveyorBackground.GetWidth() / 2), mY - (mHeight / 2), conveyorBackground.GetWidth(), mHeight);
+
+    // Load and draw the conveyor belt image twice to simulate motion
+    wxBitmap conveyorBelt(L"images/conveyor-belt.png", wxBITMAP_TYPE_PNG);
+    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2), mY - (mHeight / 2), conveyorBelt.GetWidth(), mHeight);
+    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2) + conveyorBelt.GetWidth(), mY - (mHeight / 2), conveyorBelt.GetWidth(), mHeight);
+
+    // Load and draw the appropriate control panel image (based on whether the conveyor is running)
+    wxBitmap panelBitmap = mIsRunning ? wxBitmap(L"images/conveyor-switch-start.png", wxBITMAP_TYPE_PNG)
+                                      : wxBitmap(L"images/conveyor-switch-stop.png", wxBITMAP_TYPE_PNG);
+    graphics->DrawBitmap(panelBitmap, mX + mPanelLocation.x, mY + mPanelLocation.y, panelBitmap.GetWidth(), panelBitmap.GetHeight());
+
+    // Set up the button rectangles for the start and stop buttons
+    wxRect startRect(mX + mPanelLocation.x + StartButtonRect.GetX(),
+                     mY + mPanelLocation.y + StartButtonRect.GetY(),
+                     StartButtonRect.GetWidth(), StartButtonRect.GetHeight());
+
+    wxRect stopRect(mX + mPanelLocation.x + StopButtonRect.GetX(),
+                    mY + mPanelLocation.y + StopButtonRect.GetY(),
+                    StopButtonRect.GetWidth(), StopButtonRect.GetHeight());
+
+    // Draw rings around buttons if they are being pressed (for visual feedback)
+    if (CheckStartButtonClick(mouseX, mouseY)) {
+        wxPen ringPen(*wxGREEN, 3);
+        graphics->SetPen(ringPen);
+        graphics->SetBrush(wxNullBrush);
+        graphics->DrawRectangle(startRect.GetX(), startRect.GetY(), startRect.GetWidth(), startRect.GetHeight());
+    }
+
+    if (CheckStopButtonClick(mouseX, mouseY)) {
+        wxPen ringPen(*wxRED, 3);
+        graphics->SetPen(ringPen);
+        graphics->SetBrush(wxNullBrush);
+        graphics->DrawRectangle(stopRect.GetX(), stopRect.GetY(), stopRect.GetWidth(), stopRect.GetHeight());
+    }
 }
 
 bool Conveyor::CheckStartButtonClick(int mouseX, int mouseY) const {
