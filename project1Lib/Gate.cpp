@@ -77,3 +77,24 @@ void ANDGate::Draw(wxGraphicsContext* graphics) {
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
 }
+NOTGate::NOTGate() : inputA(States::Unknown) {}
+const wxSize NotGateSize(50, 50);
+void NOTGate::SetInputA(States state) {
+    inputA = state;
+}
+
+States NOTGate::ComputeOutput() {
+    if (inputA == States::Unknown) {
+        return States::Unknown;
+    }
+    return (inputA == States::One) ? States::Zero : States::One;
+}
+
+void NOTGate::Draw(wxGraphicsContext* graphics) {
+    auto path = graphics->CreatePath();
+    path.AddRectangle(100, 100, NotGateSize.GetWidth(), NotGateSize.GetHeight());
+
+    graphics->SetPen(*wxBLACK_PEN);
+    graphics->SetBrush(*wxWHITE_BRUSH);
+    graphics->DrawPath(path);
+}

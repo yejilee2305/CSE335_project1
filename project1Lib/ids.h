@@ -22,6 +22,7 @@ enum IDs
     IDM_SENSOR,
     IDM_OR_GATE,
     IDM_AND_GATE,
+    IDM_NOT_GATE,
 };
 
 #endif //IDS_H

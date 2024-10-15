@@ -53,5 +53,15 @@ public:
     void Draw(wxGraphicsContext* graphics) override;
 
 };
+class NOTGate : public Gate {
+private:
+    States inputA;
+
+public:
+    NOTGate();
+    void SetInputA(States state);
+    States ComputeOutput() override;
+    void Draw(wxGraphicsContext* graphics) override;
+};
 
 #endif //GATE_H
