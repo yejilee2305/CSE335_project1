@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "Gate.h"
 #include "Item.h"
+#include "ids.h"
 
 ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {}
 
