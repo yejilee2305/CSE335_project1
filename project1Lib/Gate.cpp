@@ -56,6 +56,7 @@ void ORGate::Draw(wxGraphicsContext* graphics) {
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
+
 }
 
 ANDGate::ANDGate() : inputA(States::Unknown), inputB(States::Unknown) {}
