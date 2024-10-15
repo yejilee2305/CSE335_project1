@@ -118,7 +118,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
     //
     // Drawing a rectangle that is the playing area size
     //
-    wxBrush background(*wxRED);
+    wxBrush background(wxColour(230,255,230));
 
     gc->SetBrush(background);
     gc->DrawRectangle(0, 0, pixelWidth, pixelHeight);

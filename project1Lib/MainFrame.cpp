@@ -10,7 +10,7 @@
 
 void MainFrame::Initialize()
 {
-    Create(nullptr, wxID_ANY, L"Sparty's Boots", wxDefaultPosition, wxDefaultSize,
+    Create(nullptr, wxID_ANY, L"Sparty's Boots", wxDefaultPosition, wxSize(1150, 800),
            wxFULL_REPAINT_ON_RESIZE | wxDEFAULT_FRAME_STYLE);
 
     // Create a sizer that will lay out child windows vertically
