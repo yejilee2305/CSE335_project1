@@ -64,4 +64,19 @@ public:
     void Draw(wxGraphicsContext* graphics) override;
 };
 
+class SRFlipFlopGate : public Gate {
+private:
+    States inputS;
+    States inputR;
+    States outputQ;
+    States outputQPrime;
+
+public:
+    SRFlipFlopGate();
+    void SetInputS(States state);
+    void SetInputR(States state);
+    States ComputeOutput() override;
+    void Draw(wxGraphicsContext* graphics) override;
+};
+
 #endif //GATE_H

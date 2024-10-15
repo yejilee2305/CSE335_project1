@@ -23,6 +23,8 @@ enum IDs
     IDM_OR_GATE,
     IDM_AND_GATE,
     IDM_NOT_GATE,
+    IDM_SRFLIP_GATE,
+
 };
 
 #endif //IDS_H
