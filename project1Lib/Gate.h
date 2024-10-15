@@ -79,4 +79,20 @@ public:
     void Draw(wxGraphicsContext* graphics) override;
 };
 
+// D Flip-Flop Gate
+class DFlipFlopGate : public Gate {
+private:
+    States inputD;
+    States clock;
+    States outputQ;
+    States outputQPrime;
+
+public:
+    DFlipFlopGate();
+    void SetInputD(States state);
+    void SetClock(States state);
+    States ComputeOutput() override;
+    void Draw(wxGraphicsContext* graphics) override;
+};
+
 #endif //GATE_H

@@ -139,3 +139,38 @@ void SRFlipFlopGate::Draw(wxGraphicsContext* graphics) {
     graphics->DrawText(L"S", 150 + SRFlipFlopLabelMargin, 150 + SRFlipFlopLabelMargin);
     graphics->DrawText(L"R", 150 + SRFlipFlopLabelMargin, 150 + SRFlipFlopSize.GetHeight() - SRFlipFlopLabelMargin);
 }
+
+DFlipFlopGate::DFlipFlopGate() : inputD(States::Unknown), clock(States::Unknown), outputQ(States::Unknown), outputQPrime(States::Unknown) {}
+
+const wxSize DFlipFlopSize(50, 75);
+const int DFlipFlopLabelMargin = 3;
+const int DFlipFlopClockSize = 10;
+
+void DFlipFlopGate::SetInputD(States state) {
+    inputD = state;
+}
+
+void DFlipFlopGate::SetClock(States state) {
+    clock = state;
+}
+
+States DFlipFlopGate::ComputeOutput() {
+    if (clock == States::One) {
+        outputQ = inputD;
+        outputQPrime = (inputD == States::One) ? States::Zero : States::One;
+    }
+    return outputQ;
+}
+
+void DFlipFlopGate::Draw(wxGraphicsContext* graphics) {
+    auto path = graphics->CreatePath();
+    path.AddRectangle(200, 200, DFlipFlopSize.GetWidth(), DFlipFlopSize.GetHeight());
+
+    graphics->SetPen(*wxBLACK_PEN);
+    graphics->SetBrush(*wxWHITE_BRUSH);
+    graphics->DrawPath(path);
+
+    auto font = graphics->CreateFont(15, L"Arial", wxFONTFLAG_BOLD, *wxBLACK);
+    graphics->SetFont(font);
+    graphics->DrawText(L"D", 200 + DFlipFlopLabelMargin, 200 + DFlipFlopLabelMargin);
+}
