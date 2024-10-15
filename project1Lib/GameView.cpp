@@ -142,3 +142,12 @@ void GameView::OnLevelOption(wxCommandEvent& event)
         break;
     }
 }
+void GameView::AddGate(std::shared_ptr<Gate> gate) {
+    mGates.push_back(gate); // Add the new gate to the list
+    Refresh(); // Refresh the view to trigger a redraw
+}
+void GameView::OnDraw(wxGraphicsContext* gc, int width, int height) {
+    for (const auto& gate : mGates) {
+        gate->Draw(gc); // Call the draw method for each gate
+    }
+}

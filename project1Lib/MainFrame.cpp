@@ -51,12 +51,16 @@ void MainFrame::Initialize()
 }
 void MainFrame::OnAddORGate(wxCommandEvent& event)
 {
-    ORGate* orGate = new ORGate();
+    auto orGate = std::make_shared<ORGate>();
+    orGate->SetPosition(100, 100); // Set initial position
+    mGameView->AddGate(orGate); // Add the gate to the view
 }
 
 void MainFrame::OnAddANDGate(wxCommandEvent& event)
 {
-    ANDGate* andGate = new ANDGate();
+    auto andGate = std::make_shared<ANDGate>();
+    andGate->SetPosition(200, 100); // Set initial position
+    mGameView->AddGate(andGate); // Add the gate to the view
 }
 
 void MainFrame::OnFileOpen(wxCommandEvent& event)

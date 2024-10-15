@@ -5,80 +5,108 @@
 
 #include "pch.h"
 #include "Gate.h"
-#include "Item.h"
-//including ids
-#include "ids.h"
+
+// Define constant sizes for gates (kept in Gate.h)
+
 
 ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {}
 
-ANDGate::ANDGate() : inputA(States::Unknown), inputB(States::Unknown) {}
+void ORGate::SetInputA(States state) {
+    inputA = state;
+}
+
+void ORGate::SetInputB(States state) {
+    inputB = state;
+}
 
 States ORGate::ComputeOutput() {
     if (inputA == States::Unknown || inputB == States::Unknown) {
         return States::Unknown;
     }
-    if (inputA == States::One || inputB == States::One) {
-        return States::One;
-    }
-    return States::Zero;
+    return (inputA == States::One || inputB == States::One) ? States::One : States::Zero;
 }
 
 void ORGate::Draw(wxGraphicsContext* graphics) {
     auto path = graphics->CreatePath();
 
-    double x = 100, y = 100, w = 75, h = 50;
-    wxPoint2DDouble p1(x - w / 2, y + h / 2);
-    wxPoint2DDouble p2(x + w / 2, y);
-    wxPoint2DDouble p3(x - w / 2, y - h / 2);
+    // The location and size
+    auto x = GetX();
+    auto y = GetY();
+    auto w = GetWidth();
+    auto h = GetHeight();
 
+    // The three corner points of an OR gate
+    wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left
+    wxPoint2DDouble p2(x + w / 2, y);            // Center right
+    wxPoint2DDouble p3(x - w / 2, y - h / 2);   // Top left
+
+    // Control points used to create the Bezier curves
     auto controlPointOffset1 = wxPoint2DDouble(w * 0.5, 0);
     auto controlPointOffset2 = wxPoint2DDouble(w * 0.75, 0);
     auto controlPointOffset3 = wxPoint2DDouble(w * 0.2, 0);
 
+    // Create the path for the gate
     path.MoveToPoint(p1);
     path.AddCurveToPoint(p1 + controlPointOffset1, p1 + controlPointOffset2, p2);
     path.AddCurveToPoint(p3 + controlPointOffset2, p3 + controlPointOffset1, p3);
     path.AddCurveToPoint(p3 + controlPointOffset3, p1 + controlPointOffset3, p1);
     path.CloseSubpath();
 
-    // Drawing the gate
+    // Draw the path
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
+}
+
+ANDGate::ANDGate() : inputA(States::Unknown), inputB(States::Unknown) {}
+
+void ANDGate::SetInputA(States state) {
+    inputA = state;
+}
+
+void ANDGate::SetInputB(States state) {
+    inputB = state;
 }
 
 States ANDGate::ComputeOutput() {
     if (inputA == States::Unknown || inputB == States::Unknown) {
         return States::Unknown;
     }
-    if (inputA == States::One && inputB == States::One) {
-        return States::One;
-    }
-    return States::Zero;
+    return (inputA == States::One && inputB == States::One) ? States::One : States::Zero;
 }
 
 void ANDGate::Draw(wxGraphicsContext* graphics) {
     auto path = graphics->CreatePath();
 
-    double x = 200, y = 100, w = 75, h = 50;
-    wxPoint2DDouble p1(x - w / 2, y + h / 2);
-    wxPoint2DDouble p2(x + w / 2, y);
-    wxPoint2DDouble p3(x - w / 2, y - h / 2);
+    // The location and size
+    auto x = GetX();
+    auto y = GetY();
+    auto w = GetWidth();
+    auto h = GetHeight();
 
+    // The three corner points of an AND gate
+    wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left
+    wxPoint2DDouble p2(x + w / 2, y);            // Center right
+    wxPoint2DDouble p3(x - w / 2, y - h / 2);   // Top left
+
+    // Control points used to create the Bezier curves
     auto controlPointOffset1 = wxPoint2DDouble(w * 0.75, 0);
 
+    // Create the path for the gate
     path.MoveToPoint(p1);
     path.AddCurveToPoint(p1 + controlPointOffset1, p2, p2);
     path.AddLineToPoint(p3);
     path.AddCurveToPoint(p3 + controlPointOffset1, p1, p1);
     path.CloseSubpath();
 
+    // Draw the path
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
 }
+
 NOTGate::NOTGate() : inputA(States::Unknown) {}
-const wxSize NotGateSize(50, 50);
+
 void NOTGate::SetInputA(States state) {
     inputA = state;
 }
@@ -92,17 +120,16 @@ States NOTGate::ComputeOutput() {
 
 void NOTGate::Draw(wxGraphicsContext* graphics) {
     auto path = graphics->CreatePath();
-    path.AddRectangle(100, 100, NotGateSize.GetWidth(), NotGateSize.GetHeight());
+    path.AddRectangle(GetX() - NotGateSize.GetWidth() / 2, GetY() - NotGateSize.GetHeight() / 2,
+                      NotGateSize.GetWidth(), NotGateSize.GetHeight());
 
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
 }
 
-SRFlipFlopGate::SRFlipFlopGate() : inputS(States::Unknown), inputR(States::Unknown), outputQ(States::Unknown), outputQPrime(States::Unknown) {}
-
-const wxSize SRFlipFlopSize(50, 75);
-const int SRFlipFlopLabelMargin = 3;
+SRFlipFlopGate::SRFlipFlopGate() : inputS(States::Unknown), inputR(States::Unknown),
+                                    outputQ(States::Unknown), outputQPrime(States::Unknown) {}
 
 void SRFlipFlopGate::SetInputS(States state) {
     inputS = state;
@@ -128,23 +155,16 @@ States SRFlipFlopGate::ComputeOutput() {
 
 void SRFlipFlopGate::Draw(wxGraphicsContext* graphics) {
     auto path = graphics->CreatePath();
-    path.AddRectangle(150, 150, SRFlipFlopSize.GetWidth(), SRFlipFlopSize.GetHeight());
+    path.AddRectangle(GetX() - SRFlipFlopSize.GetWidth() / 2, GetY() - SRFlipFlopSize.GetHeight() / 2,
+                      SRFlipFlopSize.GetWidth(), SRFlipFlopSize.GetHeight());
 
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
-
-    auto font = graphics->CreateFont(15, L"Arial", wxFONTFLAG_BOLD, *wxBLACK);
-    graphics->SetFont(font);
-    graphics->DrawText(L"S", 150 + SRFlipFlopLabelMargin, 150 + SRFlipFlopLabelMargin);
-    graphics->DrawText(L"R", 150 + SRFlipFlopLabelMargin, 150 + SRFlipFlopSize.GetHeight() - SRFlipFlopLabelMargin);
 }
 
-DFlipFlopGate::DFlipFlopGate() : inputD(States::Unknown), clock(States::Unknown), outputQ(States::Unknown), outputQPrime(States::Unknown) {}
-
-const wxSize DFlipFlopSize(50, 75);
-const int DFlipFlopLabelMargin = 3;
-const int DFlipFlopClockSize = 10;
+DFlipFlopGate::DFlipFlopGate() : inputD(States::Unknown), clock(States::Unknown),
+                                   outputQ(States::Unknown), outputQPrime(States::Unknown) {}
 
 void DFlipFlopGate::SetInputD(States state) {
     inputD = state;
@@ -164,13 +184,10 @@ States DFlipFlopGate::ComputeOutput() {
 
 void DFlipFlopGate::Draw(wxGraphicsContext* graphics) {
     auto path = graphics->CreatePath();
-    path.AddRectangle(200, 200, DFlipFlopSize.GetWidth(), DFlipFlopSize.GetHeight());
+    path.AddRectangle(GetX() - DFlipFlopSize.GetWidth() / 2, GetY() - DFlipFlopSize.GetHeight() / 2,
+                      DFlipFlopSize.GetWidth(), DFlipFlopSize.GetHeight());
 
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
-
-    auto font = graphics->CreateFont(15, L"Arial", wxFONTFLAG_BOLD, *wxBLACK);
-    graphics->SetFont(font);
-    graphics->DrawText(L"D", 200 + DFlipFlopLabelMargin, 200 + DFlipFlopLabelMargin);
 }
