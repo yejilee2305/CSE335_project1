@@ -41,7 +41,7 @@ void MainFrame::Initialize()
     menuBar->Append(gateMenu, "&Gates");
     menuBar->Append(fileMenu, "&File");
 
-    fileMenu->Append(wxFD_OPEN, "Load File");
+    fileMenu->Append(wxID_OPEN, "Open &File...\tCtrl-F", L"Open file...");
 
     SetMenuBar(menuBar);
     CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);
@@ -63,17 +63,4 @@ void MainFrame::OnAddANDGate(wxCommandEvent& event)
     auto andGate = std::make_shared<ANDGate>();
     andGate->SetPosition(200, 100); // Set initial position
     mGameView->AddGate(andGate); // Add the gate to the view
-}
-
-void MainFrame::OnFileOpen(wxCommandEvent& event)
-{
-    //    wxFileDialog loadFileDialog(this, L"Load Game file", L"", L"",
-    //        L"Sparty Files (*.sparty)|*.sparty",wxFD_OPEN);
-    //    if (loadFileDialog.ShowModal() == wxID_CANCEL)
-    //    {
-    //        return;
-    //    }
-    //    auto filename = loadFileDialog.GetPath();
-    //mSparty.Load(filename);
-    //    Refresh();
 }
