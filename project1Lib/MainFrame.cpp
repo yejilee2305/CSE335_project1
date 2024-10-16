@@ -47,6 +47,11 @@ void MainFrame::Initialize()
     levelMenu->Append(IDM_LEVEL1, L"Level 1", L"Select Level 1");
     levelMenu->Append(IDM_LEVEL2, L"Level 2", L"Select Level 2");
     levelMenu->Append(IDM_LEVEL3, L"Level 3", L"Select Level 3");
+    levelMenu->Append(IDM_LEVEL4, L"Level 4", L"Select Level 4");
+    levelMenu->Append(IDM_LEVEL5, L"Level 5", L"Select Level 5");
+    levelMenu->Append(IDM_LEVEL6, L"Level 6", L"Select Level 6");
+    levelMenu->Append(IDM_LEVEL7, L"Level 7", L"Select Level 7");
+    levelMenu->Append(IDM_LEVEL8, L"Level 8", L"Select Level 8");
     gateMenu->Append(ID_ORGate, "Add OR Gate");
     gateMenu->Append(ID_ANDGate, "Add AND Gate");
     gateMenu->Append(ID_NOTGate, "Add NOT Gate");
