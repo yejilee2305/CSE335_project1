@@ -22,11 +22,11 @@ private:
     /// The game
     Game mGame;
 
-    int mCurrentLevel = 1; ///< Current level of the game
+    int mCurrentLevel = 0; ///< Current level of the game
 
     /// current item we are dragging
     std::shared_ptr<Item> mGrabbedItem;
-    //std::vector<std::shared_ptr<Gate>> mGates;
+    std::vector<std::shared_ptr<Gate>> mGates;
 
 public:
     GameView();

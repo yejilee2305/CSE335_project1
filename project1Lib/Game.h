@@ -19,8 +19,7 @@ class Game {
 public:
     Game();
 
-    // starting game
-    void StartGame();
+    void Load(const wxString &filename);
 
     // starting level ____
     void StartLevel(int Number);
@@ -49,6 +48,10 @@ public:
 
     void Clear();
 
+    void SetVirtualWidth(int width) {mVirtualWidth = width;}
+
+    void SetVirtualHeight(int height) {mVirtualHeight = height;}
+
 private:
     /**
     * Represents the width of the virtual playing area.
@@ -76,9 +79,8 @@ private:
 
     /// All of the items to populate our game
     std::vector<std::shared_ptr<Item>> mItems;
-    ///gate
+    /// All of the gates to populate our game
     std::vector<std::shared_ptr<Gate>> mGates;
-
 
 };
 

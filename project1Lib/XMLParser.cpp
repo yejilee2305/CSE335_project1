@@ -50,8 +50,8 @@ void XMLParser::Load(const wxString &filename)
             //XmlItems(node);
         }
     }
-    //mGame->SetVirtualWidth(virtualWidth);
-    //mGame->SetVirtualHeight(virtualHeight);
+    mGame->SetVirtualWidth(virtualWidth);
+    mGame->SetVirtualHeight(virtualHeight);
 }
 
 //Add Function called XMLItems to load in the items

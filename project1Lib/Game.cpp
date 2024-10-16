@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "Sensor.h"
 #include "Gate.h"
+#include "XMLParser.h"
 
 /**
  * Constructor
@@ -15,9 +16,14 @@ Game::Game()
 {
 }
 
-void Game::StartGame()
+/**
+ * Load the game level from a level XML file
+ * @param filename The filename of the level XML file
+ */
+void Game::Load(const wxString &filename)
 {
- StartLevel(0);
+    auto xmlParser = XMLParser(this);
+    xmlParser.Load(filename);
 }
 
 void Game::StartLevel(int levelNumber)
@@ -95,8 +101,8 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
 {
     // Determine the size of the playing area in pixels
     // This is up to you...
-    int pixelWidth = 1304;
-    int pixelHeight = 900;
+    int pixelWidth = mVirtualWidth;
+    int pixelHeight = mVirtualHeight;
 
     //
     // Automatic Scaling

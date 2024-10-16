@@ -35,6 +35,20 @@ void GameView::Initialize(wxFrame* mainFrame)
     // Binds paint function with event
     Bind(wxEVT_PAINT, &GameView::OnPaint, this);
 
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL0);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL1);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL2);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL3);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL4);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL5);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL6);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL7);
+    mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL8);
+
+    mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
+    Refresh();
+
+
     // mouse events
     Bind(wxEVT_LEFT_DOWN, &GameView::OnLeftDown, this);
     Bind(wxEVT_LEFT_UP, &GameView::OnLeftUp, this);
@@ -160,9 +174,9 @@ void GameView::OnLevelOption(wxCommandEvent& event)
         break;
     }
 
-    //mGame = Game();
-    //mGame.Load(filename);
-    //Refresh();
+    mGame = Game();
+    mGame.Load(filename);
+    Refresh();
 }
 
 void GameView::AddGate(std::shared_ptr<Gate> gate)
