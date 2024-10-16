@@ -48,7 +48,7 @@ void MainFrame::Initialize()
 
     Bind(wxEVT_MENU, &MainFrame::OnAddORGate, this, ID_ORGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddANDGate, this, ID_ANDGate);
-    Bind(wxEVT_MENU, &MainFrame::OnFileOpen, this, wxFD_OPEN);
+    // Bind(wxEVT_MENU, &MainFrame::OnFileOpen, this, wxFD_OPEN);
 }
 
 void MainFrame::OnAddORGate(wxCommandEvent& event)
