@@ -30,7 +30,7 @@ private:
     /// the item image
     std::unique_ptr<wxImage> mItemImage;
     /// the bitmap we can display
-    std::unique_ptr<wxBitmap> mItemBitmap;
+    wxGraphicsBitmap mItemBitmap;
 
     /// item width
     double mWidth = 0;
@@ -104,6 +104,15 @@ public:
      * @return height
      */
     double GetHeight() { return mHeight; }
+};
+
+
+class TestItem : public Item
+{
+public:
+    TestItem(Game* game, const std::wstring& filename) : Item(game, filename)
+    {
+    }
 };
 
 

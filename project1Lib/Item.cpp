@@ -14,7 +14,15 @@
 Item::Item(Game* game, const std::wstring& filename) : mGame(game)
 {
     mItemImage = std::make_unique<wxImage>(filename, wxBITMAP_TYPE_ANY);
-    mItemBitmap = std::make_unique<wxBitmap>(*mItemImage);
+    if (!mItemImage->IsOk())
+    {
+        wxMessageBox("Failed to load image: ", filename);
+    }
+    else
+    {
+        wxMessageBox(filename, "Successfully loaded image!");
+
+    }
 }
 
 /**
@@ -26,8 +34,12 @@ Item::Item(Game* game, const std::wstring& filename) : mGame(game)
  */
 bool Item::HitTest(int x, int y)
 {
-    double width = mItemBitmap->GetSize().x;
-    double height = mItemBitmap->GetSize().y;
+    if (!mItemImage)
+    {
+        return false;
+    }
+    double width = mItemImage->GetSize().x;
+    double height = mItemImage->GetSize().y;
 
     // Make x and y relative to the top-left corner of the bitmap image
     // Subtracting the center makes x, y relative to the image center
@@ -54,11 +66,16 @@ bool Item::HitTest(int x, int y)
  */
 void Item::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
-    double width = mItemBitmap->GetWidth();
-    double height = mItemBitmap->GetHeight();
+    if (mItemBitmap.IsNull())
+    {
+        mItemBitmap = graphics->CreateBitmapFromImage(*mItemImage);
+    }
 
-    // the x: and y: (from clion) is calculating the top left
-    graphics->DrawBitmap(*mItemBitmap, int(GetX() - width / 2), int(GetY() - height / 2), width, height);
+    graphics->DrawBitmap(mItemBitmap,
+                         GetX() - mItemImage->GetWidth() / 2,
+                         GetY() - mItemImage->GetHeight() / 2,
+                         mItemImage->GetWidth(),
+                         mItemImage->GetHeight());
 }
 
 /**
