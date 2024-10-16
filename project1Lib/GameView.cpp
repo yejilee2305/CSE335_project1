@@ -143,6 +143,21 @@ void GameView::OnLevelOption(wxCommandEvent& event)
     case IDM_LEVEL3:filename = L"";
         levelNumber = 3;
         break;
+    case IDM_LEVEL4:filename = L"";
+        levelNumber = 4;
+        break;
+    case IDM_LEVEL5:filename = L"";
+        levelNumber = 5;
+        break;
+    case IDM_LEVEL6:filename = L"";
+        levelNumber = 6;
+        break;
+    case IDM_LEVEL7:filename = L"";
+        levelNumber = 7;
+        break;
+    case IDM_LEVEL8:filename = L"";
+        levelNumber = 8;
+        break;
     }
 }
 // void GameView::AddGate(std::shared_ptr<Gate> gate) {
