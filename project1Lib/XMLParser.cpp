@@ -1,6 +1,7 @@
 /**
  * @file XMLParser.cpp
  * @author Yeji Lee
+ * @author Nicolas Roberts
  */
 
 #include "pch.h"

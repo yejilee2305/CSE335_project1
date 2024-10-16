@@ -22,6 +22,15 @@ private:
 public:
     XMLParser(Game *game);
 
+    /// Default constructor (disabled)
+    XMLParser() = delete;
+
+    /// Copy constructor (disabled)
+    XMLParser(const XMLParser&) = delete;
+
+    /// Assignment operator
+    void operator=(const XMLParser&) = delete;
+
     void Load(const wxString &filename);
 };
 
