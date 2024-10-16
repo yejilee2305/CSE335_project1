@@ -3,7 +3,7 @@
  * @author Yeji Lee
  *
  * implement the constructor, getter methods, and kick method
- * kick: contains logic for kicking products off conveyot
+ * kick: contains logic for kicking products off conveyor
  */
  
 #include "pch.h"

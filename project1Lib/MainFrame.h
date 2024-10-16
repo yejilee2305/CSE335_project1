@@ -15,18 +15,14 @@ class GameView;
 class MainFrame : public wxFrame
 {
 private:
-    void OnFileOpen(wxCommandEvent &event);
-
     /// View class for our Game
     GameView *mGameView;
-
-
-    //wxDECLARE_EVENT_TABLE();
 
 public:
     void Initialize();
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
+    void OnClose(wxCloseEvent& event);
     void OnAddORGate(wxCommandEvent& event);
     void OnAddANDGate(wxCommandEvent& event);
     enum

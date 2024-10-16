@@ -13,7 +13,6 @@
  */
 Game::Game()
 {
-
 }
 
 void Game::StartGame()
@@ -117,6 +116,11 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
 
     gc->Translate(mXOffset, mYOffset);
     gc->Scale(mScale, mScale);
+
+    for (auto items : mItems)
+    {
+        items->Draw(gc);
+    }
 
     //
     // Drawing a rectangle that is the playing area size

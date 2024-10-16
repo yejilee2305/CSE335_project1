@@ -131,16 +131,16 @@ void GameView::OnLevelOption(wxCommandEvent& event)
 
     switch(event.GetId())
     {
-    case IDM_LEVEL0:filename = L"levels/level0.xml";
+    case IDM_LEVEL0:filename = L"";
         levelNumber = 0;
         break;
-    case IDM_LEVEL1:filename = L"levels/level1.xml";
+    case IDM_LEVEL1:filename = L"";
         levelNumber = 1;
         break;
-    case IDM_LEVEL2:filename = L"levels/level2.xml";
+    case IDM_LEVEL2:filename = L"";
         levelNumber = 2;
         break;
-    case IDM_LEVEL3:filename = L"levels/level3.xml";
+    case IDM_LEVEL3:filename = L"";
         levelNumber = 3;
         break;
     }
