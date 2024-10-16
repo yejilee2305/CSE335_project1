@@ -1,7 +1,7 @@
 /**
  * @file Game.h
  * @author Yeji Lee
- *
+ * @author Nicolas Roberts
  *
  */
  
@@ -41,7 +41,7 @@ public:
     // check if game has ended
     bool IsGameOver() const;
 
-    void OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height);
+    void OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height);
     void AddGate(std::shared_ptr<Gate> gate);
 
     std::shared_ptr<Item> HitTest(int x, int y);

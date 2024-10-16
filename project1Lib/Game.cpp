@@ -1,6 +1,7 @@
 /**
  * @file Game.cpp
  * @author Yeji Lee
+ * @author Nicolas Roberts
  */
 
 #include "pch.h"
@@ -97,7 +98,14 @@ void Game::AddItem(std::shared_ptr<Item> item)
 void Game::AddGate(std::shared_ptr<Gate> gate) {
  mGates.push_back(gate); // Add the new gate to the list
 }
-void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
+
+/**
+ * Draws the content of the game on the screen
+ * @param graphics The graphics context to be drawn on
+ * @param width Width to use to scale
+ * @param height Height to use to scale
+ */
+void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height)
 {
     // Determine the size of the playing area in pixels
     // This is up to you...
@@ -118,14 +126,14 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
         mYOffset = (double)((height - pixelHeight * mScale) / 2.0);
     }
 
-    gc->PushState();
+    graphics->PushState();
 
-    gc->Translate(mXOffset, mYOffset);
-    gc->Scale(mScale, mScale);
+    graphics->Translate(mXOffset, mYOffset);
+    graphics->Scale(mScale, mScale);
 
     for (auto items : mItems)
     {
-        items->Draw(gc);
+        items->Draw(graphics);
     }
 
     //
@@ -133,18 +141,20 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
     //
     wxBrush background(wxColour(230,255,230));
 
-    gc->SetBrush(background);
-    gc->DrawRectangle(0, 0, pixelWidth, pixelHeight);
+    graphics->SetBrush(background);
+    graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
 
-    gc->PopState();
-    for (const auto& gate : mGates) {
-     gate->Draw(gc); // Call the draw method for each gate
+    graphics->PopState();
+
+    for (const auto& gate : mGates)
+    {
+     gate->Draw(graphics); // Call the draw method for each gate
     }
 }
 
 
 /**
- * test x,y click location to see if it we clicked on a item
+ * Test x,y click location to see if it we clicked on a item
  * @param x x location in pixel
  * @param y y location in pixel
  * @return pointer to the item we clicked on or nullptr if none
@@ -163,7 +173,7 @@ std::shared_ptr<Item> Game::HitTest(int x, int y)
 }
 
 /**
- * deletes all the known items in the aquarium
+ * Deletes all the known items in the game
  */
 void Game::Clear()
 {
