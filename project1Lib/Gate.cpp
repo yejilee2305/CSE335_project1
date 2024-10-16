@@ -26,7 +26,7 @@ States ORGate::ComputeOutput() {
     return (inputA == States::One || inputB == States::One) ? States::One : States::Zero;
 }
 
-void ORGate::Draw(wxGraphicsContext* graphics) {
+void ORGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
     // The location and size
@@ -76,7 +76,7 @@ States ANDGate::ComputeOutput() {
     return (inputA == States::One && inputB == States::One) ? States::One : States::Zero;
 }
 
-void ANDGate::Draw(wxGraphicsContext* graphics) {
+void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
     // The location and size
@@ -119,7 +119,7 @@ States NOTGate::ComputeOutput() {
     return (inputA == States::One) ? States::Zero : States::One;
 }
 
-void NOTGate::Draw(wxGraphicsContext* graphics) {
+void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
     path.AddRectangle(GetX() - NotGateSize.GetWidth() / 2, GetY() - NotGateSize.GetHeight() / 2,
                       NotGateSize.GetWidth(), NotGateSize.GetHeight());
@@ -154,7 +154,7 @@ States SRFlipFlopGate::ComputeOutput() {
     return outputQ;
 }
 
-void SRFlipFlopGate::Draw(wxGraphicsContext* graphics) {
+void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
     path.AddRectangle(GetX() - SRFlipFlopSize.GetWidth() / 2, GetY() - SRFlipFlopSize.GetHeight() / 2,
                       SRFlipFlopSize.GetWidth(), SRFlipFlopSize.GetHeight());
@@ -183,7 +183,7 @@ States DFlipFlopGate::ComputeOutput() {
     return outputQ;
 }
 
-void DFlipFlopGate::Draw(wxGraphicsContext* graphics) {
+void DFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
     path.AddRectangle(GetX() - DFlipFlopSize.GetWidth() / 2, GetY() - DFlipFlopSize.GetHeight() / 2,
                       DFlipFlopSize.GetWidth(), DFlipFlopSize.GetHeight());

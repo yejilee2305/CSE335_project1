@@ -26,8 +26,7 @@ private:
 
     /// current item we are dragging
     std::shared_ptr<Item> mGrabbedItem;
-    ///gates
-    std::vector<std::shared_ptr<Gate>> mGates;
+    //std::vector<std::shared_ptr<Gate>> mGates;
 
 public:
     GameView();
@@ -42,6 +41,8 @@ public:
 
     void OnLevelOption(wxCommandEvent& event);
     void OnDraw(wxGraphicsContext* gc, int width, int height);
+    void OnAddORGate(wxCommandEvent& event);
+    auto OnAddANDGate(wxCommandEvent& event) -> void;
     void AddGate(std::shared_ptr<Gate> gate);
 };
 

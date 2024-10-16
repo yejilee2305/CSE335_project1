@@ -32,7 +32,7 @@ private:
     double mY = 0;  ///< Y coordinate of the gate
 
 public:
-    virtual void Draw(wxGraphicsContext* graphics) = 0;  // Pure virtual function to draw the gate
+    virtual void Draw(std::shared_ptr<wxGraphicsContext> graphics) = 0;  // Pure virtual function to draw the gate
     virtual States ComputeOutput() = 0;  // Pure virtual function to compute the output
     virtual ~Gate() = default;
     // Getter functions for the position of the gate
@@ -59,7 +59,7 @@ public:
     void SetInputA(States state);
     void SetInputB(States state);
     States ComputeOutput() override;
-    void Draw(wxGraphicsContext* graphics) override;
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     // Override to return the specific width and height for OR Gate
     double GetWidth() const override { return OrGateSize.GetWidth(); }
     double GetHeight() const override { return OrGateSize.GetHeight(); }
@@ -77,7 +77,7 @@ public:
     void SetInputA(States state);
     void SetInputB(States state);
     States ComputeOutput() override;
-    void Draw(wxGraphicsContext* graphics) override;
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
 
@@ -90,7 +90,7 @@ public:
     NOTGate();
     void SetInputA(States state);
     States ComputeOutput() override;
-    void Draw(wxGraphicsContext* graphics) override;
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 };
 
 class SRFlipFlopGate : public Gate {
@@ -105,7 +105,7 @@ public:
     void SetInputS(States state);
     void SetInputR(States state);
     States ComputeOutput() override;
-    void Draw(wxGraphicsContext* graphics) override;
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 };
 
 // D Flip-Flop Gate
@@ -121,7 +121,7 @@ public:
     void SetInputD(States state);
     void SetClock(States state);
     States ComputeOutput() override;
-    void Draw(wxGraphicsContext* graphics) override;
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 };
 
 #endif //GATE_H

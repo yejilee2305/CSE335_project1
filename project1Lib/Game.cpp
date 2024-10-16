@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "Game.h"
 #include "Sensor.h"
+#include "Gate.h"
 
 /**
  * Constructor
@@ -88,7 +89,9 @@ void Game::AddItem(std::shared_ptr<Item> item)
 //  //beam.Reset();
 //  gates.clear();
 // }
-
+void Game::AddGate(std::shared_ptr<Gate> gate) {
+ mGates.push_back(gate); // Add the new gate to the list
+}
 void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
 {
     // Determine the size of the playing area in pixels
@@ -124,7 +127,11 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height)
     gc->DrawRectangle(0, 0, pixelWidth, pixelHeight);
 
     gc->PopState();
+    for (const auto& gate : mGates) {
+     gate->Draw(gc); // Call the draw method for each gate
+    }
 }
+
 
 /**
  * test x,y click location to see if it we clicked on a item

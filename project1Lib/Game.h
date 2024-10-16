@@ -43,6 +43,7 @@ public:
     bool IsGameOver() const;
 
     void OnDraw(std::shared_ptr<wxGraphicsContext> gc, int width, int height);
+    void AddGate(std::shared_ptr<Gate> gate);
 
     std::shared_ptr<Item> HitTest(int x, int y);
 
@@ -75,6 +76,8 @@ private:
 
     /// All of the items to populate our game
     std::vector<std::shared_ptr<Item>> mItems;
+    ///gate
+    std::vector<std::shared_ptr<Gate>> mGates;
 
 
 };

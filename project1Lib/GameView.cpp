@@ -7,6 +7,7 @@
 #include "GameView.h"
 #include <wx/stdpaths.h>
 #include <wx/dcbuffer.h>
+#include "MainFrame.h"
 #include "ids.h"
 
 using namespace std;
@@ -38,6 +39,8 @@ void GameView::Initialize(wxFrame* mainFrame)
     Bind(wxEVT_LEFT_DOWN, &GameView::OnLeftDown, this);
     Bind(wxEVT_LEFT_UP, &GameView::OnLeftUp, this);
     Bind(wxEVT_MOTION, &GameView::OnMouseMove, this);
+    mainFrame->Bind(wxEVT_MENU, &GameView::OnAddORGate, this);
+    mainFrame->Bind(wxEVT_MENU, &GameView::OnAddANDGate, this);
 }
 
 /**
@@ -142,12 +145,34 @@ void GameView::OnLevelOption(wxCommandEvent& event)
         break;
     }
 }
-void GameView::AddGate(std::shared_ptr<Gate> gate) {
-    mGates.push_back(gate); // Add the new gate to the list
-    Refresh(); // Refresh the view to trigger a redraw
+// void GameView::AddGate(std::shared_ptr<Gate> gate) {
+//     mGates.push_back(gate); // Add the new gate to the list
+//     Refresh(); // Refresh the view to trigger a redraw
+// }
+// void GameView::OnDraw(wxGraphicsContext* gc, int width, int height) {
+//     for (const auto& gate : mGates) {
+//         gate->Draw(gc); // Call the draw method for each gate
+//     }
+// }
+void GameView::AddGate(std::shared_ptr<Gate> gate)
+{
+    // Assuming you have access to the game object through mGame
+    mGame.AddGate(gate);
+
+    // Redraw the screen to show the added gate
+    Refresh();
 }
-void GameView::OnDraw(wxGraphicsContext* gc, int width, int height) {
-    for (const auto& gate : mGates) {
-        gate->Draw(gc); // Call the draw method for each gate
-    }
+void GameView::OnAddORGate(wxCommandEvent& event)
+{
+    auto orGate = std::make_shared<ORGate>();
+    orGate->SetPosition(100, 100); // Set initial position
+    mGame.AddGate(orGate); // Add the gate to the view
+    std::cout << "yay" << std::endl;
+}
+
+auto GameView::OnAddANDGate(wxCommandEvent& event) -> void
+{
+    auto andGate = std::make_shared<ANDGate>();
+    andGate->SetPosition(200, 100); // Set initial position
+    mGame.AddGate(andGate); // Add the gate to the view
 }
