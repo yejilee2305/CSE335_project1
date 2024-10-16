@@ -23,8 +23,5 @@ bool SpartyApp::OnInit()
     frame->Initialize();
     frame->Show(true);
 
-    XMLParser parser;
-    parser.ParseConfiguration("config.xml");
-
     return true;
 }

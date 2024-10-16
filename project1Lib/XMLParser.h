@@ -1,28 +1,28 @@
 /**
  * @file XMLParser.h
  * @author Yeji Lee
+ * @author Nicolas Roberts
  *
- *
+ * File for XMLParser class.
  */
  
 #ifndef XMLPARSER_H
 #define XMLPARSER_H
 
-#include <wx/wx.h>
-#include <wx/xml/xml.h>
-#include <iostream>
+class Game;
 
-
+/**
+ * Base class for XMLParser.
+ */
 class XMLParser {
 private:
+    /// The game the level will be loaded into
+    Game* mGame;
 
 public:
- bool ParseConfiguration(const wxString& filename);
+    XMLParser(Game *game);
 
- bool ParseLevel(const wxString& filename);
-
- bool ParseObjects(const wxString& filename);
-
+    void Load(const wxString &filename);
 };
 
 
