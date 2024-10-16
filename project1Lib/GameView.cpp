@@ -131,44 +131,40 @@ void GameView::OnLevelOption(wxCommandEvent& event)
 
     switch(event.GetId())
     {
-    case IDM_LEVEL0:filename = L"";
+    case IDM_LEVEL0:filename = L"resources/levels/level0.xml";
         levelNumber = 0;
         break;
-    case IDM_LEVEL1:filename = L"";
+    case IDM_LEVEL1:filename = L"resources/levels/level1.xml";
         levelNumber = 1;
         break;
-    case IDM_LEVEL2:filename = L"";
+    case IDM_LEVEL2:filename = L"resources/levels/level2.xml";
         levelNumber = 2;
         break;
-    case IDM_LEVEL3:filename = L"";
+    case IDM_LEVEL3:filename = L"resources/levels/level3.xml";
         levelNumber = 3;
         break;
-    case IDM_LEVEL4:filename = L"";
+    case IDM_LEVEL4:filename = L"resources/levels/level4.xml";
         levelNumber = 4;
         break;
-    case IDM_LEVEL5:filename = L"";
+    case IDM_LEVEL5:filename = L"resources/levels/level5.xml";
         levelNumber = 5;
         break;
-    case IDM_LEVEL6:filename = L"";
+    case IDM_LEVEL6:filename = L"resources/levels/level6.xml";
         levelNumber = 6;
         break;
-    case IDM_LEVEL7:filename = L"";
+    case IDM_LEVEL7:filename = L"resources/levels/level7.xml";
         levelNumber = 7;
         break;
-    case IDM_LEVEL8:filename = L"";
+    case IDM_LEVEL8:filename = L"resources/levels/level8.xml";
         levelNumber = 8;
         break;
     }
+
+    //mGame = Game();
+    //mGame.Load(filename);
+    //Refresh();
 }
-// void GameView::AddGate(std::shared_ptr<Gate> gate) {
-//     mGates.push_back(gate); // Add the new gate to the list
-//     Refresh(); // Refresh the view to trigger a redraw
-// }
-// void GameView::OnDraw(wxGraphicsContext* gc, int width, int height) {
-//     for (const auto& gate : mGates) {
-//         gate->Draw(gc); // Call the draw method for each gate
-//     }
-// }
+
 void GameView::AddGate(std::shared_ptr<Gate> gate)
 {
     // Assuming you have access to the game object through mGame
