@@ -30,8 +30,8 @@ void MainFrame::Initialize()
     Layout();
 
     auto menuBar = new wxMenuBar();
-    auto gateMenu = new wxMenu;
-    auto fileMenu = new wxMenu;
+    auto gateMenu = new wxMenu();
+    auto fileMenu = new wxMenu();
 
     gateMenu->Append(ID_ORGate, "Add OR Gate");
     gateMenu->Append(ID_ANDGate, "Add AND Gate");
@@ -39,16 +39,18 @@ void MainFrame::Initialize()
 
 
     menuBar->Append(gateMenu, "&Gates");
-    SetMenuBar(menuBar);
+    menuBar->Append(fileMenu, "&File");
 
     fileMenu->Append(wxFD_OPEN, "Load File");
 
+    SetMenuBar(menuBar);
     CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);
 
     Bind(wxEVT_MENU, &MainFrame::OnAddORGate, this, ID_ORGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddANDGate, this, ID_ANDGate);
     Bind(wxEVT_MENU, &MainFrame::OnFileOpen, this, wxFD_OPEN);
 }
+
 void MainFrame::OnAddORGate(wxCommandEvent& event)
 {
     auto orGate = std::make_shared<ORGate>();
@@ -65,13 +67,13 @@ void MainFrame::OnAddANDGate(wxCommandEvent& event)
 
 void MainFrame::OnFileOpen(wxCommandEvent& event)
 {
-//    wxFileDialog loadFileDialog(this, L"Load Game file", L"", L"",
-//        L"Sparty Files (*.sparty)|*.sparty",wxFD_OPEN);
-//    if (loadFileDialog.ShowModal() == wxID_CANCEL)
-//    {
-//        return;
-//    }
-//    auto filename = loadFileDialog.GetPath();
+    //    wxFileDialog loadFileDialog(this, L"Load Game file", L"", L"",
+    //        L"Sparty Files (*.sparty)|*.sparty",wxFD_OPEN);
+    //    if (loadFileDialog.ShowModal() == wxID_CANCEL)
+    //    {
+    //        return;
+    //    }
+    //    auto filename = loadFileDialog.GetPath();
     //mSparty.Load(filename);
-//    Refresh();
+    //    Refresh();
 }
