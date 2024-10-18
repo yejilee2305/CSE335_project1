@@ -11,10 +11,7 @@ using namespace std;
 
 TEST(GameTest, OrGateConstruct)
 {
- ORGate orGate;  // Create an ORGate instance
-
- // Since inputA and inputB are private, we will test them indirectly
- // by checking the output, which relies on the inputs being in a known state.
+ ORGate orGate;
  EXPECT_EQ(orGate.ComputeOutput(), States::Unknown) << "ORGate should initialize with Unknown state inputs.";
 
 }
