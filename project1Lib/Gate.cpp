@@ -36,21 +36,25 @@ void ORGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto h = GetHeight();
 
     // The three corner points of an OR gate
-    wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left
-    wxPoint2DDouble p2(x + w / 2, y);            // Center right
-    wxPoint2DDouble p3(x - w / 2, y - h / 2);   // Top left
+    wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left of the rectangle
+    wxPoint2DDouble p2(x, y + h / 2);           // Bottom right (before the arc)
+    wxPoint2DDouble p3(x, y - h / 2);           // Top right (before the arc)
+    wxPoint2DDouble p4(x - w / 2, y - h / 2);
 
     // Control points used to create the Bezier curves
+    /**
     auto controlPointOffset1 = wxPoint2DDouble(w * 0.5, 0);
     auto controlPointOffset2 = wxPoint2DDouble(w * 0.75, 0);
     auto controlPointOffset3 = wxPoint2DDouble(w * 0.2, 0);
+    */
 
     // Create the path for the gate
-    path.MoveToPoint(p1);
-    path.AddCurveToPoint(p1 + controlPointOffset1, p1 + controlPointOffset2, p2);
-    path.AddCurveToPoint(p3 + controlPointOffset2, p3 + controlPointOffset1, p3);
-    path.AddCurveToPoint(p3 + controlPointOffset3, p1 + controlPointOffset3, p1);
-    path.CloseSubpath();
+    path.MoveToPoint(p1);  // Move to bottom left
+    path.AddLineToPoint(p2);  // Draw a line to the bottom right corner (before the arc)
+    path.AddArc(x, y, h / 2, M_PI / 2, -M_PI / 2, false);  // Smooth semicircle arc
+    path.AddLineToPoint(p3);  // Line from the top of the arc to the top right corner
+    path.AddLineToPoint(p4);  // Line back to top left
+    path.CloseSubpath();      // Close the rectangle
 
     // Draw the path
     graphics->SetPen(*wxBLACK_PEN);
@@ -87,7 +91,7 @@ void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
     // The three corner points of an AND gate
     wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left
-    wxPoint2DDouble p2(x, y+h/2);            // Center right
+    wxPoint2DDouble p2(x + w / 2, y);            // Center right
     wxPoint2DDouble p3(x, y - h / 2);   // Top left
     wxPoint2DDouble p4(x - w / 2, y-h/2);
 
