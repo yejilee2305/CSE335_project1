@@ -41,8 +41,8 @@ public:
     void SetVirtualHeight(int height) {mVirtualHeight = height;}
 
 private:
-    double mVirtualWidth;
-    double mVirtualHeight;
+    int mVirtualWidth;
+    int mVirtualHeight;
     double mScale;
     double mXOffset;
     double mYOffset;

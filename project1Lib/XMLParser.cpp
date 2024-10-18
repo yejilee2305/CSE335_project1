@@ -24,8 +24,8 @@ XMLParser::XMLParser(Game *game) : mGame(game)
  */
 void XMLParser::Load(const wxString &filename)
 {
-    double virtualHeight;
-    double virtualWidth;
+    int virtualHeight;
+    int virtualWidth;
 
     wxXmlDocument xmlDoc;
     if(!xmlDoc.Load(filename))
@@ -38,8 +38,8 @@ void XMLParser::Load(const wxString &filename)
     auto root = xmlDoc.GetRoot();
 
     auto sizeString = root->GetAttribute("size", "0,0");
-    sizeString.BeforeFirst(',').ToDouble(&virtualWidth);
-    sizeString.AfterFirst(',').ToDouble(&virtualHeight);
+    sizeString.BeforeFirst(',').ToInt(&virtualWidth);
+    sizeString.AfterFirst(',').ToInt(&virtualHeight);
 
     auto child = root->GetChildren();
     for(; child; child = child->GetNext())
