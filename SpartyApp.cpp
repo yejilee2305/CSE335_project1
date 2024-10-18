@@ -6,7 +6,6 @@
 #include "pch.h"
 #include "SpartyApp.h"
 #include <MainFrame.h>
-#include <XMLParser.h>
 
 
 bool SpartyApp::OnInit()
