@@ -32,7 +32,7 @@ Item::Item(Game* game, const std::wstring& filename) : mGame(game)
  * @param y Y position to test
  * @return true if hit
  */
-bool Item::HitTest(int x, int y)
+bool Item::HitTest(double x, double y)
 {
     if (!mItemImage)
     {

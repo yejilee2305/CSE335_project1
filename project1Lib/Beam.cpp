@@ -56,7 +56,7 @@ void Beam::Update(double elpased)
  * @param y y location
  * @return true if hit, else false
  */
-bool Beam::HitTest(int x, int y)
+bool Beam::HitTest(double x, double y)
 {
     //implement later
     return false;

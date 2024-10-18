@@ -4,6 +4,7 @@ set(TEST_FILES
 		gtest_main.cpp
 		GameTest.cpp
 		GateTest.cpp
+		ItemTest.cpp
 )
 
 # Get Google Tests

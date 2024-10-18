@@ -24,8 +24,8 @@ private:
     /// path of the image file
     std::wstring mPath;
 
-    int mX = 0; ///< X location
-    int mY = 0; ///< Y location
+    double mX = 0; ///< X location
+    double mY = 0; ///< Y location
 
     /// the item image
     std::unique_ptr<wxImage> mItemImage;
@@ -92,7 +92,7 @@ public:
      * @param y Y location clicked on
      * @return true if clicked on item
      */
-    virtual bool HitTest(int x, int y);
+    virtual bool HitTest(double x, double y);
 
     /**
      * getter for width

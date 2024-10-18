@@ -162,7 +162,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
     auto conveyor = std::make_shared<Conveyor>(this, 150, 400, 100, 800, wxPoint(60,-390));
 
-    conveyor->Draw(graphics, -200, -200);
+    conveyor->Draw(graphics, 200, 200);
 
     graphics->PopState();
 

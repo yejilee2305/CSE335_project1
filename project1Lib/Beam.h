@@ -35,7 +35,7 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     void Update(double elpased) override;
 
-    bool HitTest(int x, int y) override;
+    bool HitTest(double x, double y) override;
 
     bool IsBroken() const { return mBroken; }
 
