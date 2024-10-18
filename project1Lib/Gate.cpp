@@ -85,36 +85,26 @@ void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto w = GetWidth();
     auto h = GetHeight();
 
-    // The three corner points of an AND gate
-    wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left
-    wxPoint2DDouble p2(x, y+h/2);            // Center right
-    wxPoint2DDouble p3(x, y - h / 2);   // Top left
-    wxPoint2DDouble p4(x - w / 2, y-h/2);
+    // Key points for the rectangle and semicircle
+    wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left of the rectangle
+    wxPoint2DDouble p2(x, y + h / 2);           // Bottom right (before the arc)
+    wxPoint2DDouble p3(x, y - h / 2);           // Top right (before the arc)
+    wxPoint2DDouble p4(x - w / 2, y - h / 2);   // Top left of the rectangle
 
-    // Control points used to create the Bezier curves
-    //auto controlPointOffset1 = wxPoint2DDouble(w * 0.75, 0);
-
-    // Create the path for the gate
-    /**
-    path.MoveToPoint(p1);
-    path.AddCurveToPoint(p1 + controlPointOffset1, p2, p2);
-    path.AddLineToPoint(p3);
-    path.AddCurveToPoint(p3 + controlPointOffset1, p1, p1);
-    path.CloseSubpath();
-    */
-
-    path.MoveToPoint(p1);
-    path.AddLineToPoint(p2);
-    path.AddArc(x,y,h/2,M_PI/2,-M_PI/2, false);
-    path.AddLineToPoint(p3);
-    path.AddLineToPoint(p4);
-    path.CloseSubpath();
+    // Create the path for the AND gate (rectangle + smooth arc)
+    path.MoveToPoint(p1);  // Move to bottom left
+    path.AddLineToPoint(p2);  // Draw a line to the bottom right corner (before the arc)
+    path.AddArc(x, y, h / 2, M_PI / 2, -M_PI / 2, false);  // Smooth semicircle arc
+    path.AddLineToPoint(p3);  // Line from the top of the arc to the top right corner
+    path.AddLineToPoint(p4);  // Line back to top left
+    path.CloseSubpath();      // Close the rectangle
 
     // Draw the path
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
 }
+
 
 NOTGate::NOTGate() : inputA(States::Unknown) {}
 
