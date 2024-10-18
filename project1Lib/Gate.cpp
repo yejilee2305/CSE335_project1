@@ -87,17 +87,27 @@ void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
     // The three corner points of an AND gate
     wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left
-    wxPoint2DDouble p2(x + w / 2, y);            // Center right
-    wxPoint2DDouble p3(x - w / 2, y - h / 2);   // Top left
+    wxPoint2DDouble p2(x, y+h/2);            // Center right
+    wxPoint2DDouble p3(x, y - h / 2);   // Top left
+    wxPoint2DDouble p4(x - w / 2, y-h/2);
 
     // Control points used to create the Bezier curves
-    auto controlPointOffset1 = wxPoint2DDouble(w * 0.75, 0);
+    //auto controlPointOffset1 = wxPoint2DDouble(w * 0.75, 0);
 
     // Create the path for the gate
+    /**
     path.MoveToPoint(p1);
     path.AddCurveToPoint(p1 + controlPointOffset1, p2, p2);
     path.AddLineToPoint(p3);
     path.AddCurveToPoint(p3 + controlPointOffset1, p1, p1);
+    path.CloseSubpath();
+    */
+
+    path.MoveToPoint(p1);
+    path.AddLineToPoint(p2);
+    path.AddArc(x,y,h/2,M_PI/2,-M_PI/2, false);
+    path.AddLineToPoint(p3);
+    path.AddLineToPoint(p4);
     path.CloseSubpath();
 
     // Draw the path
