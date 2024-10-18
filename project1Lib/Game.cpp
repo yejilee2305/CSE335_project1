@@ -34,30 +34,68 @@ void Game::StartLevel(int levelNumber)
 
 void Game::Update()
 {
- //if (!gameOver)
- {
-  //conveyor.Update();
+    /**
+    // Update the conveyor belt, moving products along
+    Conveyor.Update();
 
-  //sensor.Update(conveyor.GetCurrentProduct());
-  //beam.Update(conveyor.GetCurrentProduct());
+    // Update the sensor with the current product on the conveyor
+    Sensor.Update(Conveyor.GetCurrentProduct());
 
-  //for (auto& gate : gates) {
-   //gate->Update();
-  }
+    // Update the beam with the current product on the conveyor
+    beam.Update(conveyor.GetCurrentProduct());
 
-  //sparty.Update(beam.IsActive(), sensor.GetProductType());
+    // Update all gates in the game
+    for (auto& gate : mGates) {
+        gate->Update();
+    }
 
-  //if (beam.IsActive() && sparty.ShouldKick())
-  {
-   //core += sparty.Kick(conveyor.GetCurrentProduct()) ? 10 : -5;
-  }
+    // Update Sparty's state based on the beam and sensor
+    sparty.Update(beam.IsActive(), sensor.GetProductType());
 
-  //if (conveyor.IsFinished())
-  {
-   //NextLevel();
-  }
- }
+    // Check if Sparty should kick and adjust the score accordingly
+    if (beam.IsActive() && sparty.ShouldKick()) {
+        // Add to the score if Sparty kicks the correct product, otherwise subtract points
+        score += sparty.Kick(conveyor.GetCurrentProduct()) ? 10 : -5;
+    }
 
+    // Check if the conveyor has finished processing all products
+    if (conveyor.IsFinished()) {
+        // Move to the next level if the current one is done
+        NextLevel();
+    }
+
+    // Optionally check if the game should be marked as over
+    if () {
+        gameOver = true;
+        */
+    }
+//}
+
+
+
+void Game::HandleMouseClick(int x, int y)
+{
+    auto item = HitTest(x, y);
+    if (item != nullptr)
+    {
+        mGrabbedItem = item;
+    }
+}
+
+void Game::HandleMouseMove(int x, int y, bool leftDown)
+{
+    if (mGrabbedItem != nullptr)
+    {
+        if (leftDown)
+        {
+            mGrabbedItem->SetLocation(x, y);
+        }
+        else
+        {
+            mGrabbedItem = nullptr;
+        }
+    }
+}
 
 void Game::ConnectGates(Gate* outputGate, Gate* inputGate) {
  if (outputGate && inputGate) {
@@ -65,36 +103,11 @@ void Game::ConnectGates(Gate* outputGate, Gate* inputGate) {
  }
 }
 
-//int Game::GetScore() const {
- //return score;
-//}
-
-//void Game::NextLevel() {
- //currentLevel++;
- //StartLevel(currentLevel);
-//}
-
 void Game::AddItem(std::shared_ptr<Item> item)
 {
     mItems.push_back(item);
 }
 
-
-//bool Game::IsGameOver() const {
- //return gameOver;
-//}
-
-// void Game::ResetGameState() {
-//  score = 0;
-//  currentLevel = 0;
-//  gameOver = false;
-//
-//  //sparty.Reset();
-//  conveyor.ResetProducts();
-//  //sensor.Reset();
-//  //beam.Reset();
-//  gates.clear();
-// }
 void Game::AddGate(std::shared_ptr<Gate> gate) {
  mGates.push_back(gate); // Add the new gate to the list
 }
@@ -107,14 +120,9 @@ void Game::AddGate(std::shared_ptr<Gate> gate) {
  */
 void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height)
 {
-    // Determine the size of the playing area in pixels
-    // This is up to you...
     int pixelWidth = mVirtualWidth;
     int pixelHeight = mVirtualHeight;
 
-    //
-    // Automatic Scaling
-    //
     auto scaleX = double(width) / double(pixelWidth);
     auto scaleY = double(height) / double(pixelHeight);
     mScale = std::min(scaleX, scaleY);
@@ -127,7 +135,6 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     }
 
     graphics->PushState();
-
     graphics->Translate(mXOffset, mYOffset);
     graphics->Scale(mScale, mScale);
 
@@ -136,11 +143,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
         items->Draw(graphics);
     }
 
-    //
-    // Drawing a rectangle that is the playing area size
-    //
     wxBrush background(wxColour(230,255,230));
-
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
 
@@ -148,13 +151,12 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
     for (const auto& gate : mGates)
     {
-     gate->Draw(graphics); // Call the draw method for each gate
+     gate->Draw(graphics);
     }
 }
 
-
 /**
- * Test x,y click location to see if it we clicked on a item
+ * Test x,y click location to see if we clicked on a item
  * @param x x location in pixel
  * @param y y location in pixel
  * @return pointer to the item we clicked on or nullptr if none
