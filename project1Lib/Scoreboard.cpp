@@ -34,7 +34,7 @@ void Scoreboard::UpdateGameScore() {
     mGameScore += mLevelScore;
 }
 
-void Scoreboard::Draw(wxGraphicsContext* graphics) {
+void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     // Draw the scoreboard box
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->SetPen(wxPen(wxColour(0, 0, 0), 2));
@@ -56,7 +56,7 @@ void Scoreboard::Draw(wxGraphicsContext* graphics) {
     DrawWrappedText(graphics, wxString(mInstructions), mX + 10, mY + SpacingScoresToInstructions, 360);
 }
 
-void Scoreboard::DrawWrappedText(wxGraphicsContext* graphics, const wxString& text,
+void Scoreboard::DrawWrappedText( std::shared_ptr<wxGraphicsContext> graphics, const wxString& text,
                                  int x, int y, int maxWidth) {
     // Split the input text into words
     wxArrayString words = wxSplit(text, ' ');

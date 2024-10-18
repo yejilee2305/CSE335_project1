@@ -27,7 +27,7 @@ public:
  void AddGoodScore();
  void AddBadScore();
  void UpdateGameScore();
- void Draw(wxGraphicsContext* graphics);
+ void Draw(std::shared_ptr<wxGraphicsContext> graphics);
  void SetInstructions(const std::string& instructions);
 
  int GetLevelScore() const;
@@ -37,7 +37,7 @@ public:
 
 private:
  // Helper function to draw wrapped text.
- void DrawWrappedText(wxGraphicsContext* graphics, const wxString& text,
+ void DrawWrappedText(std::shared_ptr<wxGraphicsContext> graphics, const wxString& text,
                       int x, int y, int maxWidth);
 };
 

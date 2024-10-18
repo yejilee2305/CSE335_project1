@@ -9,6 +9,7 @@
 #include "Sensor.h"
 #include "Gate.h"
 #include "XMLParser.h"
+#include "Scoreboard.h"
 
 /**
  * Constructor
@@ -146,13 +147,21 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     wxBrush background(wxColour(230,255,230));
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
+    for (const auto& gate : mGates)
+    {
+        gate->Draw(graphics);
+    }
+    // Create a temporary scoreboard for this draw cycle
+    auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
+    scoreboard->SetInstructions(
+        "Make Sparty kick all product from the conveyor\n that are not Izzo or Smith.");
+
+    // Draw the scoreboard within the graphics context
+    scoreboard->Draw(graphics);
 
     graphics->PopState();
 
-    for (const auto& gate : mGates)
-    {
-     gate->Draw(graphics);
-    }
+
 }
 
 /**

@@ -122,13 +122,13 @@ void GameView::OnPaint(wxPaintEvent& event)
     // Instruct the game to draw its elements
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
 
-    // Create a temporary scoreboard for this draw cycle
-    auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
-    scoreboard->SetInstructions(
-        "Make Sparty kick all product from the conveyor\n that are not Izzo or Smith.");
-
-    // Draw the scoreboard within the graphics context
-    scoreboard->Draw(gc.get());
+    // // Create a temporary scoreboard for this draw cycle
+    // auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
+    // scoreboard->SetInstructions(
+    //     "Make Sparty kick all product from the conveyor\n that are not Izzo or Smith.");
+    //
+    // // Draw the scoreboard within the graphics context
+    // scoreboard->Draw(gc.get());
 }
 
 /**
