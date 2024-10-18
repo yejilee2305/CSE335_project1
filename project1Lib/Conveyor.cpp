@@ -12,10 +12,13 @@ const wxRect Conveyor::StartButtonRect(35, 29, 95, 36);
 const wxRect Conveyor::StopButtonRect(35, 87, 95, 36);
 
 // Define XML level path as a constant (adjust based on user level)
-const std::wstring LevelXMLFile = L"resources/levels/level1.xml";  // Example level file
+const std::wstring LevelXMLFile = L"levels/level1.xml";  // Example level file
+
+const std::wstring conveyorBackImage = L"images/conveyor-back.png";
+
 
 Conveyor::Conveyor(Game* game,int x, int y, int speed, int height, const wxPoint& panelLocation)
-    : Item(game, LevelXMLFile),  // Pass the appropriate XML file to the Item constructor
+    : Item(game, conveyorBackImage),  // Pass the appropriate XML file to the Item constructor
       mX(x), mY(y), mSpeed(speed), mHeight(height), mPanelLocation(panelLocation), mIsRunning(false) {
     // Calculate mWidth here based on the aspect ratio of the conveyor image if needed.
 }
@@ -33,7 +36,7 @@ void Conveyor::ResetProducts() {
     // Logic to reset product positions to their initial placement as defined in the XML.
 }
 
-void Conveyor::Draw(wxGraphicsContext* graphics, int mouseX, int mouseY)
+void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics, int mouseX, int mouseY)
 {
         // Load and draw the conveyor background image
     wxBitmap conveyorBackground(L"images/conveyor-back.png", wxBITMAP_TYPE_PNG);
@@ -42,7 +45,7 @@ void Conveyor::Draw(wxGraphicsContext* graphics, int mouseX, int mouseY)
     // Load and draw the conveyor belt image twice to simulate motion
     wxBitmap conveyorBelt(L"images/conveyor-belt.png", wxBITMAP_TYPE_PNG);
     graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2), mY - (mHeight / 2), conveyorBelt.GetWidth(), mHeight);
-    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2) + conveyorBelt.GetWidth(), mY - (mHeight / 2), conveyorBelt.GetWidth(), mHeight);
+    // graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2) + conveyorBelt.GetWidth(), mY - (mHeight / 2), conveyorBelt.GetWidth(), mHeight);
 
     // Load and draw the appropriate control panel image (based on whether the conveyor is running)
     wxBitmap panelBitmap = mIsRunning ? wxBitmap(L"images/conveyor-switch-start.png", wxBITMAP_TYPE_PNG)

@@ -10,6 +10,7 @@
 #include "Gate.h"
 #include "XMLParser.h"
 #include "Scoreboard.h"
+#include "Conveyor.h"
 
 /**
  * Constructor
@@ -158,6 +159,10 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
     // Draw the scoreboard within the graphics context
     scoreboard->Draw(graphics);
+
+    auto conveyor = std::make_shared<Conveyor>(this, 150, 400, 100, 800, wxPoint(60,-390));
+
+    conveyor->Draw(graphics, -200, -200);
 
     graphics->PopState();
 

@@ -14,15 +14,15 @@
 Item::Item(Game* game, const std::wstring& filename) : mGame(game)
 {
     mItemImage = std::make_unique<wxImage>(filename, wxBITMAP_TYPE_ANY);
-    if (!mItemImage->IsOk())
-    {
-        wxMessageBox("Failed to load image: ", filename);
-    }
-    else
-    {
-        wxMessageBox(filename, "Successfully loaded image!");
-
-    }
+    // if (!mItemImage->IsOk())
+    // {
+    //     wxMessageBox(filename, "Failed to load image");
+    // }
+    // else
+    // {
+    //     wxMessageBox(filename, "Successfully loaded image!");
+    //
+    // }
 }
 
 /**

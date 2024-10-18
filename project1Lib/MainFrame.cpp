@@ -68,7 +68,7 @@ void MainFrame::Initialize()
 void MainFrame::OnAddORGate(wxCommandEvent& event)
 {
     auto orGate = std::make_shared<ORGate>();
-    orGate->SetPosition(100, 100); // Set initial position
+    orGate->SetPosition(350, 250); // Set initial position
     mGameView->AddGate(orGate); // Add the gate to the view
 }
 
