@@ -2,6 +2,7 @@ project(Tests)
 
 set(TEST_FILES
 		gtest_main.cpp
+		GameTest.cpp
 )
 
 # Get Google Tests
