@@ -3,19 +3,21 @@
  * @author Nicolas Roberts
  */
 
+
 #include "pch.h"
 #include "GameView.h"
 #include <wx/stdpaths.h>
 #include <wx/dcbuffer.h>
 #include "MainFrame.h"
 #include "ids.h"
+#include "Scoreboard.h"
 
 using namespace std;
 
 /**
- * Constructor
+ * Constructor for GameView.
  */
-GameView::GameView()
+GameView::GameView() : mCurrentLevel(0)  // Initialize level to 0
 {
 }
 
@@ -29,12 +31,13 @@ void GameView::Initialize(wxFrame* mainFrame)
            wxDefaultPosition, wxDefaultSize,
            wxFULL_REPAINT_ON_RESIZE);
 
-    // Allows ability to paint on background
+    // Allows for background repainting
     SetBackgroundStyle(wxBG_STYLE_PAINT);
 
-    // Binds paint function with event
+    // Bind the paint event to the OnPaint method
     Bind(wxEVT_PAINT, &GameView::OnPaint, this);
 
+    // Bind menu events for all levels
     mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL0);
     mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL1);
     mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL2);
@@ -45,52 +48,100 @@ void GameView::Initialize(wxFrame* mainFrame)
     mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL7);
     mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnLevelOption, this, IDM_LEVEL8);
 
-    mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
-    Refresh();
-
-
-    // mouse events
+    // Bind mouse events
     Bind(wxEVT_LEFT_DOWN, &GameView::OnLeftDown, this);
     Bind(wxEVT_LEFT_UP, &GameView::OnLeftUp, this);
     Bind(wxEVT_MOTION, &GameView::OnMouseMove, this);
+
+    // Bind gate-adding menu events
     mainFrame->Bind(wxEVT_MENU, &GameView::OnAddORGate, this);
     mainFrame->Bind(wxEVT_MENU, &GameView::OnAddANDGate, this);
+
+    // Load the initial level (default to mCurrentLevel)
+    mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
+
+    // Request a repaint to reflect the initial game state
+    Refresh();
+}
+
+/**
+ * Handle level choosing event.
+ * @param event The command event triggered by the menu selection
+ */
+void GameView::OnLevelOption(wxCommandEvent& event)
+{
+    wxString filename;
+
+    // Switch based on the selected level
+    switch (event.GetId())
+    {
+    case IDM_LEVEL0:
+        filename = L"resources/levels/level0.xml";
+        mCurrentLevel = 0;  // Update the current level
+        break;
+    case IDM_LEVEL1:
+        filename = L"resources/levels/level1.xml";
+        mCurrentLevel = 1;  // Update the current level
+        break;
+    case IDM_LEVEL2:
+        filename = L"resources/levels/level2.xml";
+        mCurrentLevel = 2;  // Update the current level
+        break;
+    // Add other cases for different levels...
+    }
+
+    // Reload the game with the selected level
+    mGame = Game();
+    mGame.Load(filename);
+
+    // Request a repaint to reflect the loaded level
+    Refresh();
 }
 
 /**
  * Handles the paint event for the game view.
- *
- * This function is responsible for drawing the game scene, including graphics, text, and notices.
- *
- * @param event The paint event.
+ * This function is responsible for rendering the game scene.
+ * @param event The paint event
  */
 void GameView::OnPaint(wxPaintEvent& event)
 {
     // Create a double-buffered display context
     wxAutoBufferedPaintDC dc(this);
 
-    // Clear the image to black
+    // Clear the display to black
     wxBrush background(*wxBLACK);
     dc.SetBackground(background);
     dc.Clear();
 
-    // Create a graphics context
-    auto gc =
-        std::shared_ptr<wxGraphicsContext>(wxGraphicsContext::Create(dc));
+    // Create a graphics context for advanced drawing
+    auto gc = std::shared_ptr<wxGraphicsContext>(wxGraphicsContext::Create(dc));
 
-    // Tell the game class to draw
+    // Get the dimensions of the current view
     wxRect rect = GetRect();
+
+    // Instruct the game to draw its elements
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
+
+    // Create a temporary scoreboard for this draw cycle
+    auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
+    scoreboard->SetInstructions(
+        "Make Sparty kick all product from the conveyor\n that are not Izzo or Smith.");
+
+    // Draw the scoreboard within the graphics context
+    scoreboard->Draw(gc.get());
 }
 
 /**
- * handles the left mosue button down event
- * @param event
+ * Handles the left mouse button down event.
+ * Used to detect and manipulate game objects with the mouse.
+ * @param event The mouse event
  */
 void GameView::OnLeftDown(wxMouseEvent& event)
 {
+    // Check if the mouse clicked on a game object
     mGrabbedItem = mGame.HitTest(event.GetX(), event.GetY());
 
+    // If an item was grabbed, request a repaint
     if (mGrabbedItem != nullptr)
     {
         Refresh();
@@ -98,106 +149,81 @@ void GameView::OnLeftDown(wxMouseEvent& event)
 }
 
 /**
- * Handle the left mouse button down event
- * @param event
+ * Handles the left mouse button up event.
+ * @param event The mouse event
  */
 void GameView::OnLeftUp(wxMouseEvent& event)
 {
+    // Handle the final position after the item is released
     OnMouseMove(event);
 }
 
 /**
- * implemented from "aquarium" steps
- * Handles left mouse button down event
- * @param event
+ * Handles mouse move events.
+ * Allows dragging game objects with the mouse.
+ * @param event The mouse event
  */
 void GameView::OnMouseMove(wxMouseEvent& event)
 {
-    // See if an item is currently being moved by the mouse
+    // Check if an item is being dragged
     if (mGrabbedItem != nullptr)
     {
-        // If an item is being moved, we only continue to
-        // move it while the left button is down.
+        // Continue dragging if the left button is down
         if (event.LeftIsDown())
         {
             mGrabbedItem->SetLocation(event.GetX(), event.GetY());
         }
         else
         {
-            // When the left button is released, we release the
-            // item.
+            // Release the item if the button is released
             mGrabbedItem = nullptr;
         }
 
-        // Force the screen to redraw
+        // Request a repaint to update the screen
         Refresh();
     }
 }
 
 /**
- * Handle level choosing event
- * @param event
+ * Adds a gate to the game.
+ * @param gate The gate to add
  */
-void GameView::OnLevelOption(wxCommandEvent& event)
-{
-    wxString filename;
-    int levelNumber = 0;
-
-    switch(event.GetId())
-    {
-    case IDM_LEVEL0:filename = L"resources/levels/level0.xml";
-        levelNumber = 0;
-        break;
-    case IDM_LEVEL1:filename = L"resources/levels/level1.xml";
-        levelNumber = 1;
-        break;
-    case IDM_LEVEL2:filename = L"resources/levels/level2.xml";
-        levelNumber = 2;
-        break;
-    case IDM_LEVEL3:filename = L"resources/levels/level3.xml";
-        levelNumber = 3;
-        break;
-    case IDM_LEVEL4:filename = L"resources/levels/level4.xml";
-        levelNumber = 4;
-        break;
-    case IDM_LEVEL5:filename = L"resources/levels/level5.xml";
-        levelNumber = 5;
-        break;
-    case IDM_LEVEL6:filename = L"resources/levels/level6.xml";
-        levelNumber = 6;
-        break;
-    case IDM_LEVEL7:filename = L"resources/levels/level7.xml";
-        levelNumber = 7;
-        break;
-    case IDM_LEVEL8:filename = L"resources/levels/level8.xml";
-        levelNumber = 8;
-        break;
-    }
-
-    mGame = Game();
-    mGame.Load(filename);
-    Refresh();
-}
-
 void GameView::AddGate(std::shared_ptr<Gate> gate)
 {
-    // Assuming you have access to the game object through mGame
+    // Add the gate to the game
     mGame.AddGate(gate);
 
-    // Redraw the screen to show the added gate
+    // Request a repaint to show the new gate
     Refresh();
 }
+
+/**
+ * Handles the addition of an OR gate.
+ * @param event The event triggered by the menu selection
+ */
 void GameView::OnAddORGate(wxCommandEvent& event)
 {
+    // Create an OR gate and set its initial position
     auto orGate = std::make_shared<ORGate>();
-    orGate->SetPosition(100, 100); // Set initial position
-    mGame.AddGate(orGate); // Add the gate to the view
+    orGate->SetPosition(100, 100);
+
+    // Add the OR gate to the game
+    mGame.AddGate(orGate);
+
+    // Print to console for debugging
     std::cout << "yay" << std::endl;
 }
 
+/**
+ * Handles the addition of an AND gate.
+ * @param event The event triggered by the menu selection
+ */
 auto GameView::OnAddANDGate(wxCommandEvent& event) -> void
 {
+    // Create an AND gate and set its initial position
     auto andGate = std::make_shared<ANDGate>();
-    andGate->SetPosition(200, 100); // Set initial position
-    mGame.AddGate(andGate); // Add the gate to the view
+    andGate->SetPosition(200, 100);
+
+    // Add the AND gate to the game
+    mGame.AddGate(andGate);
 }
