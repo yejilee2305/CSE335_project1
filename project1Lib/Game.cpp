@@ -153,7 +153,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
         gate->Draw(graphics);
     }
     // Create a temporary scoreboard for this draw cycle
-    auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
+    auto scoreboard = std::make_shared<Scoreboard>(600, 40, 10, -5);
     scoreboard->SetInstructions(
         "Make Sparty kick all product from the conveyor\n that are not Izzo or Smith.");
 
