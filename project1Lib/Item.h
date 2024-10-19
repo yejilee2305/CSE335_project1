@@ -104,6 +104,8 @@ public:
      * @return height
      */
     double GetHeight() { return mHeight; }
+
+    void XmlLoad(wxXmlNode *node);
 };
 
 

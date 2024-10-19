@@ -40,6 +40,13 @@ public:
     void SetVirtualWidth(int width) {mVirtualWidth = width;}
     void SetVirtualHeight(int height) {mVirtualHeight = height;}
 
+    /**
+     * Get size of mItems
+     * @return size of mItems
+     */
+    size_t GetItemSize() const {return mItems.size();}
+
+
 private:
     int mVirtualWidth;
     int mVirtualHeight;

@@ -84,3 +84,15 @@ void Item::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 Item::~Item()
 {
 }
+
+/**
+ * Load the attributes for an item node.
+ * @param node The Xml node we are loading the item from
+ */
+void Item::XmlLoad(wxXmlNode *node)
+{
+    auto position = node->GetAttribute("p","0,0");
+    position.BeforeFirst(',').ToDouble(&mX);
+    position.AfterFirst(',').ToDouble(&mY);
+}
+

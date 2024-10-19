@@ -113,8 +113,9 @@ void Game::AddItem(std::shared_ptr<Item> item)
     mItems.push_back(item);
 }
 
-void Game::AddGate(std::shared_ptr<Gate> gate) {
- mGates.push_back(gate); // Add the new gate to the list
+void Game::AddGate(std::shared_ptr<Gate> gate)
+{
+    mGates.push_back(gate); // Add the new gate to the list
 }
 
 /**
@@ -145,7 +146,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
     for (auto items : mItems)
     {
-        items->Draw(graphics);
+        //items->Draw(graphics);
     }
 
     wxBrush background(wxColour(230,255,230));

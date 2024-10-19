@@ -19,4 +19,6 @@ TEST(GameTest, Load) {
     wxString level = L"levels/level0.xml";
 
     game.Load(level);
+
+    ASSERT_EQ(game.GetItemSize(), 2) << L"Scoreboard and Conveyor are loaded";
 }

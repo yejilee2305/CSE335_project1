@@ -7,10 +7,10 @@
 #include "Game.h"
 
 /// The image file for the sensor cable
-const std::wstring SensorCableImage = L"sensor-cable.png";
+const std::wstring SensorCableImage = L"images/sensor-cable.png";
 
 /// The image file for the sensor camera
-const std::wstring SensorCameraImage = L"sensor-camera.png";
+const std::wstring SensorCameraImage = L"images/sensor-camera.png";
 
 /// How far below Y location of the sensor system is the panel top?
 const int PanelOffsetY = 87;

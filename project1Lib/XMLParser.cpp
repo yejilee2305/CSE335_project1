@@ -48,7 +48,7 @@ void XMLParser::Load(const wxString &filename)
         if(name == L"items")
         {
             auto node = child->GetChildren();
-            //XmlItems(node);
+            XmlItems(node);
         }
     }
     mGame->SetVirtualWidth(virtualWidth);
@@ -84,13 +84,19 @@ void XMLParser::XmlItems(wxXmlNode* node)
             node->GetAttribute(L"height", "0").ToInt(&height);
             panelStr = node->GetAttribute(L"panel", "0,0");
 
-            long panelX = 0, panelY = 0;
-            panelStr.BeforeFirst(',').ToLong(&panelX);
-            panelStr.AfterFirst(',').ToLong(&panelY);
+            int panelX = 0, panelY = 0;
+            panelStr.BeforeFirst(',').ToInt(&panelX);
+            panelStr.AfterFirst(',').ToInt(&panelY);
 
             wxPoint panelPnt(panelX, panelY);
 
-            item = make_shared<Conveyor>(mGame, x, y, speed, height,panelPnt);
+            item = make_shared<Conveyor>(mGame, x, y, speed, height, panelPnt);
+        }
+
+        if(item != nullptr)
+        {
+            item->XmlLoad(node);
+            mGame->AddItem(item);
         }
     }
 }
