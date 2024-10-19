@@ -55,4 +55,42 @@ void XMLParser::Load(const wxString &filename)
     mGame->SetVirtualHeight(virtualHeight);
 }
 
-//Add Function called XMLItems to load in the items
+/**
+ * Handle a node of type item.
+ * @param node Xml node
+ */
+void XMLParser::XmlItems(wxXmlNode* node)
+{
+    for(*node; node; node = node->GetNext())
+    {
+        shared_ptr<Item> item;
+        auto name = node->GetName();
+        if(name == L"sensor")
+        {
+            int x = 0, y = 0;
+            node->GetAttribute(L"x", "0").ToInt(&x);
+            node->GetAttribute(L"y", "0").ToInt(&y);
+            item = make_shared<Sensor>(mGame, x, y);
+        }
+        else if (name == L"conveyor")
+        {
+            int x = 0, y = 0, speed = 0, height = 0;
+            wxString panelStr;
+
+
+            node->GetAttribute(L"x", "0").ToInt(&x);
+            node->GetAttribute(L"y", "0").ToInt(&y);
+            node->GetAttribute(L"speed", "0").ToInt(&speed);
+            node->GetAttribute(L"height", "0").ToInt(&height);
+            panelStr = node->GetAttribute(L"panel", "0,0");
+
+            long panelX = 0, panelY = 0;
+            panelStr.BeforeFirst(',').ToLong(&panelX);
+            panelStr.AfterFirst(',').ToLong(&panelY);
+
+            wxPoint panelPnt(panelX, panelY);
+
+            item = make_shared<Conveyor>(mGame, x, y, speed, height,panelPnt);
+        }
+    }
+}

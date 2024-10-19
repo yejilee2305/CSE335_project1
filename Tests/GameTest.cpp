@@ -12,3 +12,11 @@ using namespace std;
 TEST(GameTest, Construct) {
     Game game;
 }
+
+TEST(GameTest, Load) {
+    Game game;
+
+    wxString level = L"levels/level0.xml";
+
+    game.Load(level);
+}

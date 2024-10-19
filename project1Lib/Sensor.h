@@ -54,7 +54,7 @@ public:
      */
     virtual ~Sensor();
 
-    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
+    //void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
     void AddOutputPin(Product::Properties property);
     bool IsProductInRange(const Product* product);
@@ -63,7 +63,7 @@ public:
      * updates the sensor state
      * @param elpased
      */
-    void Update(double elpased) override;
+    //void Update(double elpased) override;
 
     /**
      * getter for X

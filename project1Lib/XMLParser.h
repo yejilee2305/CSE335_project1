@@ -32,6 +32,8 @@ public:
     void operator=(const XMLParser&) = delete;
 
     void Load(const wxString &filename);
+
+    void XmlItems(wxXmlNode *node);
 };
 
 
