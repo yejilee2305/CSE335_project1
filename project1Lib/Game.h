@@ -30,6 +30,7 @@ public:
     void AddGate(std::shared_ptr<Gate> gate);
 
     void HandleMouseClick(int x, int y);
+    void Refresh();
     void HandleMouseMove(int x, int y, bool leftDown);
 
     std::shared_ptr<Item> HitTest(int x, int y);

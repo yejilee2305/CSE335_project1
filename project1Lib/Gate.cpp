@@ -7,7 +7,20 @@
 #include "Gate.h"
 
 // Define constant sizes for gates (kept in Gate.h)
+bool Gate::HitTest(int x, int y)
+{
+    return mPath.Contains(x,y);
 
+}
+void Gate::OnMouseClick(double x, double y) {
+    for (const auto& gate : gates) {
+        if (gate->HitTest(x, y)) {
+            // Store the grabbed gate for dragging
+            mGrabbedGate = gate;
+            break;  // Exit after the first gate is found
+        }
+    }
+}
 
 ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {}
 

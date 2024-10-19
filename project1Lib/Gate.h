@@ -30,6 +30,9 @@ class Gate {
 private:
     double mX = 0;  ///< X coordinate of the gate
     double mY = 0;  ///< Y coordinate of the gate
+    wxGraphicsPath mPath;
+    std::vector<std::shared_ptr<Gate>> gates;  // Collection of logic gates
+    std::shared_ptr<Gate> mGrabbedGate;
 
 public:
     virtual void Draw(std::shared_ptr<wxGraphicsContext> graphics) = 0;  // Pure virtual function to draw the gate
@@ -46,6 +49,8 @@ public:
     }
     virtual double GetWidth() const = 0;  // Pure virtual function to get width
     virtual double GetHeight() const = 0; // Pure virtual function to get height
+    bool HitTest(int x, int y);
+    void OnMouseClick(double x, double y);
 };
 
 class ORGate : public Gate

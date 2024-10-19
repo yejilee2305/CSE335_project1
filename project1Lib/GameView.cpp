@@ -154,8 +154,12 @@ void GameView::OnLeftDown(wxMouseEvent& event)
  */
 void GameView::OnLeftUp(wxMouseEvent& event)
 {
-    // Handle the final position after the item is released
-    OnMouseMove(event);
+    // Release the item if it was grabbed
+    if (mGrabbedItem != nullptr)
+    {
+        mGrabbedItem = nullptr; // Release the item
+        Refresh(); // Refresh to update the display
+    }
 }
 
 /**
@@ -171,6 +175,7 @@ void GameView::OnMouseMove(wxMouseEvent& event)
         // Continue dragging if the left button is down
         if (event.LeftIsDown())
         {
+            // Update the item's location based on the current mouse position
             mGrabbedItem->SetLocation(event.GetX(), event.GetY());
         }
         else

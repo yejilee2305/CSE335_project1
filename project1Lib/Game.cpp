@@ -83,19 +83,29 @@ void Game::HandleMouseClick(int x, int y)
         mGrabbedItem = item;
     }
 }
-
+void Game::Refresh()
+{
+    // Assuming `this` is derived from wxWindow or wxPanel
+    this->Refresh(); // This invalidates the window area, causing it to be redrawn
+}
 void Game::HandleMouseMove(int x, int y, bool leftDown)
 {
+    // Check if an item is currently being moved by the mouse
     if (mGrabbedItem != nullptr)
     {
+        // Continue to move the item only while the left button is down
         if (leftDown)
         {
-            mGrabbedItem->SetLocation(x, y);
+            mGrabbedItem->SetLocation(x, y);  // Update the item's location to the current mouse coordinates
         }
         else
         {
+            // When the left button is released, we release the item
             mGrabbedItem = nullptr;
         }
+
+        // Force the screen to redraw (this might be your custom refresh method)
+        Refresh();
     }
 }
 
