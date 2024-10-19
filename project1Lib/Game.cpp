@@ -84,13 +84,13 @@ void Game::HandleMouseClick(int x, int y)
     }
 }
 
-void Game::HandleMouseMove(int x, int y, bool leftDown)
+void Game::HandleMouseMove(int x, int y, wxMouseEvent &event)
 {
     // Check if an item is currently being moved by the mouse
     if (mGrabbedItem != nullptr)
     {
         // Continue to move the item only while the left button is down
-        if (leftDown)
+        if (event.LeftIsDown())
         {
             mGrabbedItem->SetLocation(x, y);  // Update the item's location to the current mouse coordinates
         }
