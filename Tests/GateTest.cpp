@@ -9,7 +9,7 @@
 using namespace std;
 
 
-TEST(GameTest, OrGateConstruct)
+TEST(GateTest, OrGateConstruct)
 {
  ORGate orGate;
  EXPECT_EQ(orGate.ComputeOutput(), States::Unknown) << "ORGate should initialize with Unknown state inputs.";

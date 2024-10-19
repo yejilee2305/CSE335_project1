@@ -22,13 +22,13 @@ public:
     };
 };
 
-TEST(GameTest, Constructor)
+TEST(ItemTest, Constructor)
 {
     Game game;
     ItemMock item(&game);
 }
 
-TEST(GameTest, GettersSetters)
+TEST(ItemTest, GettersSetters)
 {
     Game game;
     ItemMock item(&game);
@@ -40,7 +40,7 @@ TEST(GameTest, GettersSetters)
 }
 
 
-TEST(GameTest, HitTest)
+TEST(ItemTest, HitTest)
 {
     Game game;
     ItemMock item(&game);
