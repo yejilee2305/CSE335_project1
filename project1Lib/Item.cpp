@@ -13,7 +13,11 @@
  */
 Item::Item(Game* game, const std::wstring& filename) : mGame(game)
 {
-    mItemImage = std::make_unique<wxImage>(filename, wxBITMAP_TYPE_ANY);
+    if (!filename.empty())
+    {
+        mItemImage = std::make_unique<wxImage>(filename, wxBITMAP_TYPE_ANY);
+    }
+
     // if (!mItemImage->IsOk())
     // {
     //     wxMessageBox(filename, "Failed to load image");
@@ -68,7 +72,13 @@ void Item::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     if (mItemBitmap.IsNull())
     {
-        mItemBitmap = graphics->CreateBitmapFromImage(*mItemImage);
+        try
+        {
+            mItemBitmap = graphics->CreateBitmapFromImage(*mItemImage);
+        }
+        catch (...)
+        {
+        }
     }
 
     graphics->DrawBitmap(mItemBitmap,
@@ -89,10 +99,9 @@ Item::~Item()
  * Load the attributes for an item node.
  * @param node The Xml node we are loading the item from
  */
-void Item::XmlLoad(wxXmlNode *node)
+void Item::XmlLoad(wxXmlNode* node)
 {
-    auto position = node->GetAttribute("p","0,0");
+    auto position = node->GetAttribute("p", "0,0");
     position.BeforeFirst(',').ToDouble(&mX);
     position.AfterFirst(',').ToDouble(&mY);
 }
-

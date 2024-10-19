@@ -20,7 +20,6 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override
     {
     };
-
 };
 
 TEST(GameTest, Constructor)
@@ -60,5 +59,4 @@ TEST(GameTest, HitTest)
 
     //below
     ASSERT_FALSE(item.HitTest(200.0, 100.0));
-
 }

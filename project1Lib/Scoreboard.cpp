@@ -12,29 +12,35 @@ const wxSize ScoreboardSize(380, 100);
 const int SpacingScoresToInstructions = 40;
 const int SpacingInstructionLines = 17;
 
-Scoreboard::Scoreboard(int x, int y, int goodScore, int badScore)
-    : mX(x + 160), mY(y), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
-      mLevelScore(0), mGameScore(0) {
+Scoreboard::Scoreboard(Game* game, int x, int y, int goodScore, int badScore)
+    : Item(game, L""), mX(x + 160), mY(y), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
+      mLevelScore(0), mGameScore(0)
+{
     mInstructions = "Level: 1 Game: 0\nMake Sparty kick all product from the conveyor that are not Izzo or Smith.";
 }
 
-void Scoreboard::ResetLevelScore() {
+void Scoreboard::ResetLevelScore()
+{
     mLevelScore = 0;
 }
 
-void Scoreboard::AddGoodScore() {
+void Scoreboard::AddGoodScore()
+{
     mLevelScore += mGoodScoreIncrement;
 }
 
-void Scoreboard::AddBadScore() {
+void Scoreboard::AddBadScore()
+{
     mLevelScore -= mBadScoreDecrement;
 }
 
-void Scoreboard::UpdateGameScore() {
+void Scoreboard::UpdateGameScore()
+{
     mGameScore += mLevelScore;
 }
 
-void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
+void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics)
+{
     // Draw the scoreboard box
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->SetPen(wxPen(wxColour(0, 0, 0), 2));
@@ -56,8 +62,9 @@ void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     DrawWrappedText(graphics, wxString(mInstructions), mX + 10, mY + SpacingScoresToInstructions, 360);
 }
 
-void Scoreboard::DrawWrappedText( std::shared_ptr<wxGraphicsContext> graphics, const wxString& text,
-                                 int x, int y, int maxWidth) {
+void Scoreboard::DrawWrappedText(std::shared_ptr<wxGraphicsContext> graphics, const wxString& text,
+                                 int x, int y, int maxWidth)
+{
     // Split the input text into words
     wxArrayString words = wxSplit(text, ' ');
     wxString currentLine;
@@ -67,45 +74,55 @@ void Scoreboard::DrawWrappedText( std::shared_ptr<wxGraphicsContext> graphics, c
     double width, height;
 
     // Iterate through each word and build lines within the max width
-    for (size_t i = 0; i < words.size(); ++i) {
+    for (size_t i = 0; i < words.size(); ++i)
+    {
         wxString testLine = currentLine + words[i] + " ";
 
         // Measure the width of the test line
         graphics->GetTextExtent(testLine, &width, &height);
 
-        if (width > maxWidth) {
+        if (width > maxWidth)
+        {
             // Draw the current line if it exceeds the width
             graphics->DrawText(currentLine, x, currentY);
-            currentLine = words[i] + " ";  // Start a new line with the current word
-            currentY += SpacingInstructionLines;  // Move to the next line
-        } else {
+            currentLine = words[i] + " "; // Start a new line with the current word
+            currentY += SpacingInstructionLines; // Move to the next line
+        }
+        else
+        {
             // If it fits, keep adding words to the current line
             currentLine = testLine;
         }
     }
 
     // Draw the last line
-    if (!currentLine.IsEmpty()) {
+    if (!currentLine.IsEmpty())
+    {
         graphics->DrawText(currentLine, x, currentY);
     }
 }
 
-void Scoreboard::SetInstructions(const std::string& instructions) {
+void Scoreboard::SetInstructions(const std::string& instructions)
+{
     mInstructions = instructions;
 }
 
-int Scoreboard::GetLevelScore() const {
+int Scoreboard::GetLevelScore() const
+{
     return mLevelScore;
 }
 
-int Scoreboard::GetGameScore() const {
+int Scoreboard::GetGameScore() const
+{
     return mGameScore;
 }
 
-int Scoreboard::GetX() const {
+int Scoreboard::GetX() const
+{
     return mX;
 }
 
-int Scoreboard::GetY() const {
+int Scoreboard::GetY() const
+{
     return mY;
 }
