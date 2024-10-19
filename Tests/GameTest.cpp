@@ -20,7 +20,7 @@ TEST(GameTest, LoadLevel0) {
 
     game.Load(level);
 
-    ASSERT_EQ(game.GetItemSize(), 3) << L"Scoreboard and Conveyor are loaded";
+    ASSERT_EQ(game.GetItemSize(), 4) << L"Scoreboard, Sensor, Beam and Conveyor are loaded";
 }
 
 TEST(GameTest, LoadLevel1) {
@@ -30,5 +30,5 @@ TEST(GameTest, LoadLevel1) {
 
     game.Load(level);
 
-    ASSERT_EQ(game.GetItemSize(), 2) << L"Scoreboard and Conveyor are loaded";
+    ASSERT_EQ(game.GetItemSize(), 3) << L"Scoreboard, Beam and Conveyor are loaded";
 }

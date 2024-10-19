@@ -5,10 +5,10 @@
 
 #include "Beam.h"
 /// Image for the beam sender and receiver when red
-const std::wstring BeamRedImage = L"beam-red.png";
+const std::wstring BeamRedImage = L"images/beam-red.png";
 
 /// Image for the beam sender and receiver when green
-const std::wstring BeamGreenImage = L"beam-green.png";
+const std::wstring BeamGreenImage = L"images/beam-green.png";
 
 /// X offset for the beam pin in pixels
 /// This is larger than normal to get it past Sparty's feet

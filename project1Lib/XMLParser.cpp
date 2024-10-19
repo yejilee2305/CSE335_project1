@@ -6,6 +6,8 @@
 
 #include "pch.h"
 #include "XMLParser.h"
+
+#include "Beam.h"
 #include "Game.h"
 #include "Sensor.h"
 #include "Conveyor.h"
@@ -68,7 +70,7 @@ void XMLParser::XmlItems(wxXmlNode* node)
     {
         shared_ptr<Item> item;
         auto name = node->GetName();
-        if(name == L"sensor")
+        if (name == L"sensor")
         {
             int x = 0, y = 0;
             node->GetAttribute(L"x", "0").ToInt(&x);
@@ -97,19 +99,26 @@ void XMLParser::XmlItems(wxXmlNode* node)
         }
         else if (name == L"scoreboard")
         {
-            int x = 0, y = 0;
-            int goodScore = 0, badScore = 0;
+            int x = 0, y = 0, goodScore = 0, badScore = 0;
 
             node->GetAttribute(L"x", "0").ToInt(&x);
             node->GetAttribute(L"y", "0").ToInt(&y);
             node->GetAttribute(L"good", "0").ToInt(&goodScore);
             node->GetAttribute(L"bad", "0").ToInt(&badScore);
 
-            // Get the text content inside the scoreboard tag
             wxString instructions = node->GetNodeContent().Trim(true).Trim(false);
 
-            // Create the Scoreboard object
             item = make_shared<Scoreboard>(mGame, x, y, goodScore, badScore);
+        }
+        else if (name == L"beam")
+        {
+            int x = 0, y = 0, sender = 0;
+
+            node->GetAttribute(L"x", "0").ToInt(&x);
+            node->GetAttribute(L"y", "0").ToInt(&y);
+            node->GetAttribute(L"sender", "0").ToInt(&sender);
+
+            item = make_shared<Beam>(mGame, x, y, sender);
         }
 
         if(item != nullptr)

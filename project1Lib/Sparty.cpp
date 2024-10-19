@@ -14,13 +14,13 @@
 
 
 /// Image for the sparty background, what is behind the boot
-const std::wstring SpartyBackImage = L"sparty-back.png";
+const std::wstring SpartyBackImage = L"images/sparty-back.png";
 
 /// Image for the Sparty boot
-const std::wstring SpartyBootImage = L"sparty-boot.png";
+const std::wstring SpartyBootImage = L"images/sparty-boot.png";
 
 /// Image for the Sparty front, what is in front of the boot
-const std::wstring SpartyFrontImage = L"sparty-front.png";
+const std::wstring SpartyFrontImage = L"images/sparty-front.png";
 
 /// Pivot point for the Sparty boot image as a fraction of
 /// the width and height.
