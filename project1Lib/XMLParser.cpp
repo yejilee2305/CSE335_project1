@@ -7,6 +7,9 @@
 #include "pch.h"
 #include "XMLParser.h"
 #include "Game.h"
+#include "Sensor.h"
+#include "Conveyor.h"
+#include "Scoreboard.h"
 
 using namespace std;
 
@@ -91,6 +94,22 @@ void XMLParser::XmlItems(wxXmlNode* node)
             wxPoint panelPnt(panelX, panelY);
 
             item = make_shared<Conveyor>(mGame, x, y, speed, height, panelPnt);
+        }
+        else if (name == L"scoreboard")
+        {
+            int x = 0, y = 0;
+            int goodScore = 0, badScore = 0;
+
+            node->GetAttribute(L"x", "0").ToInt(&x);
+            node->GetAttribute(L"y", "0").ToInt(&y);
+            node->GetAttribute(L"good", "0").ToInt(&goodScore);
+            node->GetAttribute(L"bad", "0").ToInt(&badScore);
+
+            // Get the text content inside the scoreboard tag
+            wxString instructions = node->GetNodeContent().Trim(true).Trim(false);
+
+            // Create the Scoreboard object
+            item = make_shared<Scoreboard>(mGame, x, y, goodScore, badScore);
         }
 
         if(item != nullptr)
