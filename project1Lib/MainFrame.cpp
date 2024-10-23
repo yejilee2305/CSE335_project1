@@ -64,6 +64,7 @@ void MainFrame::Initialize()
     Bind(wxEVT_MENU, &MainFrame::OnAddANDGate, this, ID_ANDGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddNOTGate, this, ID_NOTGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddSRFlipFlopGate, this, IDM_SRFLIP_GATE);
+    Bind(wxEVT_MENU, &MainFrame::OnAddSRFlipFlopGate, this, IDM_DRFLIP_GATE);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
@@ -94,6 +95,16 @@ void MainFrame::OnAddSRFlipFlopGate(wxCommandEvent& event)
     srFlipFlop->SetPosition(290, 230); // Set initial position
     mGameView->AddGate(srFlipFlop); // Add the gate to the view
 }
+void MainFrame::OnAddDFlipFlopGate(wxCommandEvent& event)
+{
+    // Create an D gate and set its initial position
+    auto dFlipFlop = std::make_shared<DFlipFlopGate>();
+    dFlipFlop->SetPosition(295, 190);
+
+    // Add the D gate to the game
+    mGameView->AddGate(dFlipFlop);
+}
+
 /**
  * Exit menu option handlers
  * @param event The Exit event
