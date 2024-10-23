@@ -44,6 +44,7 @@ public:
     void OnAddORGate(wxCommandEvent& event);
     auto OnAddANDGate(wxCommandEvent& event) -> void;
     auto OnAddNOTGate(wxCommandEvent& event) -> void;
+    auto OnAddSRFLipFlopGate(wxCommandEvent& event) -> void;
     void AddGate(std::shared_ptr<Gate> gate);
 };
 

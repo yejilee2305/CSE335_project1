@@ -26,6 +26,7 @@ public:
     void OnAddORGate(wxCommandEvent& event);
     void OnAddANDGate(wxCommandEvent& event);
     void OnAddNOTGate(wxCommandEvent& event);
+    void OnAddSRFlipFlopGate(wxCommandEvent& event);
 
     enum
     {

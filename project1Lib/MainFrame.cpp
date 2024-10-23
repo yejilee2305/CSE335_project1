@@ -55,12 +55,15 @@ void MainFrame::Initialize()
     gateMenu->Append(ID_ORGate, "Add OR Gate");
     gateMenu->Append(ID_ANDGate, "Add AND Gate");
     gateMenu->Append(ID_NOTGate, "Add NOT Gate");
+    gateMenu->Append(IDM_SRFLIP_GATE, "Add SR-Flip Flop Gate");
+    gateMenu->Append(IDM_DRFLIP_GATE, "Add D-Flip Flop Gate");
     SetMenuBar(menuBar);
     CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);
 
     Bind(wxEVT_MENU, &MainFrame::OnAddORGate, this, ID_ORGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddANDGate, this, ID_ANDGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddNOTGate, this, ID_NOTGate);
+    Bind(wxEVT_MENU, &MainFrame::OnAddSRFlipFlopGate, this, IDM_SRFLIP_GATE);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
@@ -84,6 +87,12 @@ void MainFrame::OnAddNOTGate(wxCommandEvent& event)
     auto notGate = std::make_shared<NOTGate>();
     notGate->SetPosition(320, 240); // Set initial position
     mGameView->AddGate(notGate); // Add the gate to the view
+}
+void MainFrame::OnAddSRFlipFlopGate(wxCommandEvent& event)
+{
+    auto srFlipFlop = std::make_shared<SRFlipFlopGate>();
+    srFlipFlop->SetPosition(290, 230); // Set initial position
+    mGameView->AddGate(srFlipFlop); // Add the gate to the view
 }
 /**
  * Exit menu option handlers

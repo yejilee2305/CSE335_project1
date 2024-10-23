@@ -230,3 +230,17 @@ auto GameView::OnAddNOTGate(wxCommandEvent& event) -> void
     // Add the NOT gate to the game
     mGame.AddGate(notGate);
 }
+
+/**
+ * Handles the addition of an NOT gate.
+ * @param event The event triggered by the menu selection
+ */
+auto GameView::OnAddSRFLipFlopGate(wxCommandEvent& event) -> void
+{
+    // Create an NOT gate and set its initial position
+    auto srFlipFlop = std::make_shared<SRFlipFlopGate>();
+    srFlipFlop->SetPosition(400, 100);
+
+    // Add the NOT gate to the game
+    mGame.AddGate(srFlipFlop);
+}

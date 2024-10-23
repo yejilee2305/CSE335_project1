@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "Gate.h"
+#include <wx/graphics.h>
 
 // Define constant sizes for gates (kept in Gate.h)
 bool Gate::HitTest(int x, int y)
@@ -190,13 +191,37 @@ States SRFlipFlopGate::ComputeOutput() {
 
 void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
-    path.AddRectangle(GetX() - SRFlipFlopSize.GetWidth() / 2, GetY() - SRFlipFlopSize.GetHeight() / 2,
-                      SRFlipFlopSize.GetWidth(), SRFlipFlopSize.GetHeight());
 
+    // The location and size
+    auto x = GetX();
+    auto y = GetY();
+    auto w = GetWidth();  // Width of the SR flip-flop gate
+    auto h = GetHeight(); // Height of the SR flip-flop gate
+
+    // Draw the body of the SR flip-flop (rectangle)
+    path.AddRectangle(x - w / 2, y - h / 2, w, h);
+
+    // Draw the input and output connections using a path
+    wxPoint2DDouble p1(x - w / 2, y - h / 2 + 10);   // Input S
+    wxPoint2DDouble p2(x - w / 2 - 20, y - h / 2 + 10); // Input S connection point
+    wxPoint2DDouble p3(x - w / 2, y + h / 2 - 10);   // Output Q
+    wxPoint2DDouble p4(x + w / 2 + 20, y + h / 2 - 10); // Output Q connection point
+    wxPoint2DDouble p5(x + w / 2, y + h / 2 - 10);   // Output Q'
+
+    // Create path for the input and output lines
+    path.MoveToPoint(p1); // Move to Input S
+    path.AddLineToPoint(p2); // Draw line for Input S connection
+    path.MoveToPoint(p3); // Move to Output Q
+    path.AddLineToPoint(p4); // Draw line for Output Q connection
+    path.MoveToPoint(p5); // Move to Output Q'
+
+    // Draw the SR flip-flop gate
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
 }
+
+
 
 DFlipFlopGate::DFlipFlopGate() : inputD(States::Unknown), clock(States::Unknown),
                                    outputQ(States::Unknown), outputQPrime(States::Unknown) {}
