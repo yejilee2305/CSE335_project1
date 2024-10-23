@@ -152,8 +152,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     wxBrush background(wxColour(230,255,230));
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
-    for (const auto& gate : mGates)
-    {
+    for (const auto& gate : mGates) {
         gate->Draw(graphics);
     }
     // Create a temporary scoreboard for this draw cycle

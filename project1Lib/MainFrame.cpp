@@ -60,6 +60,7 @@ void MainFrame::Initialize()
 
     Bind(wxEVT_MENU, &MainFrame::OnAddORGate, this, ID_ORGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddANDGate, this, ID_ANDGate);
+    Bind(wxEVT_MENU, &MainFrame::OnAddNOTGate, this, ID_NOTGate);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
@@ -75,10 +76,15 @@ void MainFrame::OnAddORGate(wxCommandEvent& event)
 void MainFrame::OnAddANDGate(wxCommandEvent& event)
 {
     auto andGate = std::make_shared<ANDGate>();
-    andGate->SetPosition(200, 100); // Set initial position
+    andGate->SetPosition(400, 300); // Set initial position
     mGameView->AddGate(andGate); // Add the gate to the view
 }
-
+void MainFrame::OnAddNOTGate(wxCommandEvent& event)
+{
+    auto notGate = std::make_shared<NOTGate>();
+    notGate->SetPosition(320, 240); // Set initial position
+    mGameView->AddGate(notGate); // Add the gate to the view
+}
 /**
  * Exit menu option handlers
  * @param event The Exit event

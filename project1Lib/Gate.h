@@ -94,8 +94,12 @@ private:
 public:
     NOTGate();
     void SetInputA(States state);
+    void SetInputB(States state);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
+    double GetWidth() const override { return NotGateSize.GetWidth(); }
+    double GetHeight() const override { return NotGateSize.GetHeight(); }
+
 };
 
 class SRFlipFlopGate : public Gate {

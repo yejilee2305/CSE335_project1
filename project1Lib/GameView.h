@@ -43,6 +43,7 @@ public:
     void OnDraw(wxGraphicsContext* gc, int width, int height);
     void OnAddORGate(wxCommandEvent& event);
     auto OnAddANDGate(wxCommandEvent& event) -> void;
+    auto OnAddNOTGate(wxCommandEvent& event) -> void;
     void AddGate(std::shared_ptr<Gate> gate);
 };
 

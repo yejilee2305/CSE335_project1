@@ -100,14 +100,14 @@ void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
     // Key points for the rectangle and semicircle
     wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left of the rectangle
-    wxPoint2DDouble p2(x, y + h / 2);           // Bottom right (before the arc)
-    wxPoint2DDouble p3(x, y - h / 2);           // Top right (before the arc)
+    wxPoint2DDouble p2(x + w / 4, y + h / 2);   // Bottom right (before the arc)
+    wxPoint2DDouble p3(x + w / 4, y - h / 2);   // Top right (before the arc)
     wxPoint2DDouble p4(x - w / 2, y - h / 2);   // Top left of the rectangle
 
-    // Create the path for the AND gate (rectangle + smooth arc)
+    // Create the path for the AND gate (rectangle + arc for the right side)
     path.MoveToPoint(p1);  // Move to bottom left
     path.AddLineToPoint(p2);  // Draw a line to the bottom right corner (before the arc)
-    path.AddArc(x, y, h / 2, M_PI / 2, -M_PI / 2, false);  // Smooth semicircle arc
+    path.AddArc(x + w / 4, y, h / 2, M_PI / 2, -M_PI / 2, false);  // Semicircle arc from bottom to top
     path.AddLineToPoint(p3);  // Line from the top of the arc to the top right corner
     path.AddLineToPoint(p4);  // Line back to top left
     path.CloseSubpath();      // Close the rectangle
@@ -134,13 +134,34 @@ States NOTGate::ComputeOutput() {
 
 void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
-    path.AddRectangle(GetX() - NotGateSize.GetWidth() / 2, GetY() - NotGateSize.GetHeight() / 2,
-                      NotGateSize.GetWidth(), NotGateSize.GetHeight());
 
+    // The location and size
+    auto x = GetX();
+    auto y = GetY();
+    auto w = GetWidth();  // Width of the NOT gate
+    auto h = GetHeight(); // Height of the NOT gate
+
+    // Key points for the triangle and circle
+    wxPoint2DDouble p1(x - w / 2, y + h / 2);   // Bottom left of the triangle
+    wxPoint2DDouble p2(x - w / 2, y - h / 2);   // Top left of the triangle
+    wxPoint2DDouble p3(x + w / 2, y);            // Point of the triangle (right)
+
+    // Create the path for the NOT gate (triangle)
+    path.MoveToPoint(p1);                          // Move to bottom left of triangle
+    path.AddLineToPoint(p2);                       // Draw line to top left of triangle
+    path.AddLineToPoint(p3);                       // Draw line to the point of the triangle
+    path.CloseSubpath();                           // Close the triangle
+
+    // Draw the triangle part of the NOT gate
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
+
+    // Draw the inversion circle at the point of the triangle using DrawEllipse
+    graphics->DrawEllipse(x + w / 2 - h / 4, y - h / 4, h / 2, h / 2); // Adjust to draw a circle
 }
+
+
 
 SRFlipFlopGate::SRFlipFlopGate() : inputS(States::Unknown), inputR(States::Unknown),
                                     outputQ(States::Unknown), outputQPrime(States::Unknown) {}

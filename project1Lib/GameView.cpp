@@ -211,8 +211,22 @@ auto GameView::OnAddANDGate(wxCommandEvent& event) -> void
 {
     // Create an AND gate and set its initial position
     auto andGate = std::make_shared<ANDGate>();
-    andGate->SetPosition(200, 100);
+    andGate->SetPosition(300, 100);
 
     // Add the AND gate to the game
     mGame.AddGate(andGate);
+}
+
+/**
+ * Handles the addition of an NOT gate.
+ * @param event The event triggered by the menu selection
+ */
+auto GameView::OnAddNOTGate(wxCommandEvent& event) -> void
+{
+    // Create an NOT gate and set its initial position
+    auto notGate = std::make_shared<NOTGate>();
+    notGate->SetPosition(400, 100);
+
+    // Add the NOT gate to the game
+    mGame.AddGate(notGate);
 }

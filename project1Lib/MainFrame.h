@@ -25,6 +25,8 @@ public:
     void OnClose(wxCloseEvent& event);
     void OnAddORGate(wxCommandEvent& event);
     void OnAddANDGate(wxCommandEvent& event);
+    void OnAddNOTGate(wxCommandEvent& event);
+
     enum
     {
         ID_ORGate = 1001,
