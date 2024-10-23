@@ -6,6 +6,11 @@
 #include "pch.h"
 #include "Gate.h"
 #include <wx/graphics.h>
+#include <wx/dcclient.h>  // For wxPaintDC
+#include <wx/dcbuffer.h>  // For wxAutoBufferedPaintDC
+#include <wx/app.h>
+#include <wx/event.h>
+
 
 // Define constant sizes for gates (kept in Gate.h)
 bool Gate::HitTest(int x, int y)
@@ -195,30 +200,46 @@ void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     // The location and size
     auto x = GetX();
     auto y = GetY();
-    auto w = GetWidth();  // Width of the SR flip-flop gate
-    auto h = GetHeight(); // Height of the SR flip-flop gate
+    auto w = GetWidth();
+    auto h = GetHeight();
 
-    // Draw the body of the SR flip-flop (rectangle)
-    path.AddRectangle(x - w / 2, y - h / 2, w, h);
+    // Draw the body of the SR flip-flop (rectangle with rounded corners)
+    path.AddRoundedRectangle(x - w / 2, y - h / 2, w, h, 10);
 
-    // Draw the input and output connections using a path
-    wxPoint2DDouble p1(x - w / 2, y - h / 2 + 10);   // Input S
-    wxPoint2DDouble p2(x - w / 2 - 20, y - h / 2 + 10); // Input S connection point
-    wxPoint2DDouble p3(x - w / 2, y + h / 2 - 10);   // Output Q
-    wxPoint2DDouble p4(x + w / 2 + 20, y + h / 2 - 10); // Output Q connection point
-    wxPoint2DDouble p5(x + w / 2, y + h / 2 - 10);   // Output Q'
+    // Draw the input and output connections
+    wxPoint2DDouble p1(x - w / 2, y - h / 4);   // Input S
+    wxPoint2DDouble p2(x - w / 2 - 20, y - h / 4); // Input S connection point
+    wxPoint2DDouble p3(x - w / 2, y + h / 4);   // Input R
+    wxPoint2DDouble p4(x - w / 2 - 20, y + h / 4); // Input R connection point
+    wxPoint2DDouble p5(x + w / 2, y - h / 4);   // Output Q
+    wxPoint2DDouble p6(x + w / 2 + 20, y - h / 4); // Output Q connection point
+    wxPoint2DDouble p7(x + w / 2, y + h / 4);   // Output Q'
+    wxPoint2DDouble p8(x + w / 2 + 20, y + h / 4); // Output Q' connection point
 
     // Create path for the input and output lines
-    path.MoveToPoint(p1); // Move to Input S
-    path.AddLineToPoint(p2); // Draw line for Input S connection
-    path.MoveToPoint(p3); // Move to Output Q
-    path.AddLineToPoint(p4); // Draw line for Output Q connection
-    path.MoveToPoint(p5); // Move to Output Q'
+    path.MoveToPoint(p1);
+    path.AddLineToPoint(p2);
+    path.MoveToPoint(p3);
+    path.AddLineToPoint(p4);
+    path.MoveToPoint(p5);
+    path.AddLineToPoint(p6);
+    path.MoveToPoint(p7);
+    path.AddLineToPoint(p8);
 
     // Draw the SR flip-flop gate
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
+
+    // Set font for labels
+    wxFont font(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    graphics->SetFont(font, *wxBLACK);
+
+    // Draw labels
+    graphics->DrawText("S", x - w / 2 + 5, y - h / 4 - 10);
+    graphics->DrawText("R", x - w / 2 + 5, y + h / 4 - 10);
+    graphics->DrawText("Q", x + w / 2 - 15, y - h / 4 - 10);
+    graphics->DrawText("Q'", x + w / 2 - 15, y + h / 4 - 10);
 }
 
 
@@ -248,28 +269,51 @@ void DFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     // The location and size
     auto x = GetX();
     auto y = GetY();
-    auto w = GetWidth();  // Width of the D flip-flop gate
-    auto h = GetHeight(); // Height of the D flip-flop gate
+    auto w = GetWidth();
+    auto h = GetHeight();
 
-    // Draw the body of the D flip-flop (rectangle)
-    path.AddRectangle(x - w / 2, y - h / 2, w, h);
+    // Draw the body of the D flip-flop (rectangle with rounded corners)
+    path.AddRoundedRectangle(x - w / 2, y - h / 2, w, h, 10);
 
-    // Draw the input and output connections using a path
-    wxPoint2DDouble p1(x - w / 2, y - h / 2 + 10);   // Input D
-    wxPoint2DDouble p2(x - w / 2 - 20, y - h / 2 + 10); // Input D connection point
-    wxPoint2DDouble p3(x - w / 2, y + h / 2 - 10);   // Output Q
-    wxPoint2DDouble p4(x + w / 2 + 20, y + h / 2 - 10); // Output Q connection point
-    wxPoint2DDouble p5(x + w / 2, y + h / 2 - 10);   // Output Q'
+    // Draw the input and output connections
+    wxPoint2DDouble p1(x - w / 2, y - h / 4);   // Input D
+    wxPoint2DDouble p2(x - w / 2 - 20, y - h / 4); // Input D connection point
+    wxPoint2DDouble p3(x - w / 2, y + h / 4);   // Clock input
+    wxPoint2DDouble p4(x - w / 2 - 20, y + h / 4); // Clock input connection point
+    wxPoint2DDouble p5(x + w / 2, y - h / 4);   // Output Q
+    wxPoint2DDouble p6(x + w / 2 + 20, y - h / 4); // Output Q connection point
+    wxPoint2DDouble p7(x + w / 2, y + h / 4);   // Output Q'
+    wxPoint2DDouble p8(x + w / 2 + 20, y + h / 4); // Output Q' connection point
 
     // Create path for the input and output lines
-    path.MoveToPoint(p1); // Move to Input D
-    path.AddLineToPoint(p2); // Draw line for Input D connection
-    path.MoveToPoint(p3); // Move to Output Q
-    path.AddLineToPoint(p4); // Draw line for Output Q connection
-    path.MoveToPoint(p5); // Move to Output Q'
+    path.MoveToPoint(p1);
+    path.AddLineToPoint(p2);
+    path.MoveToPoint(p3);
+    path.AddLineToPoint(p4);
+    path.MoveToPoint(p5);
+    path.AddLineToPoint(p6);
+    path.MoveToPoint(p7);
+    path.AddLineToPoint(p8);
 
     // Draw the D flip-flop gate
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
+
+    // Draw the clock input triangle
+    wxPoint2DDouble trianglePoints[3] = {
+        wxPoint2DDouble(x - w / 2, y + h / 4 - 10),
+        wxPoint2DDouble(x - w / 2 + 15, y + h / 4),
+        wxPoint2DDouble(x - w / 2, y + h / 4 + 10)
+    };
+    graphics->DrawLines(3, trianglePoints);
+
+    // Set font for labels
+    wxFont font(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    graphics->SetFont(font, *wxBLACK);
+
+    // Draw labels
+    graphics->DrawText("D", x - w / 2 + 5, y - h / 4 - 10);
+    graphics->DrawText("Q", x + w / 2 - 15, y - h / 4 - 10);
+    graphics->DrawText("Q'", x + w / 2 - 15, y + h / 4 - 10);
 }
