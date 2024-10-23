@@ -66,7 +66,7 @@ void XMLParser::Load(const wxString &filename)
  */
 void XMLParser::XmlItems(wxXmlNode* node)
 {
-    for(*node; node; node = node->GetNext())
+    for(; node; node = node->GetNext())
     {
         shared_ptr<Item> item;
         auto name = node->GetName();
