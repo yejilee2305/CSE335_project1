@@ -42,15 +42,11 @@ public:
     double GetX() const { return mX; }
     double GetY() const { return mY; }
 
-    // Setter functions to update the gate position
-    void SetPosition(double x, double y) {
-        mX = x;
-        mY = y;
-    }
     virtual double GetWidth() const = 0;  // Pure virtual function to get width
     virtual double GetHeight() const = 0; // Pure virtual function to get height
-    bool HitTest(int x, int y);
     void OnMouseClick(double x, double y);
+    virtual bool HitTest(double x, double y) const;
+    void SetPosition(double x, double y);
 };
 
 class ORGate : public Gate
