@@ -138,11 +138,10 @@ void GameView::OnPaint(wxPaintEvent& event)
  */
 void GameView::OnLeftDown(wxMouseEvent& event)
 {
-    // Check if the mouse clicked on a game object
-    mGrabbedItem = mGame.HitTest(event.GetX(), event.GetY());
-
-    // If an item was grabbed, request a repaint
-    if (mGrabbedItem != nullptr)
+    auto x = event.GetX();
+    auto y = event.GetY();
+    mGrabbedGate = mGame.HitTestGate(x, y);
+    if (mGrabbedGate != nullptr)
     {
         Refresh();
     }
@@ -154,11 +153,10 @@ void GameView::OnLeftDown(wxMouseEvent& event)
  */
 void GameView::OnLeftUp(wxMouseEvent& event)
 {
-    // Release the item if it was grabbed
-    if (mGrabbedItem != nullptr)
+    if (mGrabbedGate != nullptr)
     {
-        mGrabbedItem = nullptr; // Release the item
-        Refresh(); // Refresh to update the display
+        mGrabbedGate = nullptr;
+        Refresh();
     }
 }
 
@@ -169,8 +167,13 @@ void GameView::OnLeftUp(wxMouseEvent& event)
  */
 void GameView::OnMouseMove(wxMouseEvent& event)
 {
-    mGame.HandleMouseMove(event.GetX(), event.GetY(), event);
-    Refresh();
+    auto x = event.GetX();
+    auto y = event.GetY();
+    if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown())
+    {
+        mGrabbedGate->SetPosition(x, y);
+        Refresh();
+    }
 }
 
 /**

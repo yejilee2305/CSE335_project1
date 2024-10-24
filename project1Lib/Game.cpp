@@ -198,6 +198,18 @@ std::shared_ptr<Item> Game::HitTest(int x, int y)
     return nullptr;
 }
 
+std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
+{
+    for (auto& gate : mGates)
+    {
+        if (gate->HitTest(x, y))
+        {
+            return gate;
+        }
+    }
+    return nullptr;
+}
+
 /**
  * Deletes all the known items in the game
  */

@@ -13,11 +13,21 @@
 
 
 // Define constant sizes for gates (kept in Gate.h)
-bool Gate::HitTest(int x, int y)
+bool Gate::HitTest(double x, double y) const
 {
-    return mPath.Contains(x,y);
+    double left = GetX() - GetWidth() / 2;
+    double right = GetX() + GetWidth() / 2;
+    double top = GetY() - GetHeight() / 2;
+    double bottom = GetY() + GetHeight() / 2;
 
+    return (x >= left && x <= right && y >= top && y <= bottom);
 }
+// Setter functions to update the gate position
+void Gate::SetPosition(double x, double y) {
+    mX = x;
+    mY = y;
+}
+
 void Gate::OnMouseClick(double x, double y) {
     for (const auto& gate : gates) {
         if (gate->HitTest(x, y)) {
