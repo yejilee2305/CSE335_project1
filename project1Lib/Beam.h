@@ -18,6 +18,8 @@ private:
     int mSenderOffset; ///< x sender offset
     bool mBroken = false; ///< state of beam
 
+    wxGraphicsBitmap mRedBitmap;
+    wxGraphicsBitmap mGreenBitmap;
     std::unique_ptr<wxImage> mRedImage; ///< red image
     std::unique_ptr<wxImage> mGreenImage; ///< green image
 

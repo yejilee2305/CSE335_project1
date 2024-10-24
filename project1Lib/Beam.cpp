@@ -20,14 +20,11 @@ const int BeamPinOffset = 80;
  * @param y y location
  * @param senderOffset offset for the beam sender
  */
-Beam::Beam(Game* game, int x, int y, int senderOffset) : Item(game, BeamGreenImage)
+Beam::Beam(Game* game, int x, int y, int senderOffset)
+    : Item(game, BeamGreenImage), mX(x + senderOffset), mY(y), mSenderOffset(senderOffset)
 {
-    mX = x;
-    mY = y;
-    mSenderOffset = senderOffset;
-
-    mRedImage = std::make_unique<wxImage>(BeamRedImage, wxBITMAP_TYPE_ANY);
-    mGreenImage = std::make_unique<wxImage>(BeamGreenImage, wxBITMAP_TYPE_ANY);
+    mRedImage = std::make_unique<wxImage>(BeamRedImage, wxBITMAP_TYPE_PNG);
+    mGreenImage = std::make_unique<wxImage>(BeamGreenImage, wxBITMAP_TYPE_PNG);
 }
 
 /**
@@ -36,10 +33,36 @@ Beam::Beam(Game* game, int x, int y, int senderOffset) : Item(game, BeamGreenIma
  */
 void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
+    if (mRedBitmap.IsNull())
+    {
+        mRedBitmap = graphics->CreateBitmapFromImage(*mRedImage);
+        mGreenBitmap = graphics->CreateBitmapFromImage(*mGreenImage);
+    }
+
+    auto bitmap = mBroken ? mRedBitmap : mGreenBitmap;
+    int wid = mRedImage->GetWidth();
+    int hit = mRedImage->GetHeight();
+
+    // beam
     wxPen laser1(wxColour(255, 200, 200, 100), 8);
     wxPen laser2(wxColour(255, 0, 0, 175), 4);
-    // implement later
+
+    graphics->SetPen(laser1);
+    graphics->StrokeLine(mX - mSenderOffset, mY, mX, mY);
+    graphics->SetPen(laser2);
+    graphics->StrokeLine(mX - mSenderOffset, mY, mX, mY);
+
+    // receiver
+    graphics->DrawBitmap(bitmap, mX - wid / 2, mY - hit / 2, wid, hit);
+
+    // mirrored
+    graphics->PushState();
+    graphics->Translate(mX - mSenderOffset, mY);
+    graphics->Scale(-1, 1);
+    graphics->DrawBitmap(bitmap, -wid / 2, -hit / 2, wid, hit);
+    graphics->PopState();
 }
+
 
 /**
  * update the beam state

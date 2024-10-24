@@ -17,7 +17,7 @@ Item::Item(Game* game, const std::wstring& filename) : mGame(game)
     {
         mItemImage = std::make_unique<wxImage>(filename, wxBITMAP_TYPE_ANY);
     }
-
+    //
     // if (!mItemImage->IsOk())
     // {
     //     wxMessageBox(filename, "Failed to load image");
@@ -72,13 +72,7 @@ void Item::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     if (mItemBitmap.IsNull())
     {
-        try
-        {
             mItemBitmap = graphics->CreateBitmapFromImage(*mItemImage);
-        }
-        catch (...)
-        {
-        }
     }
 
     graphics->DrawBitmap(mItemBitmap,

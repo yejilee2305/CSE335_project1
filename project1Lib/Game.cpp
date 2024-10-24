@@ -6,6 +6,8 @@
 
 #include "pch.h"
 #include "Game.h"
+
+#include "Beam.h"
 #include "Sensor.h"
 #include "Gate.h"
 #include "XMLParser.h"
@@ -23,7 +25,7 @@ Game::Game()
  * Load the game level from a level XML file
  * @param filename The filename of the level XML file
  */
-void Game::Load(const wxString &filename)
+void Game::Load(const wxString& filename)
 {
     auto xmlParser = XMLParser(this);
     xmlParser.Load(filename);
@@ -31,7 +33,7 @@ void Game::Load(const wxString &filename)
 
 void Game::StartLevel(int levelNumber)
 {
-//starting certain level
+    //starting certain level
 }
 
 void Game::Update()
@@ -70,9 +72,9 @@ void Game::Update()
     if () {
         gameOver = true;
         */
-    }
-//}
+}
 
+//}
 
 
 void Game::HandleMouseClick(int x, int y)
@@ -84,7 +86,7 @@ void Game::HandleMouseClick(int x, int y)
     }
 }
 
-void Game::HandleMouseMove(int x, int y, wxMouseEvent &event)
+void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
 {
     // Check if an item is currently being moved by the mouse
     if (mGrabbedItem != nullptr)
@@ -92,7 +94,7 @@ void Game::HandleMouseMove(int x, int y, wxMouseEvent &event)
         // Continue to move the item only while the left button is down
         if (event.LeftIsDown())
         {
-            mGrabbedItem->SetLocation(x, y);  // Update the item's location to the current mouse coordinates
+            mGrabbedItem->SetLocation(x, y); // Update the item's location to the current mouse coordinates
         }
         else
         {
@@ -102,10 +104,12 @@ void Game::HandleMouseMove(int x, int y, wxMouseEvent &event)
     }
 }
 
-void Game::ConnectGates(Gate* outputGate, Gate* inputGate) {
- if (outputGate && inputGate) {
-  //outputGate->ConnectTo(inputGate);
- }
+void Game::ConnectGates(Gate* outputGate, Gate* inputGate)
+{
+    if (outputGate && inputGate)
+    {
+        //outputGate->ConnectTo(inputGate);
+    }
 }
 
 void Game::AddItem(std::shared_ptr<Item> item)
@@ -146,13 +150,14 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
     for (auto items : mItems)
     {
-        //items->Draw(graphics);
+        // items->Draw(graphics);
     }
 
-    wxBrush background(wxColour(230,255,230));
+    wxBrush background(wxColour(230, 255, 230));
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
-    for (const auto& gate : mGates) {
+    for (const auto& gate : mGates)
+    {
         gate->Draw(graphics);
     }
     // Create a temporary scoreboard for this draw cycle
@@ -163,13 +168,15 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     // Draw the scoreboard within the graphics context
     scoreboard->Draw(graphics);
 
-    auto conveyor = std::make_shared<Conveyor>(this, 150, 400, 100, 800, wxPoint(60,-390));
+    auto conveyor = std::make_shared<Conveyor>(this, 150, 400, 100, 800, wxPoint(60, -390));
 
-    conveyor->Draw(graphics, 200, 200);
+    conveyor->Draw(graphics, 60, -390);
+
+
+    auto beam = std::make_shared<Beam>(this, 242, 437, -175);
+    beam->Draw(graphics);
 
     graphics->PopState();
-
-
 }
 
 /**
