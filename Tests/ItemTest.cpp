@@ -7,6 +7,7 @@
 #include "gtest/gtest.h"
 #include <Item.h>
 #include <Game.h>
+#include <Product.h>
 
 const std::wstring randomFile = L"images/izzo.png";
 

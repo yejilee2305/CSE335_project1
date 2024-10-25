@@ -32,3 +32,4 @@ TEST(GameTest, LoadLevel1) {
 
     ASSERT_EQ(game.GetItemSize(), 3) << L"Scoreboard, Beam and Conveyor are loaded";
 }
+

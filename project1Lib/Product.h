@@ -14,7 +14,7 @@
 #include <Sparty.h>
 #include <Item.h>
 
-class Product
+class Product : public Item
 {
 public:
     /**
@@ -43,7 +43,7 @@ public:
      * @param content  content inside the product
      * @param kick  whether the product should be kicked
      */
-    Product(int placement, Properties shape, Properties color, Properties content, bool kick);
+    Product(Game* game, int placement, Properties shape, Properties color, Properties content, bool kick);
 
     /**
      * get the placement of the product on the conveyor
@@ -78,6 +78,11 @@ public:
      * @param conveyorSpeed the speed of the conveyor belt
      */
     void Move(int conveyorSpeed);
+    void Update(double elapsed);
+    void SetKicked(bool kicked, double kickSpeed);
+    void SetOnConveyor(bool onConveyor, double conveyorSpeed);
+
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
 private:
     int mPlacement; // Placement on conveyor
@@ -88,6 +93,11 @@ private:
     double mWidth = 80; // Default width in pixels
     double mContentScale = 0.8; // Scale of content relative to the product size
     int mX, mY; // Position on conveyor
+    double mKickSpeed = 0;
+    bool mIsOnConveyor = true;
+    double mConveyorSpeed= 0;
+    std::unique_ptr<wxImage> mContentImage;
+    wxGraphicsBitmap mContentBitmap;
 
     // Maps for product properties
     static const std::map<std::wstring, Properties> NamesToProperties;

@@ -35,10 +35,10 @@ const std::map<std::wstring, Product::Properties> Product::NamesToProperties = {
     {L"square", Product::Properties::Square},
     {L"circle", Product::Properties::Circle},
     {L"diamond", Product::Properties::Diamond},
-    {L"izzo", Product::Properties::Izzo},
-    {L"smith", Product::Properties::Smith},
-    {L"basketball", Product::Properties::Basketball},
-    {L"football", Product::Properties::Football},
+    {L"images/izzo", Product::Properties::Izzo},
+    {L"images/smith", Product::Properties::Smith},
+    {L"images/basketball", Product::Properties::Basketball},
+    {L"images/football", Product::Properties::Football},
     {L"none", Product::Properties::None},
 };
 
@@ -58,24 +58,120 @@ const std::map<Product::Properties, Product::Types> Product::PropertiesToTypes =
 };
 
 const std::map<Product::Properties, std::wstring> Product::PropertiesToContentImages = {
-    {Product::Properties::Izzo, L"izzo.png"},
-    {Product::Properties::Smith, L"smith.png"},
-    {Product::Properties::Football, L"football.png"},
-    {Product::Properties::Basketball, L"basketball.png"}
+    {Product::Properties::Izzo, L"images/izzo.png"},
+    {Product::Properties::Smith, L"images/smith.png"},
+    {Product::Properties::Football, L"images/football.png"},
+    {Product::Properties::Basketball, L"images/basketball.png"}
 };
 
 
 // Constructor
-Product::Product(int placement, Properties shape, Properties color, Properties content, bool kick)
-    : mPlacement(placement), mShape(shape), mColor(color), mContent(content), mKick(kick), mX(0), mY(0)
+Product::Product(Game* game, int placement, Properties shape, Properties color, Properties content, bool kick)
+    : Item(game, L""), mPlacement(placement), mShape(shape), mColor(color), mContent(content), mKick(kick), mX(0), mY(0)
 {
 }
 
-// Method to move product based on the conveyor speed
-void Product::Move(int conveyorSpeed)
+
+void Product::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
-    mX -= conveyorSpeed; // Update X position
+    if (!graphics)
+    {
+        return;
+    }
+
+    double size = mWidth;
+    double halfSize = mWidth / 2;
+
+    //color
+    wxBrush brush;
+    switch (mColor)
+    {
+    case Properties::Red:
+        brush = wxBrush(OhioStateRed);
+        break;
+    case Properties::Green:
+        brush = wxBrush(MSUGreen);
+        break;
+    case Properties::Blue:
+        brush = wxBrush(UofMBlue);
+        break;
+    default:
+        brush = wxBrush(*wxWHITE);
+    }
+
+    graphics->SetBrush(brush);
+    graphics->SetPen(*wxBLACK_PEN);
+
+    switch (mShape)
+    {
+    case Properties::Square:
+        graphics->DrawRectangle(mX - halfSize, mY - halfSize, size, size);
+        break;
+    case Properties::Circle:
+        graphics->DrawEllipse(mX - halfSize, mY - halfSize, size, size);
+        break;
+    case Properties::Diamond:
+        {
+            auto path = graphics->CreatePath();
+            path.MoveToPoint(mX, mY - halfSize);
+            path.AddLineToPoint(mX + halfSize, mY);
+            path.AddLineToPoint(mX, mY + halfSize);
+            path.AddLineToPoint(mX - halfSize, mY);
+            path.CloseSubpath();
+            graphics->DrawPath(path);
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    if (mContent != Properties::None)
+    {
+        auto it = Product::PropertiesToContentImages.find(mContent);
+        if (it != Product::PropertiesToContentImages.end())
+        {
+            if (!mContentImage)
+            {
+                mContentImage = std::make_unique<wxImage>(it->second);
+                mContentBitmap = graphics->CreateBitmapFromImage(*mContentImage);
+            }
+            double contentSize = size * mContentScale;
+            double contentOffset = (size - contentSize) / 2;
+
+            graphics->DrawBitmap(mContentBitmap, mX - halfSize + contentOffset, mY - halfSize + contentOffset,
+                                 contentSize, contentSize);
+        }
+    }
 }
+
+
+void Product::Update(double elapsed)
+{
+    if (mKick)
+    {
+        // if kicked, move left
+        mX -= mKickSpeed * elapsed;
+    }
+    else if (mIsOnConveyor)
+    {
+        // if on conveyor, move down
+        mY += mConveyorSpeed * elapsed;
+    }
+}
+
+void Product::SetKicked(bool kicked, double kickSpeed)
+{
+    mKick = kicked;
+    mKickSpeed = kickSpeed;
+}
+
+void Product::SetOnConveyor(bool onConveyor, double conveyorSpeed)
+{
+    mIsOnConveyor = onConveyor;
+    mConveyorSpeed = conveyorSpeed;
+}
+
 
 // Getters
 int Product::GetPlacement() const
