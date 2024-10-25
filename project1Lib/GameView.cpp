@@ -11,6 +11,8 @@
 #include "MainFrame.h"
 #include "ids.h"
 #include "Scoreboard.h"
+#include "Beam.h"
+#include "Product.h"
 
 using namespace std;
 
@@ -19,6 +21,16 @@ using namespace std;
  */
 GameView::GameView() : mCurrentLevel(0), mConnectionStart(wxDefaultPosition)
 {
+}
+
+void GameView::OnTimer(wxTimerEvent& event)
+{
+    auto newTime = mStopWatch.Time();
+    auto elapsed = (double)(newTime - mTime) * 0.001;
+    mTime = newTime;
+
+    mGame.Update(elapsed);
+    Refresh();
 }
 
 /**
@@ -60,8 +72,10 @@ void GameView::Initialize(wxFrame* mainFrame)
     // Load the initial level (default to mCurrentLevel)
     mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
 
-    // Request a repaint to reflect the initial game state
-    Refresh();
+    Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    mTimer.SetOwner(this);
+    mTimer.Start(60);
+    mStopWatch.Start();
 }
 
 /**
@@ -77,15 +91,15 @@ void GameView::OnLevelOption(wxCommandEvent& event)
     {
     case IDM_LEVEL0:
         filename = L"resources/levels/level0.xml";
-        mCurrentLevel = 0;  // Update the current level
+        mCurrentLevel = 0; // Update the current level
         break;
     case IDM_LEVEL1:
         filename = L"resources/levels/level1.xml";
-        mCurrentLevel = 1;  // Update the current level
+        mCurrentLevel = 1; // Update the current level
         break;
     case IDM_LEVEL2:
         filename = L"resources/levels/level2.xml";
-        mCurrentLevel = 2;  // Update the current level
+        mCurrentLevel = 2; // Update the current level
         break;
     // Add other cases for different levels...
     }
@@ -105,6 +119,8 @@ void GameView::OnLevelOption(wxCommandEvent& event)
  */
 void GameView::OnPaint(wxPaintEvent& event)
 {
+
+
     // Create a double-buffered display context
     wxAutoBufferedPaintDC dc(this);
 
@@ -129,6 +145,7 @@ void GameView::OnPaint(wxPaintEvent& event)
     //
     // // Draw the scoreboard within the graphics context
     // scoreboard->Draw(gc.get());
+
 }
 
 
@@ -171,18 +188,25 @@ void GameView::OnMouseMove(wxMouseEvent& event)
     auto x = event.GetX();
     auto y = event.GetY();
 
-    if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown()) {
+    if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown())
+    {
         mGrabbedGate->SetPosition(x, y);
         // Update pin positions when gate is moved
-        for (auto& pin : mGrabbedGate->pins) {
+        for (auto& pin : mGrabbedGate->pins)
+        {
             pin.position = wxPoint(x + pin.position.x - mGrabbedGate->GetX(),
                                    y + pin.position.y - mGrabbedGate->GetY());
         }
         Refresh();
-    } else if (event.LeftIsDown()) {
-        if (!mConnectionStart.IsFullySpecified()) {
+    }
+    else if (event.LeftIsDown())
+    {
+        if (!mConnectionStart.IsFullySpecified())
+        {
             mConnectionStart = wxPoint(x, y);
-        } else {
+        }
+        else
+        {
             mGame.TryCreateConnection(mConnectionStart, wxPoint(x, y));
             mConnectionStart = wxPoint(); // Reset start point
         }
@@ -190,7 +214,8 @@ void GameView::OnMouseMove(wxMouseEvent& event)
     }
 }
 
-void GameView::OnDraw(wxPaintEvent& event) {
+void GameView::OnDraw(wxPaintEvent& event)
+{
     // ... existing drawing code ...
     wxAutoBufferedPaintDC dc(this);
     auto gc = std::shared_ptr<wxGraphicsContext>(wxGraphicsContext::Create(dc));
@@ -268,6 +293,7 @@ auto GameView::OnAddSRFLipFlopGate(wxCommandEvent& event) -> void
     // Add the SR gate to the game
     mGame.AddGate(srFlipFlop);
 }
+
 /**
  * Handles the addition of an SR flip gate.
  * @param event The event triggered by the menu selection

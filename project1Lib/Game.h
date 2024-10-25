@@ -22,7 +22,7 @@ public:
     void Load(const wxString &filename);
 
     void StartLevel(int Number);
-    void Update();
+    void Update(double elapsed);
 
     void ConnectGates(Gate* outputGate, Gate* inputGate);
 

@@ -19,6 +19,10 @@ private:
     /// The timer that allows for animation
     wxTimer mTimer;
 
+    wxStopWatch mStopWatch;
+
+    long mTime = 0;
+
     /// The game
     Game mGame;
 
@@ -32,6 +36,7 @@ private:
 
 public:
     GameView();
+    void OnTimer(wxTimerEvent& event);
 
     void OnPaint(wxPaintEvent& event);
 
