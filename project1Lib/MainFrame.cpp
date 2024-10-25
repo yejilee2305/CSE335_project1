@@ -64,7 +64,7 @@ void MainFrame::Initialize()
     Bind(wxEVT_MENU, &MainFrame::OnAddANDGate, this, ID_ANDGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddNOTGate, this, ID_NOTGate);
     Bind(wxEVT_MENU, &MainFrame::OnAddSRFlipFlopGate, this, IDM_SRFLIP_GATE);
-    Bind(wxEVT_MENU, &MainFrame::OnAddSRFlipFlopGate, this, IDM_DRFLIP_GATE);
+    Bind(wxEVT_MENU, &MainFrame::OnAddDFlipFlopGate, this, IDM_DRFLIP_GATE);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
