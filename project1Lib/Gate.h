@@ -12,7 +12,7 @@
 #include <wx/pen.h>
 #include <wx/brush.h>
 #include "ids.h"
-#include "Pins.h"
+
 
 enum class States { One, Zero, Unknown };
 const wxSize OrGateSize(75, 50);
@@ -48,16 +48,7 @@ public:
     void OnMouseClick(double x, double y);
     virtual bool HitTest(double x, double y) const;
     void SetPosition(double x, double y);
-    std::vector<Pin> pins;
 
-    void AddPin(PinType type, wxPoint relativePosition);
-    Pin* GetClosestPin(wxPoint point);
-    virtual void SetInputA(States state) = 0;
-    virtual void SetInputB(States state) = 0;
-    // virtual void SetInputS(States state) = 0;
-    // virtual void SetInputR(States state) = 0;
-    // virtual void SetInputD(States state) = 0;
-    // virtual void SetClock(States state) = 0;
 
 
 };
@@ -70,8 +61,8 @@ private:
 
 public:
     ORGate();
-    void SetInputA(States state) override;
-    void SetInputB(States state) override;
+    void SetInputA(States state);
+    void SetInputB(States state);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     // Override to return the specific width and height for OR Gate
@@ -88,8 +79,8 @@ private:
 
 public:
     ANDGate();
-    void SetInputA(States state) override;
-    void SetInputB(States state) override;
+    void SetInputA(States state);
+    void SetInputB(States state);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
@@ -99,12 +90,11 @@ public:
 class NOTGate : public Gate {
 private:
     States inputA;
-    States inputB;
 
 public:
     NOTGate();
-    void SetInputA(States state) override;
-    void SetInputB(States state) override;
+    void SetInputA(States state);
+    void SetInputB(States state);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return NotGateSize.GetWidth(); }
@@ -114,15 +104,15 @@ public:
 
 class SRFlipFlopGate : public Gate {
 private:
-    States inputA;
-    States inputB;
+    States inputS;
+    States inputR;
     States outputQ;
     States outputQPrime;
 
 public:
     SRFlipFlopGate();
-    void SetInputA(States state) override;
-    void SetInputB(States state) override;
+    void SetInputS(States state);
+    void SetInputR(States state);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
@@ -133,15 +123,15 @@ public:
 // D Flip-Flop Gate
 class DFlipFlopGate : public Gate {
 private:
-    States inputA;
-    States inputB;
+    States inputD;
+    States clock;
     States outputQ;
     States outputQPrime;
 
 public:
     DFlipFlopGate();
-    void SetInputA(States state) override;
-    void SetInputB(States state) override;
+    void SetInputD(States state);
+    void SetClock(States state);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }

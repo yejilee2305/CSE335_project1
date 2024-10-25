@@ -30,8 +30,8 @@ set(SOURCE_FILES
 		XMLParser.h
 		Team.cpp
 		Team.h
-		Pins.cpp
-		Pins.h
+#		Pins.cpp
+#		Pins.h
 )
 
 set(wxBUILD_PRECOMP OFF)

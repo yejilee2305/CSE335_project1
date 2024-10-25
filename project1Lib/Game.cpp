@@ -40,31 +40,6 @@ void Game::StartLevel(int levelNumber)
 
 void Game::Update(double elapsed)
 {
-    for (auto& item : mItems)
-    {
-        item->Update(elapsed);
-    }
-    for (auto& gate : mGates)
-    {
-        for (size_t i = 0; i < gate->pins.size(); ++i)
-        {
-            auto& pin = gate->pins[i];
-            if (pin.type == PinType::Input && pin.isConnected)
-            {
-                States inputState = pin.connectedTo->gate->ComputeOutput();
-                if (i == 0)
-                {
-                    gate->SetInputA(inputState);
-                }
-                else if (i == 1)
-                {
-                    gate->SetInputB(inputState);
-                }
-            }
-        }
-
-        gate->ComputeOutput();
-    }
 
     /**
     // Update the conveyor belt, moving products along
@@ -219,33 +194,8 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     graphics->PopState();
 }
 
-void Game::TryCreateConnection(wxPoint start, wxPoint end)
-{
-    Pin* startPin = nullptr;
-    Pin* endPin = nullptr;
 
-    for (auto& gate : mGates)
-    {
-        if (!startPin) startPin = gate->GetClosestPin(start);
-        if (!endPin) endPin = gate->GetClosestPin(end);
-        if (startPin && endPin) break;
-    }
 
-    if (startPin && endPin && startPin != endPin &&
-        startPin->type != endPin->type && !startPin->isConnected && !endPin->isConnected)
-    {
-        startPin->Connect(endPin);
-        connections.emplace_back(startPin, endPin);
-    }
-}
-
-void Game::DrawConnections(wxGraphicsContext* graphics)
-{
-    for (auto& connection : connections)
-    {
-        connection.Draw(graphics);
-    }
-}
 
 /**
  * Test x,y click location to see if we clicked on a item

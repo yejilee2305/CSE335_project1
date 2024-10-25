@@ -46,10 +46,7 @@ public:
      * @return size of mItems
      */
     size_t GetItemSize() const {return mItems.size();}
-    std::vector<Connection> connections;
 
-    void TryCreateConnection(wxPoint start, wxPoint end);
-    void DrawConnections(wxGraphicsContext* graphics);
 
 
 private:

@@ -37,31 +37,9 @@ void Gate::OnMouseClick(double x, double y) {
         }
     }
 }
-void Gate::AddPin(PinType type, wxPoint relativePosition) {
-    wxPoint absolutePosition(GetX() + relativePosition.x, GetY() + relativePosition.y);
-    pins.emplace_back(type, absolutePosition, this);
-}
 
-Pin* Gate::GetClosestPin(wxPoint point) {
-    Pin* closest = nullptr;
-    double minDistance = std::numeric_limits<double>::max();
 
-    for (auto& pin : pins) {
-        double distance = std::sqrt(std::pow(pin.position.x - point.x, 2) +
-                                    std::pow(pin.position.y - point.y, 2));
-        if (distance < minDistance) {
-            minDistance = distance;
-            closest = &pin;
-        }
-    }
-
-    return (minDistance <= 10) ? closest : nullptr; // 10 pixels threshold
-}
-
-ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown)
-{
-
-}
+ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {}
 
 void ORGate::SetInputA(States state) {
     inputA = state;
@@ -163,9 +141,7 @@ NOTGate::NOTGate() : inputA(States::Unknown) {}
 void NOTGate::SetInputA(States state) {
     inputA = state;
 }
-void NOTGate::SetInputB(States state) {
-    inputB = state;
-}
+
 
 States NOTGate::ComputeOutput() {
     if (inputA == States::Unknown) {
@@ -205,25 +181,25 @@ void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 
 
-SRFlipFlopGate::SRFlipFlopGate() : inputA(States::Unknown), inputB(States::Unknown),
-                                    outputQ(States::Unknown), outputQPrime(States::Unknown) {}
+SRFlipFlopGate::SRFlipFlopGate() : inputS(States::Unknown), inputR(States::Unknown){}
 
-void SRFlipFlopGate::SetInputA(States state) {
-    inputA = state;
+void SRFlipFlopGate::SetInputS(States state)
+{
+    inputS = state;
 }
-
-void SRFlipFlopGate::SetInputB(States state) {
-    inputB = state;
+void SRFlipFlopGate::SetInputR(States state)
+{
+    inputR = state;
 }
 
 States SRFlipFlopGate::ComputeOutput() {
-    if (inputA == States::One && inputB == States::One) {
+    if (inputS == States::One && inputR == States::One) {
         outputQ = States::Unknown;
         outputQPrime = States::Unknown;
-    } else if (inputA == States::One) {
+    } else if (inputS == States::One) {
         outputQ = States::One;
         outputQPrime = States::Zero;
-    } else if (inputB== States::One) {
+    } else if (inputR== States::One) {
         outputQ = States::Zero;
         outputQPrime = States::One;
     }
@@ -280,21 +256,20 @@ void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 
 
-DFlipFlopGate::DFlipFlopGate() : inputA(States::Unknown), inputB(States::Unknown),
-                                   outputQ(States::Unknown), outputQPrime(States::Unknown) {}
+DFlipFlopGate::DFlipFlopGate() : inputD(States::Unknown), clock(States::Unknown){}
 
-void DFlipFlopGate::SetInputA(States state) {
-    inputA = state;
+void DFlipFlopGate::SetInputD(States state) {
+    inputD = state;
 }
 
-void DFlipFlopGate::SetInputB(States state) {
-    inputB = state;
+void DFlipFlopGate::SetClock(States state) {
+    clock = state;
 }
 
 States DFlipFlopGate::ComputeOutput() {
-    if (inputB == States::One) {
-        outputQ = inputA;
-        outputQPrime = (inputA == States::One) ? States::Zero : States::One;
+    if (clock == States::One) {
+        outputQ = inputD;
+        outputQPrime = (inputD == States::One) ? States::Zero : States::One;
     }
     return outputQ;
 }

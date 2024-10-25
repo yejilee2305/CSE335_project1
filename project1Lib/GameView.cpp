@@ -19,9 +19,7 @@ using namespace std;
 /**
  * Constructor for GameView.
  */
-GameView::GameView() : mCurrentLevel(0), mConnectionStart(wxDefaultPosition)
-{
-}
+GameView::GameView() : mCurrentLevel(0){}  // Initialize level to 0
 
 void GameView::OnTimer(wxTimerEvent& event)
 {
@@ -191,36 +189,11 @@ void GameView::OnMouseMove(wxMouseEvent& event)
     if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown())
     {
         mGrabbedGate->SetPosition(x, y);
-        // Update pin positions when gate is moved
-        for (auto& pin : mGrabbedGate->pins)
-        {
-            pin.position = wxPoint(x + pin.position.x - mGrabbedGate->GetX(),
-                                   y + pin.position.y - mGrabbedGate->GetY());
-        }
-        Refresh();
-    }
-    else if (event.LeftIsDown())
-    {
-        if (!mConnectionStart.IsFullySpecified())
-        {
-            mConnectionStart = wxPoint(x, y);
-        }
-        else
-        {
-            mGame.TryCreateConnection(mConnectionStart, wxPoint(x, y));
-            mConnectionStart = wxPoint(); // Reset start point
-        }
         Refresh();
     }
 }
 
-void GameView::OnDraw(wxPaintEvent& event)
-{
-    // ... existing drawing code ...
-    wxAutoBufferedPaintDC dc(this);
-    auto gc = std::shared_ptr<wxGraphicsContext>(wxGraphicsContext::Create(dc));
-    mGame.DrawConnections(gc.get());
-}
+
 
 /**
  * Adds a gate to the game.
