@@ -84,6 +84,8 @@ public:
 
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
+    double GetWidth() const { return mWidth; }
+
 private:
     int mPlacement; // Placement on conveyor
     Properties mShape; // Shape of the product
@@ -95,7 +97,7 @@ private:
     int mX, mY; // Position on conveyor
     double mKickSpeed = 0;
     bool mIsOnConveyor = true;
-    double mConveyorSpeed= 0;
+    double mConveyorSpeed = 0;
     std::unique_ptr<wxImage> mContentImage;
     wxGraphicsBitmap mContentBitmap;
 

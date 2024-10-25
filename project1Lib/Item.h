@@ -16,6 +16,7 @@ class Item
 {
 protected:
     Item(Game* game, const std::wstring& filename);
+    Game* GetGame() const { return mGame; }
 
 private:
     /// The game this item is contained in
@@ -105,16 +106,7 @@ public:
      */
     double GetHeight() { return mHeight; }
 
-    void XmlLoad(wxXmlNode *node);
-};
-
-
-class TestItem : public Item
-{
-public:
-    TestItem(Game* game, const std::wstring& filename) : Item(game, filename)
-    {
-    }
+    void XmlLoad(wxXmlNode* node);
 };
 
 

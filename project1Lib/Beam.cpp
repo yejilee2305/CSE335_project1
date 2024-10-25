@@ -4,6 +4,8 @@
  */
 
 #include "Beam.h"
+
+#include "Game.h"
 /// Image for the beam sender and receiver when red
 const std::wstring BeamRedImage = L"images/beam-red.png";
 
@@ -70,17 +72,44 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
  */
 void Beam::Update(double elpased)
 {
-    // implement later
+    auto products = GetGame()->GetProducts();
+
+    mBroken = false;
+
+
+    for (auto product : products)
+    {
+        if (IsIntersecting(product))
+        {
+            mBroken = true;
+            break;
+        }
+    }
 }
 
-/**
- * test if the point hits the beam
- * @param x x location
- * @param y y location
- * @return true if hit, else false
- */
-bool Beam::HitTest(double x, double y)
+bool Beam::IsIntersecting(const std::shared_ptr<Product>& product)
 {
-    //implement later
-    return false;
+    const int Padding = 5;
+    double productX = product->GetX();
+    double productY = product->GetY();
+    double productSize = product->GetWidth();
+
+    double x1 = mX - mSenderOffset;
+    double y1 = mY;
+    double x2 = mX;
+    double y2 = mY;
+
+    if (productY - productSize / 2 > y1 + Padding || // product is below beam
+        productY + productSize / 2 < y1 - Padding) // product is above beam
+    {
+        return false;
+    }
+
+    if (productX + productSize / 2 < std::min(x1, x2) ||
+        productX - productSize / 2 > std::max(x1, x2))
+    {
+        return false; // product is to left or right of beam
+    }
+
+    return true; // intersects beam
 }
