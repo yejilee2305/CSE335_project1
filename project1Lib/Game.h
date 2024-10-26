@@ -51,6 +51,7 @@ public:
 
 
     std::vector<std::shared_ptr<Product>> GetProducts() const { return mProducts; }
+    const std::vector<std::shared_ptr<Gate>>& GetGates() const { return mGates; }
 
 private:
     int mVirtualWidth;
