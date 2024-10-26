@@ -15,6 +15,7 @@
 #include "Conveyor.h"
 #include "Pins.h"
 #include "PinInput.h"
+#include "Wire.h"
 #include "PinOutput.h"
 
 const double frameTime = 0.016; //60 fps
@@ -38,6 +39,18 @@ void Game::Load(const wxString& filename)
 void Game::StartLevel(int levelNumber)
 {
     //starting certain level
+}
+void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
+{
+    mWires.push_back(std::make_shared<Wire>(outputPin, inputPin));
+}
+
+void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
+{
+    for (const auto& wire : mWires)
+    {
+        wire->Draw(graphics.get(), mShowControlPoints);
+    }
 }
 
 void Game::Update(double elapsed)
@@ -165,6 +178,10 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     for (const auto& gate : mGates)
     {
         gate->Draw(graphics);
+    }
+    for (const auto& wire : mWires)
+    {
+        wire->Draw(graphics.get(), mShowControlPoints);
     }
     // Create a temporary scoreboard for this draw cycle
     auto scoreboard = std::make_shared<Scoreboard>(this, 600, 40, 10, -5);

@@ -17,6 +17,7 @@ class MainFrame : public wxFrame
 private:
     /// View class for our Game
     GameView *mGameView;
+    wxMenuItem* mControlPointsMenuItem;
 
 public:
     void Initialize();
@@ -28,6 +29,7 @@ public:
     void OnAddNOTGate(wxCommandEvent& event);
     void OnAddSRFlipFlopGate(wxCommandEvent& event);
     void OnAddDFlipFlopGate(wxCommandEvent& event);
+    void OnToggleControlPoints(wxCommandEvent& event);
 
     enum
     {

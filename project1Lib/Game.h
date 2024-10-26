@@ -14,6 +14,7 @@
 #include "Sensor.h"
 //#include "Beam.h"
 #include "Conveyor.h"
+#include "Wire.h"
 
 class Game
 {
@@ -52,6 +53,11 @@ public:
 
     std::vector<std::shared_ptr<Product>> GetProducts() const { return mProducts; }
     const std::vector<std::shared_ptr<Gate>>& GetGates() const { return mGates; }
+    void AddWire(PinOutput* outputPin, PinInput* inputPin);
+    void DrawWires(std::shared_ptr<wxGraphicsContext> graphics);
+    void SetShowControlPoints(bool show) { mShowControlPoints = show; }
+    bool GetShowControlPoints() const { return mShowControlPoints; }
+    const std::vector<std::shared_ptr<Wire>>& GetWires() const { return mWires; }
 
 private:
     int mVirtualWidth;
@@ -59,12 +65,13 @@ private:
     double mScale;
     double mXOffset;
     double mYOffset;
-
     std::wstring mImagesDirectory;
     std::vector<std::shared_ptr<Item>> mItems;
     std::vector<std::shared_ptr<Gate>> mGates;
     std::shared_ptr<Item> mGrabbedItem = nullptr; ///< Item grabbed by the mouse
     std::vector<std::shared_ptr<Product>> mProducts;
+    std::vector<std::shared_ptr<Wire>> mWires;
+    bool mShowControlPoints = false;
 };
 
 #endif //GAME_H
