@@ -23,6 +23,7 @@ const double frameTime = 0.016; //60 fps
  */
 Game::Game()
 {
+    mSparty = std::make_shared<Sparty>(this, 345, 340, 100, wxPoint2DDouble(1100, 400), 0.25, 1000);
 }
 
 /**
@@ -40,46 +41,16 @@ void Game::StartLevel(int levelNumber)
     //starting certain level
 }
 
-void Game::Update(double elapsed)
-{
-
-    /**
-    // Update the conveyor belt, moving products along
-    Conveyor.Update();
-
-    // Update the sensor with the current product on the conveyor
-    Sensor.Update(Conveyor.GetCurrentProduct());
-
-    // Update the beam with the current product on the conveyor
-    beam.Update(conveyor.GetCurrentProduct());
-
-    // Update all gates in the game
-    for (auto& gate : mGates) {
-        gate->Update();
+void Game::Update(double elapsed) {
+    // Update kick progress
+    if (mSparty->IsKicking()) {
+        mSparty->mKickProgress += elapsed * 4; // Adjust speed as needed
+        if (mSparty->mKickProgress >= 1.0) {
+            mSparty->mKickProgress = 0.0;  // Reset after kick
+            mSparty->SetKicking(false);    // Stop kicking
+        }
     }
-
-    // Update Sparty's state based on the beam and sensor
-    sparty.Update(beam.IsActive(), sensor.GetProductType());
-
-    // Check if Sparty should kick and adjust the score accordingly
-    if (beam.IsActive() && sparty.ShouldKick()) {
-        // Add to the score if Sparty kicks the correct product, otherwise subtract points
-        score += sparty.Kick(conveyor.GetCurrentProduct()) ? 10 : -5;
-    }
-
-    // Check if the conveyor has finished processing all products
-    if (conveyor.IsFinished()) {
-        // Move to the next level if the current one is done
-        NextLevel();
-    }
-
-    // Optionally check if the game should be marked as over
-    if () {
-        gameOver = true;
-        */
 }
-
-//}
 
 
 void Game::HandleMouseClick(int x, int y)
@@ -181,6 +152,13 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
     auto beam = std::make_shared<Beam>(this, 242, 437, -175);
     beam->Draw(graphics);
+
+    if (mSparty) {
+        mSparty->Draw(graphics);
+    }
+
+
+
 
     // auto product = std::make_shared<Product>(this, 100, // placement
     //                                          Product::Properties::Circle, // shape

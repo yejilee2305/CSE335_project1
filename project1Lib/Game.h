@@ -65,6 +65,7 @@ private:
     std::vector<std::shared_ptr<Gate>> mGates;
     std::shared_ptr<Item> mGrabbedItem = nullptr; ///< Item grabbed by the mouse
     std::vector<std::shared_ptr<Product>> mProducts;
+    std::shared_ptr<Sparty> mSparty;
 };
 
 #endif //GAME_H
