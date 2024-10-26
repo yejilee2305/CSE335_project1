@@ -71,6 +71,7 @@ private:
     std::shared_ptr<Item> mGrabbedItem = nullptr; ///< Item grabbed by the mouse
     std::vector<std::shared_ptr<Product>> mProducts;
     std::vector<std::shared_ptr<Wire>> mWires;
+    std::shared_ptr<Sparty> mSparty;
     bool mShowControlPoints = false;
 };
 
