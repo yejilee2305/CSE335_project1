@@ -43,6 +43,7 @@ public:
     void SetVirtualHeight(int height) { mVirtualHeight = height; }
     std::shared_ptr<Gate> HitTestGate(double x, double y);
 
+
     /**
      * Get size of mItems
      * @return size of mItems

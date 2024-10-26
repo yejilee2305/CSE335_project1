@@ -130,6 +130,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
         // items->Draw(graphics);
     }
 
+
     wxBrush background(wxColour(230, 255, 230));
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);

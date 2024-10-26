@@ -13,7 +13,6 @@
 #include <Team.h>
 #include <cmath>
 
-
 /// Image for the sparty background, what is behind the boot
 const std::wstring SpartyBackImage = L"images/sparty-back.png";
 

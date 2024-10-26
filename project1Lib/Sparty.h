@@ -35,6 +35,7 @@ public:
     bool IsKicking() const { return mIsKicking; }
 
     // Progress of the kick (0 to 1)
+
     double mKickProgress = 0.0;
 
 private:
