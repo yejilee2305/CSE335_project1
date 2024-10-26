@@ -2,7 +2,6 @@
  * @file ProductTest.cpp
  * @author zhi lin
  */
-// Add to Tests/ProductTest.cpp
 
 #include <pch.h>
 #include "gtest/gtest.h"
@@ -27,4 +26,3 @@ TEST_F(ProductTest, Constructor) {
     ASSERT_EQ(Product::Properties::Red, product->GetColor());
     ASSERT_TRUE(product->ShouldKick());
 }
-

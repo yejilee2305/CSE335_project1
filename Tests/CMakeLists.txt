@@ -7,6 +7,7 @@ set(TEST_FILES
 		ItemTest.cpp
 		GameViewTest.cpp
 		ProductTest.cpp
+		BeamTest.cpp
 )
 
 # Get Google Tests

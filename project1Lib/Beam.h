@@ -8,6 +8,7 @@
 #ifndef BEAM_H
 #define BEAM_H
 #include "Item.h"
+#include "Product.h"
 
 
 class Beam : public Item
@@ -37,11 +38,11 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     void Update(double elpased) override;
 
-    bool HitTest(double x, double y) override;
-
     bool IsBroken() const { return mBroken; }
 
     void SetBroken(bool broken) { mBroken = broken; }
+
+    bool IsIntersecting(const std::shared_ptr<Product>& product);
 
     /**
      * getter for x location

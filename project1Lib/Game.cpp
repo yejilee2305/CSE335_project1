@@ -234,4 +234,10 @@ std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
 void Game::Clear()
 {
     mItems.clear();
+    mProducts.clear();
+}
+
+void Game::AddProduct(std::shared_ptr<Product> product)
+{
+    mProducts.push_back(product);
 }
