@@ -5,6 +5,7 @@
  *
  */
 
+// PinInput.h
 #ifndef PININPUT_H
 #define PININPUT_H
 
@@ -29,11 +30,10 @@ public:
     /// Draw the input pin
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
-    /// Connect this input to an output pin
-    void ConnectTo(PinOutput* pin);
 
     /// Get the connected pin
     PinOutput* GetConnectedPin() const { return mConnectedPin; }
+    void ConnectTo(PinOutput* pin);
 };
 
 #endif // PININPUT_H
