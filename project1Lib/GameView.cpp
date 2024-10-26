@@ -10,6 +10,7 @@
 #include <wx/dcbuffer.h>
 #include "MainFrame.h"
 #include "ids.h"
+#include "Gate.h"
 #include "Scoreboard.h"
 #include "Beam.h"
 #include "Product.h"
@@ -156,6 +157,19 @@ void GameView::OnLeftDown(wxMouseEvent& event)
 {
     auto x = event.GetX();
     auto y = event.GetY();
+
+    // Check if we clicked on an output pin
+    for (auto& gate : mGame.GetGates())
+    {
+        for (auto& pin : gate->GetOutputPins())
+        {
+            if (pin.HitTest(x, y))
+            {
+                mSelectedOutputPin = &pin;
+                return;
+            }
+        }
+    }
     mGrabbedGate = mGame.HitTestGate(x, y);
     if (mGrabbedGate != nullptr)
     {
@@ -169,6 +183,26 @@ void GameView::OnLeftDown(wxMouseEvent& event)
  */
 void GameView::OnLeftUp(wxMouseEvent& event)
 {
+    auto x = event.GetX();
+    auto y = event.GetY();
+
+    if (mSelectedOutputPin)
+    {
+        // Check if we released on an input pin
+        for (auto& gate : mGame.GetGates())
+        {
+            for (auto& pin : gate->GetInputPins())
+            {
+                if (pin.HitTest(x, y))
+                {
+                    mSelectedOutputPin->ConnectTo(&pin);
+                    Refresh();
+                    break;
+                }
+            }
+        }
+        mSelectedOutputPin = nullptr;
+    }
     if (mGrabbedGate != nullptr)
     {
         mGrabbedGate = nullptr;

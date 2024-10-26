@@ -78,7 +78,7 @@ public:
      * @param conveyorSpeed the speed of the conveyor belt
      */
     void Move(int conveyorSpeed);
-    void Update(double elapsed);
+    void Update(double elapsed) override;
     void SetKicked(bool kicked, double kickSpeed);
     void SetOnConveyor(bool onConveyor, double conveyorSpeed);
 

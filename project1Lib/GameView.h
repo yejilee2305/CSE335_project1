@@ -32,6 +32,7 @@ private:
     std::shared_ptr<Item> mGrabbedItem;
     std::vector<std::shared_ptr<Gate>> mGates;
     std::shared_ptr<Gate> mGrabbedGate = nullptr;
+    PinOutput* mSelectedOutputPin = nullptr;
 
 
 public:

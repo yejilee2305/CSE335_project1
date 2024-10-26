@@ -8,6 +8,8 @@
 #ifndef GATE_H
 #define GATE_H
 #include "Item.h"
+#include "PinInput.h"
+#include "PinOutput.h"
 #include <wx/graphics.h>
 #include <wx/pen.h>
 #include <wx/brush.h>
@@ -34,6 +36,9 @@ private:
     wxGraphicsPath mPath;
     std::vector<std::shared_ptr<Gate>> gates;  // Collection of logic gates
     std::shared_ptr<Gate> mGrabbedGate;
+protected:
+    std::vector<PinInput> mInputPins;
+    std::vector<PinOutput> mOutputPins;
 
 public:
     virtual void Draw(std::shared_ptr<wxGraphicsContext> graphics) = 0;  // Pure virtual function to draw the gate
@@ -48,9 +53,10 @@ public:
     void OnMouseClick(double x, double y);
     virtual bool HitTest(double x, double y) const;
     void SetPosition(double x, double y);
-
-
-
+    std::vector<PinInput>& GetInputPins() { return mInputPins; }
+    std::vector<PinOutput>& GetOutputPins() { return mOutputPins; }
+    void InitializePins();
+    void UpdatePinPositions();
 };
 
 class ORGate : public Gate
@@ -63,8 +69,10 @@ public:
     ORGate();
     void SetInputA(States state);
     void SetInputB(States state);
+    void SetPosition(double x, double y);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
+    void UpdatePinPositions();
     // Override to return the specific width and height for OR Gate
     double GetWidth() const override { return OrGateSize.GetWidth(); }
     double GetHeight() const override { return OrGateSize.GetHeight(); }
@@ -82,6 +90,7 @@ public:
     void SetInputA(States state);
     void SetInputB(States state);
     States ComputeOutput() override;
+    void SetPosition(double x, double y);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
@@ -96,6 +105,7 @@ public:
     void SetInputA(States state);
     void SetInputB(States state);
     States ComputeOutput() override;
+    void SetPosition(double x, double y);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return NotGateSize.GetWidth(); }
     double GetHeight() const override { return NotGateSize.GetHeight(); }
@@ -114,6 +124,7 @@ public:
     void SetInputS(States state);
     void SetInputR(States state);
     States ComputeOutput() override;
+    void SetPosition(double x, double y);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
@@ -133,6 +144,7 @@ public:
     void SetInputD(States state);
     void SetClock(States state);
     States ComputeOutput() override;
+    void SetPosition(double x, double y);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }

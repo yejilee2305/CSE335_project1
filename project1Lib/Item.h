@@ -82,9 +82,7 @@ public:
      * update the class in time
      * @param elpased elapsed time in ms
      */
-    virtual void Update(double elpased)
-    {
-    }
+    virtual void Update(double elapsed){}
 
     /**
      * handles a click on item

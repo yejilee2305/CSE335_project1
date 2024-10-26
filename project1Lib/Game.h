@@ -46,6 +46,7 @@ public:
      * @return size of mItems
      */
     size_t GetItemSize() const {return mItems.size();}
+    const std::vector<std::shared_ptr<Gate>>& GetGates() const { return mGates; }
 
 
 

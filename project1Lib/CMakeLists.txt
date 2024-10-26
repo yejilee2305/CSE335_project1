@@ -30,7 +30,13 @@ set(SOURCE_FILES
 		XMLParser.h
 		Team.cpp
 		Team.h
-#		Pins.cpp
+		Pins.cpp
+		Pins.h
+		PinInput.cpp
+		PinInput.h
+		PinOutput.cpp
+		PinOutput.h
+		#		Pins.cpp
 #		Pins.h
 )
 
