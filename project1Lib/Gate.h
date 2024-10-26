@@ -55,8 +55,8 @@ public:
     void SetPosition(double x, double y);
     std::vector<PinInput>& GetInputPins() { return mInputPins; }
     std::vector<PinOutput>& GetOutputPins() { return mOutputPins; }
+    virtual void UpdatePinPositions() = 0;
     void InitializePins();
-    void UpdatePinPositions();
 };
 
 class ORGate : public Gate
@@ -72,7 +72,7 @@ public:
     void SetPosition(double x, double y);
     States ComputeOutput() override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
-    void UpdatePinPositions();
+    void UpdatePinPositions() override;
     // Override to return the specific width and height for OR Gate
     double GetWidth() const override { return OrGateSize.GetWidth(); }
     double GetHeight() const override { return OrGateSize.GetHeight(); }
@@ -94,6 +94,7 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
+    void UpdatePinPositions() override;
 
 };
 class NOTGate : public Gate {
@@ -109,6 +110,7 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return NotGateSize.GetWidth(); }
     double GetHeight() const override { return NotGateSize.GetHeight(); }
+    void UpdatePinPositions() override;
 
 };
 
@@ -128,6 +130,7 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
+    void UpdatePinPositions() override;
 
 };
 
@@ -148,6 +151,7 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
+    void UpdatePinPositions() override;
 };
 
 #endif //GATE_H

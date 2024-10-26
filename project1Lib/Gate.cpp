@@ -55,23 +55,30 @@ void Gate::UpdatePinPositions() {
         mOutputPins[i].SetPosition(x + w / 2, y + yOffset);
     }
 }
-
 void Gate::InitializePins() {
-    // This is a base implementation. Override in derived classes if needed.
-    mInputPins.clear();
-    mOutputPins.clear();
+    UpdatePinPositions();
+}
 
-    // Add default pins (adjust as needed for each gate type)
+// void Gate::InitializePins() {
+//     // This is a base implementation. Override in derived classes if needed.
+//     mInputPins.clear();
+//     mOutputPins.clear();
+//
+//     // Add default pins (adjust as needed for each gate type)
+//     mInputPins.emplace_back(PinInput());
+//     mInputPins.emplace_back(PinInput());
+//     mOutputPins.emplace_back(PinOutput());
+//
+//     // Position the pins (you'll need to implement SetPosition in PinInput and PinOutput)
+//     UpdatePinPositions();
+// }
+
+ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {
     mInputPins.emplace_back(PinInput());
     mInputPins.emplace_back(PinInput());
     mOutputPins.emplace_back(PinOutput());
 
-    // Position the pins (you'll need to implement SetPosition in PinInput and PinOutput)
     UpdatePinPositions();
-}
-
-ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {
-    InitializePins();
 }
 
 void ORGate::SetInputA(States state) {
@@ -123,51 +130,53 @@ void ORGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
-    for (const auto& pin : mInputPins) {
-        graphics->StrokeLine(pin.GetX(), pin.GetY(), GetX() - GetWidth()/2, pin.GetY());
-    }
-    for (const auto& pin : mOutputPins) {
-        graphics->StrokeLine(pin.GetX(), pin.GetY(), GetX() + GetWidth()/2, pin.GetY());
+
+    // Draw input and output lines
+    graphics->SetPen(*wxBLACK_PEN);
+
+    // Calculate the x-coordinate for the input line endpoints on the curve
+    double curveOffset = w * 0.2; // Adjust this value to match the curve of your gate
+
+    // // Input lines
+    // graphics->StrokeLine(x - w/2 + curveOffset, y - h/4, x - w/2 - 20, y - h/4);
+    // graphics->StrokeLine(x - w/2 + curveOffset, y + h/4, x - w/2 - 20, y + h/4);
+    //
+    // // Output line
+    // graphics->StrokeLine(x + w/2, y, x + w/2 + 20, y);
+
+    // Draw pins
+    for (size_t i = 0; i < mInputPins.size(); ++i) {
+        auto& pin = mInputPins[i];
+        pin.Draw(graphics);
+        // Draw line from pin to gate, adjusting for the curve
+        double pinY = (i == 0) ? (y - h/4) : (y + h/4);
+        graphics->StrokeLine(pin.GetX(), pin.GetY(), x - w/2 + curveOffset, pinY);
     }
 
-    // Draw the pins
-    for (auto& pin : mInputPins) {
-        pin.Draw(graphics);
-    }
     for (auto& pin : mOutputPins) {
         pin.Draw(graphics);
+        // Draw line from gate to pin
+        graphics->StrokeLine(x + w/2, y, pin.GetX(), pin.GetY());
     }
-
 }
-void ORGate::UpdatePinPositions() {
+void ORGate::UpdatePinPositions()
+{
     double x = GetX();
     double y = GetY();
     double w = GetWidth();
     double h = GetHeight();
 
-    // Position input pins
-    if (mInputPins.size() >= 2) {
-        mInputPins[0].SetPosition(x - w/2, y - h/4);
-        mInputPins[1].SetPosition(x - w/2, y + h/4);
-    }
-
-    // Position output pin
-    if (!mOutputPins.empty()) {
-        mOutputPins[0].SetPosition(x + w/2, y);
-    }
+    mInputPins[0].SetPosition(x - w/2, y - h/4);
+    mInputPins[1].SetPosition(x - w/2, y + h/4);
+    mOutputPins[0].SetPosition(x + w/2, y);
 }
 
 ANDGate::ANDGate() : inputA(States::Unknown), inputB(States::Unknown)
 {
-    // Initialize input pins
     mInputPins.emplace_back(PinInput());
     mInputPins.emplace_back(PinInput());
-
-    // Initialize output pin
     mOutputPins.emplace_back(PinOutput());
-
-    // Set initial positions for pins
-    UpdatePinPositions();
+    InitializePins();
 }
 
 void ANDGate::SetInputA(States state) {
@@ -187,6 +196,17 @@ States ANDGate::ComputeOutput() {
 void ANDGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
+}
+void ANDGate::UpdatePinPositions()
+{
+    double x = GetX();
+    double y = GetY();
+    double w = GetWidth();
+    double h = GetHeight();
+
+    mInputPins[0].SetPosition(x - w/2, y - h/4);
+    mInputPins[1].SetPosition(x - w/2, y + h/4);
+    mOutputPins[0].SetPosition(x + w/2, y);
 }
 
 void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
@@ -236,6 +256,9 @@ void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 NOTGate::NOTGate() : inputA(States::Unknown)
 {
+    mInputPins.emplace_back(PinInput());
+    mInputPins.emplace_back(PinInput());
+    mOutputPins.emplace_back(PinOutput());
     InitializePins();
 }
 
@@ -253,6 +276,18 @@ States NOTGate::ComputeOutput() {
 void NOTGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
+}
+
+void NOTGate::UpdatePinPositions()
+{
+    double x = GetX();
+    double y = GetY();
+    double w = GetWidth();
+    double h = GetHeight();
+
+    mInputPins[0].SetPosition(x - w/2, y - h/4);
+    mInputPins[1].SetPosition(x - w/2, y + h/4);
+    mOutputPins[0].SetPosition(x + w/2, y);
 }
 
 void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
@@ -280,6 +315,12 @@ void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
 
+    // Draw input line
+    graphics->StrokeLine(x - w/2, y, x - w/2 - 20, y);
+
+    // Draw output line (after the inversion circle)
+    graphics->StrokeLine(x + w/2 + h/4, y, x + w/2 + h/4 + 20, y);
+
     // Draw the inversion circle at the point of the triangle using DrawEllipse
     graphics->DrawEllipse(x + w / 2 - h / 4, y - h / 4, h / 2, h / 2); // Adjust to draw a circle
     for (const auto& pin : mInputPins) {
@@ -302,6 +343,9 @@ void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 SRFlipFlopGate::SRFlipFlopGate() : inputS(States::Unknown), inputR(States::Unknown)
 {
+    mInputPins.emplace_back(PinInput());
+    mInputPins.emplace_back(PinInput());
+    mOutputPins.emplace_back(PinOutput());
     InitializePins();
 }
 
@@ -330,6 +374,17 @@ States SRFlipFlopGate::ComputeOutput() {
 void SRFlipFlopGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
+}
+void SRFlipFlopGate::UpdatePinPositions()
+{
+    double x = GetX();
+    double y = GetY();
+    double w = GetWidth();
+    double h = GetHeight();
+
+    mInputPins[0].SetPosition(x - w/2, y - h/4);
+    mInputPins[1].SetPosition(x - w/2, y + h/4);
+    mOutputPins[0].SetPosition(x + w/2, y);
 }
 void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
@@ -377,6 +432,11 @@ void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     graphics->DrawText("R", x - w / 2 + 5, y + h / 4 - 10);
     graphics->DrawText("Q", x + w / 2 - 15, y - h / 4 - 10);
     graphics->DrawText("Q'", x + w / 2 - 15, y + h / 4 - 10);
+
+    graphics->StrokeLine(x - w/2, y - h/4, x - w/2 - 20, y - h/4);
+    graphics->StrokeLine(x - w/2, y + h/4, x - w/2 - 20, y + h/4);
+    graphics->StrokeLine(x + w/2, y - h/4, x + w/2 + 20, y - h/4);
+    graphics->StrokeLine(x + w/2, y + h/4, x + w/2 + 20, y + h/4);
     for (const auto& pin : mInputPins) {
         graphics->StrokeLine(pin.GetX(), pin.GetY(), GetX() - GetWidth()/2, pin.GetY());
     }
@@ -397,6 +457,9 @@ void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 DFlipFlopGate::DFlipFlopGate() : inputD(States::Unknown), clock(States::Unknown)
 {
+    mInputPins.emplace_back(PinInput());
+    mInputPins.emplace_back(PinInput());
+    mOutputPins.emplace_back(PinOutput());
     InitializePins();
 }
 
@@ -419,6 +482,7 @@ void DFlipFlopGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
 }
+
 void DFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
@@ -472,6 +536,12 @@ void DFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     graphics->DrawText("D", x - w / 2 + 5, y - h / 4 - 10);
     graphics->DrawText("Q", x + w / 2 - 15, y - h / 4 - 10);
     graphics->DrawText("Q'", x + w / 2 - 15, y + h / 4 - 10);
+
+    graphics->StrokeLine(x - w/2, y - h/4, x - w/2 - 20, y - h/4);
+    graphics->StrokeLine(x - w/2, y + h/4, x - w/2 - 20, y + h/4);
+    graphics->StrokeLine(x + w/2, y - h/4, x + w/2 + 20, y - h/4);
+    graphics->StrokeLine(x + w/2, y + h/4, x + w/2 + 20, y + h/4);
+
     for (const auto& pin : mInputPins) {
         graphics->StrokeLine(pin.GetX(), pin.GetY(), GetX() - GetWidth()/2, pin.GetY());
     }
@@ -486,6 +556,17 @@ void DFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     for (auto& pin : mOutputPins) {
         pin.Draw(graphics);
     }
+}
+void DFlipFlopGate::UpdatePinPositions()
+{
+    double x = GetX();
+    double y = GetY();
+    double w = GetWidth();
+    double h = GetHeight();
+
+    mInputPins[0].SetPosition(x - w/2, y - h/4);
+    mInputPins[1].SetPosition(x - w/2, y + h/4);
+    mOutputPins[0].SetPosition(x + w/2, y);
 }
 
 
