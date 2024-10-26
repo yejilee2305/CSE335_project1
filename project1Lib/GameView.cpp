@@ -136,6 +136,14 @@ void GameView::OnPaint(wxPaintEvent& event)
 
     // Instruct the game to draw its elements
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
+    for (const auto& wire : mGame.GetWires())
+    {
+        wire->Draw(gc.get(), mGame.GetShowControlPoints());
+    }
+    if (mDraggingWire)
+    {
+        mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
+    }
 
     // // Create a temporary scoreboard for this draw cycle
     // auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
@@ -147,6 +155,11 @@ void GameView::OnPaint(wxPaintEvent& event)
 
 }
 
+void GameView::ToggleControlPoints()
+{
+    mGame.SetShowControlPoints(!mGame.GetShowControlPoints());
+    Refresh();
+}
 
 /**
  * Handles the left mouse button down event.
@@ -155,25 +168,26 @@ void GameView::OnPaint(wxPaintEvent& event)
  */
 void GameView::OnLeftDown(wxMouseEvent& event)
 {
-    auto x = event.GetX();
-    auto y = event.GetY();
+    auto mouseX = event.GetX();
+    auto mouseY = event.GetY();
 
-    // Check if we clicked on an output pin
-    for (auto& gate : mGame.GetGates())
+    mSelectedOutputPin = nullptr;
+
+    for (const auto& gate : mGame.GetGates())
     {
-        for (auto& pin : gate->GetOutputPins())
+        for (auto& outputPin : gate->GetOutputPins())
         {
-            if (pin.HitTest(x, y))
+            if (outputPin.HitTest(mouseX, mouseY))
             {
-                mSelectedOutputPin = &pin;
+                mSelectedOutputPin = &outputPin;
                 return;
             }
         }
-    }
-    mGrabbedGate = mGame.HitTestGate(x, y);
-    if (mGrabbedGate != nullptr)
-    {
-        Refresh();
+        if (gate->HitTest(mouseX, mouseY))
+        {
+            mGrabbedGate = gate;
+            return;
+        }
     }
 }
 
@@ -183,31 +197,29 @@ void GameView::OnLeftDown(wxMouseEvent& event)
  */
 void GameView::OnLeftUp(wxMouseEvent& event)
 {
-    auto x = event.GetX();
-    auto y = event.GetY();
+    auto mouseX = event.GetX();
+    auto mouseY = event.GetY();
 
-    if (mSelectedOutputPin)
+    if (mSelectedOutputPin != nullptr)
     {
-        // Check if we released on an input pin
-        for (auto& gate : mGame.GetGates())
+        for (const auto& gate : mGame.GetGates())
         {
-            for (auto& pin : gate->GetInputPins())
+            for (auto& inputPin : gate->GetInputPins())
             {
-                if (pin.HitTest(x, y))
+                if (inputPin.HitTest(mouseX, mouseY))
                 {
-                    mSelectedOutputPin->ConnectTo(&pin);
+                    mGame.AddWire(mSelectedOutputPin, &inputPin);
+                    mSelectedOutputPin = nullptr;
                     Refresh();
-                    break;
+                    return;
                 }
             }
         }
-        mSelectedOutputPin = nullptr;
     }
-    if (mGrabbedGate != nullptr)
-    {
-        mGrabbedGate = nullptr;
-        Refresh();
-    }
+
+    mSelectedOutputPin = nullptr;
+    mGrabbedGate = nullptr;
+    Refresh();
 }
 
 /**

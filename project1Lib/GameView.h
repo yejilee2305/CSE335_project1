@@ -33,7 +33,7 @@ private:
     std::vector<std::shared_ptr<Gate>> mGates;
     std::shared_ptr<Gate> mGrabbedGate = nullptr;
     PinOutput* mSelectedOutputPin = nullptr;
-
+    std::shared_ptr<Wire> mDraggingWire;
 
 public:
     GameView();
@@ -55,6 +55,7 @@ public:
     auto OnAddSRFLipFlopGate(wxCommandEvent& event) -> void;
     auto OnAddDFLipFlopGate(wxCommandEvent& event) -> void;
     void AddGate(std::shared_ptr<Gate> gate);
+    void ToggleControlPoints();
 };
 
 

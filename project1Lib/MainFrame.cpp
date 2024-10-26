@@ -40,6 +40,8 @@ void MainFrame::Initialize()
     menuBar->Append(helpMenu, "&Help");
     menuBar->Append(levelMenu, "&Level");
     menuBar->Append(gateMenu, "&Gates");
+    SetMenuBar(menuBar);
+    auto viewMenu = new wxMenu();
 
     fileMenu->Append(wxID_EXIT, "E&xit\tAlt-X", "Quit this program");
     helpMenu->Append(wxID_ABOUT, "&About\tF1", "Show about dialog");
@@ -57,7 +59,9 @@ void MainFrame::Initialize()
     gateMenu->Append(ID_NOTGate, "Add NOT Gate");
     gateMenu->Append(IDM_SRFLIP_GATE, "Add SR-Flip Flop Gate");
     gateMenu->Append(IDM_DRFLIP_GATE, "Add D-Flip Flop Gate");
-    SetMenuBar(menuBar);
+    mControlPointsMenuItem = viewMenu->AppendCheckItem(wxID_ANY, "Show Control Points", "Toggle display of Bézier curve control points");
+
+    menuBar->Append(viewMenu, "&View");
     CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);
 
     Bind(wxEVT_MENU, &MainFrame::OnAddORGate, this, ID_ORGate);
@@ -68,8 +72,13 @@ void MainFrame::Initialize()
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
+    Bind(wxEVT_MENU, &MainFrame::OnToggleControlPoints, this, mControlPointsMenuItem->GetId());
 }
-
+void MainFrame::OnToggleControlPoints(wxCommandEvent& event)
+{
+    mGameView->ToggleControlPoints();
+    mGameView->Refresh();
+}
 void MainFrame::OnAddORGate(wxCommandEvent& event)
 {
     auto orGate = std::make_shared<ORGate>();

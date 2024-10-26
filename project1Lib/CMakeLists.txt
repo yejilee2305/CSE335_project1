@@ -36,6 +36,8 @@ set(SOURCE_FILES
 		PinInput.h
 		PinOutput.cpp
 		PinOutput.h
+		Wire.cpp
+		Wire.h
 		#		Pins.cpp
 #		Pins.h
 )
