@@ -19,6 +19,7 @@ class PinInput : public Pins
 private:
     /// The pin this input is connected to
     PinOutput* mConnectedPin = nullptr;
+    PinOutput* mConnection = nullptr;
 
 public:
     /// Constructor
@@ -34,6 +35,9 @@ public:
     /// Get the connected pin
     PinOutput* GetConnectedPin() const { return mConnectedPin; }
     void ConnectTo(PinOutput* pin);
+    void SetConnection(PinOutput* connection) { mConnection = connection; }
+    PinOutput* GetConnection() const { return mConnection; }
+    static const int DefaultLineLength = 20;
 };
 
 #endif // PININPUT_H

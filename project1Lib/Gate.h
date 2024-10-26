@@ -76,6 +76,9 @@ public:
     // Override to return the specific width and height for OR Gate
     double GetWidth() const override { return OrGateSize.GetWidth(); }
     double GetHeight() const override { return OrGateSize.GetHeight(); }
+    PinInput* GetInputPin(int index);
+    PinOutput* GetOutputPin();
+    void ConnectInput(int inputIndex, PinOutput* outputPin);
 
 };
 

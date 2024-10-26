@@ -13,7 +13,9 @@
 #include "XMLParser.h"
 #include "Scoreboard.h"
 #include "Conveyor.h"
-
+#include "Pins.h"
+#include "PinInput.h"
+#include "PinOutput.h"
 
 const double frameTime = 0.016; //60 fps
 /**
@@ -88,6 +90,7 @@ void Game::HandleMouseClick(int x, int y)
         mGrabbedItem = item;
     }
 }
+
 
 void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
 {

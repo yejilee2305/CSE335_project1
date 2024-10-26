@@ -14,10 +14,10 @@ void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->SetBrush(*wxBLACK_BRUSH);
 
     // Draw the pin circle
-    graphics->DrawEllipse(mX - PinSize/2, mY - PinSize/2, PinSize, PinSize);
+    graphics->DrawEllipse(mX + PinSize, mY - PinSize/2, PinSize, PinSize);
 
     // Draw the line to the left
-    graphics->StrokeLine(mX - DefaultLineLength, mY, mX, mY);
+    graphics->StrokeLine(mX + DefaultLineLength, mY, mX, mY);
 
     // Draw connections to input pins
     for (auto inputPin : mConnectedPins)

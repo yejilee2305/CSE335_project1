@@ -27,6 +27,7 @@ private:
 
  /// Line width for drawing lines between pins
  static const int LineWidth = 3;
+ std::vector<PinInput*> mConnections;
 
 public:
  /// Constructor
@@ -46,6 +47,8 @@ public:
 
  /// Draw the connection between this output and an input pin
  void DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin);
+ void AddConnection(PinInput* connection) { mConnections.push_back(connection); }
+ const std::vector<PinInput*>& GetConnections() const { return mConnections; }
 };
 
 #endif // PINOUTPUT_H
