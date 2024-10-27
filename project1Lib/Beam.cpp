@@ -30,8 +30,8 @@ Beam::Beam(Game* game, int x, int y, int senderOffset)
 {
     mRedImage = std::make_unique<wxImage>(BeamRedImage, wxBITMAP_TYPE_PNG);
     mGreenImage = std::make_unique<wxImage>(BeamGreenImage, wxBITMAP_TYPE_PNG);
-
-    mOutputPin.SetPosition(mX - senderOffset + BeamPinOffset, mY);
+    mOutputPin = std::make_unique<PinOutput>(); // Initialize the PinOutput
+    mOutputPin->SetPosition(mX - senderOffset + BeamPinOffset, mY);
 }
 
 /**
@@ -56,8 +56,8 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 
     // draw the line to the pin
     graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-    graphics->StrokeLine(mX, mY, mOutputPin.GetX(), mOutputPin.GetY());
-    mOutputPin.Draw(graphics);
+    graphics->StrokeLine(mX, mY, mOutputPin->GetX(), mOutputPin->GetY()); // Use -> to access methods
+    mOutputPin->Draw(graphics); // Use -> to access methods
 
     graphics->SetPen(laser1);
     graphics->StrokeLine(mX - mSenderOffset, mY, mX, mY);

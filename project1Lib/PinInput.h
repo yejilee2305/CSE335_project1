@@ -24,20 +24,16 @@ private:
 public:
     /// Constructor
     PinInput() = default;
-
     /// Destructor
     virtual ~PinInput() = default;
-
     /// Draw the input pin
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
-
-
     /// Get the connected pin
     PinOutput* GetConnectedPin() const { return mConnectedPin; }
     void ConnectTo(PinOutput* pin);
-    void SetConnection(PinOutput* connection) { mConnection = connection; }
-    PinOutput* GetConnection() const { return mConnection; }
+    void SetConnection(PinOutput* connection) { mConnectedPin = connection;}
     static const int DefaultLineLength = 20;
+    void SetLocation(double x, double y) override;
 };
 
 #endif // PININPUT_H

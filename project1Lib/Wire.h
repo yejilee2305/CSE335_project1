@@ -24,7 +24,7 @@ private:
 public:
     Wire(PinOutput* outputPin, PinInput* inputPin);
     void Draw(wxGraphicsContext* gc, bool showControlPoints);
-    void UpdateControlPoints();
+    void UpdateControlPoints(double x, double y);
 };
 
 #endif // WIRE_H

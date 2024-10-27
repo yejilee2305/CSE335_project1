@@ -136,14 +136,15 @@ void GameView::OnPaint(wxPaintEvent& event)
 
     // Instruct the game to draw its elements
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
-    for (const auto& wire : mGame.GetWires())
-    {
-        wire->Draw(gc.get(), mGame.GetShowControlPoints());
-    }
-    if (mDraggingWire)
-    {
+    // for (const auto& wire : mGame.GetWires())
+    // {
+    //     wire->Draw(gc.get(), mGame.GetShowControlPoints());
+    // }
+    if (mSelectedOutputPin != nullptr && mSelectedInputPin != nullptr) {
+        mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, mSelectedInputPin);
         mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
     }
+    Refresh();
 
     // // Create a temporary scoreboard for this draw cycle
     // auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
@@ -165,58 +166,46 @@ void GameView::ToggleControlPoints()
  * Used to detect and manipulate game objects with the mouse.
  * @param event The mouse event
  */
-void GameView::OnLeftDown(wxMouseEvent& event)
-{
+void GameView::OnLeftDown(wxMouseEvent& event) {
     auto mouseX = event.GetX();
     auto mouseY = event.GetY();
 
-    auto game = &mGame;
-    auto scale = game->GetScale();
-    auto xOffset = game->GetXOffset();
-    auto yOffset = game->GetYOffset();
+    mSelectedOutputPin = nullptr; // Reset selection
+    mSelectedInputPin = nullptr;
 
-    double gameX = (mouseX - xOffset) / scale;
-    double gameY = (mouseY - yOffset) / scale;
-
-
-    mSelectedOutputPin = nullptr;
-
-    for (const auto& gate : mGame.GetGates())
-    {
-        for (auto& outputPin : gate->GetOutputPins())
-        {
-            if (outputPin.HitTest(gameX, gameY))
-            {
-                mSelectedOutputPin = &outputPin;
+    for (const auto& gate : mGame.GetGates()) {
+        for (auto& outputPin : gate->GetOutputPins()) {
+            if (outputPin.HitTest(mouseX, mouseY)) {
+                mSelectedOutputPin = &outputPin; // Select the output pin
+                std::cout << "Output pin clicked!" << std::endl;
                 return;
             }
         }
-        if (gate->HitTest(gameX, gameY))
-        {
-            mGrabbedGate = gate;
+        for (auto& inputPin : gate->GetInputPins()) {
+            if (inputPin.HitTest(mouseX, mouseY)) {
+                mSelectedInputPin = &inputPin; // Select the input pin
+                return;
+            }
+        }
+        if (gate->HitTest(mouseX, mouseY)) {
+            mGrabbedGate = gate; // Select the gate
             return;
         }
     }
 }
-
 /**
  * Handles the left mouse button up event.
  * @param event The mouse event
  */
-void GameView::OnLeftUp(wxMouseEvent& event)
-{
+void GameView::OnLeftUp(wxMouseEvent& event) {
     auto mouseX = event.GetX();
     auto mouseY = event.GetY();
 
-    if (mSelectedOutputPin != nullptr)
-    {
-        for (const auto& gate : mGame.GetGates())
-        {
-            for (auto& inputPin : gate->GetInputPins())
-            {
-                if (inputPin.HitTest(mouseX, mouseY))
-                {
-                    mGame.AddWire(mSelectedOutputPin, &inputPin);
+    if (mSelectedOutputPin != nullptr) {
+        for (const auto& gate : mGame.GetGates()) {
+            for (auto& inputPin : gate->GetInputPins()) {
+                if (inputPin.HitTest(mouseX, mouseY)) {
+                    mGame.AddWire(mSelectedOutputPin, &inputPin); // Connect the output pin to the input pin
                     mSelectedOutputPin = nullptr;
                     Refresh();
                     return;
@@ -230,31 +219,28 @@ void GameView::OnLeftUp(wxMouseEvent& event)
     Refresh();
 }
 
+
 /**
  * Handles mouse move events.
  * Allows dragging game objects with the mouse.
  * @param event The mouse event
  */
-void GameView::OnMouseMove(wxMouseEvent& event)
-{
+void GameView::OnMouseMove(wxMouseEvent& event) {
     auto x = event.GetX();
     auto y = event.GetY();
 
-    if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown())
-    {
-        auto game = &mGame;
-        auto scale = game->GetScale();
-        auto xOffset = game->GetXOffset();
-        auto yOffset = game->GetYOffset();
+    if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown()) {
+        mGrabbedGate->SetPosition(x, y);
+        Refresh();
+    }
 
-        double gameX = (event.GetX() - xOffset) / scale;
-        double gameY = (event.GetY() - yOffset) / scale;
-
-        mGrabbedGate->SetPosition(gameX, gameY);
+    if (mSelectedOutputPin != nullptr && event.Dragging() && event.LeftIsDown()) {
+        // Draw a wire from the output pin to the mouse position
+        mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, nullptr);
+        mDraggingWire->UpdateControlPoints(x,y);
         Refresh();
     }
 }
-
 
 /**
  * Adds a gate to the game.

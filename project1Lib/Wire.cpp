@@ -7,18 +7,16 @@
 #include "pch.h"
 #include "Wire.h"
 
-Wire::Wire(PinOutput* outputPin, PinInput* inputPin)
-    : mOutputPin(outputPin), mInputPin(inputPin)
-{
-    UpdateControlPoints();
+Wire::Wire(PinOutput* outputPin, PinInput* inputPin) : mOutputPin(outputPin), mInputPin(inputPin) {
+    UpdateControlPoints(outputPin->GetX(), outputPin->GetY());
 }
 
-void Wire::UpdateControlPoints()
+void Wire::UpdateControlPoints(double x, double y)
 {
     double startX = mOutputPin->GetX();
     double startY = mOutputPin->GetY();
-    double endX = mInputPin->GetX();
-    double endY = mInputPin->GetY();
+    double endX = x;
+    double endY = y;
 
     double offset = std::min(BezierMaxOffset, std::abs(endX - startX));
 
@@ -27,8 +25,7 @@ void Wire::UpdateControlPoints()
 }
 
 
-void Wire::Draw(wxGraphicsContext* gc, bool showControlPoints)
-{
+void Wire::Draw(wxGraphicsContext* gc, bool showControlPoints) {
     wxPoint2DDouble startPoint(mOutputPin->GetX(), mOutputPin->GetY());
     wxPoint2DDouble endPoint(mInputPin->GetX(), mInputPin->GetY());
 
@@ -38,7 +35,7 @@ void Wire::Draw(wxGraphicsContext* gc, bool showControlPoints)
     path.AddCurveToPoint(mControlPoint1, mControlPoint2, endPoint);
     gc->StrokePath(path);
 
-    if (showControlPoints) {
+    if ( showControlPoints) {
         gc->SetPen(*wxRED_PEN);
         gc->SetBrush(*wxRED_BRUSH);
         gc->DrawEllipse(mControlPoint1.m_x - 3, mControlPoint1.m_y - 3, 6, 6);

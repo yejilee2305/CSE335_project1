@@ -23,7 +23,7 @@ private:
     wxGraphicsBitmap mGreenBitmap;
     std::unique_ptr<wxImage> mRedImage; ///< red image
     std::unique_ptr<wxImage> mGreenImage; ///< green image
-    PinOutput mOutputPin;
+    std::unique_ptr<PinOutput> mOutputPin; // Use a smart pointer
 
 public:
     /// default constructor (disabled)

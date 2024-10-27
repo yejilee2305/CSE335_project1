@@ -31,6 +31,11 @@ void PinOutput::ConnectTo(PinInput* pin)
     mConnectedPins.push_back(pin);
     pin->ConnectTo(this);
 }
+bool PinOutput::HitTest(double x, double y) const {
+    // Calculate the distance from the click point to the center of the pin
+    double distance = std::sqrt(std::pow(x - mX, 2) + std::pow(y - mY, 2));
+    return distance <= (PinSize / 2.0);
+}
 
 void PinOutput::DisconnectFrom(PinInput* pin)
 {
@@ -42,10 +47,14 @@ void PinOutput::DisconnectFrom(PinInput* pin)
     }
 }
 
-void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin)
+void PinOutput::SetLocation(double x, double y)
 {
-    double startX = mX;
-    double startY = mY;
+    mX = x;
+    mY = y;
+}
+void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin) {
+    double startX = GetX();
+    double startY = GetY();
     double endX = inputPin->GetX();
     double endY = inputPin->GetY();
 
@@ -62,6 +71,6 @@ void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinI
 
     wxGraphicsPath path = graphics->CreatePath();
     path.MoveToPoint(p2);
-    path.AddCurveToPoint(p2.m_x + offset/2, p2.m_y, p3.m_x - offset/2, p3.m_y, p3.m_x, p3.m_y);
+    path.AddCurveToPoint(p2.m_x + offset / 2, p2.m_y, p3.m_x - offset / 2, p3.m_y, p3.m_x, p3.m_y);
     graphics->StrokePath(path);
 }

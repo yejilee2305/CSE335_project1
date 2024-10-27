@@ -10,11 +10,12 @@
 #define PINS_H
 
 #include <wx/graphics.h>
+#include "IDraggable.h"
 #include <memory>
 
 class Pins;  // Forward declaration
 
-class Pins
+class Pins : public IDraggable
 {
 protected:
  /// The X coordinate of the pin
@@ -39,11 +40,8 @@ public:
  /// Draw the pin
  virtual void Draw(std::shared_ptr<wxGraphicsContext> graphics) = 0;
 
- /// Hit test for the pin
- virtual bool HitTest(double x, double y) const;
-
- /// Set the position of the pin
- void SetPosition(double x, double y);
+ virtual bool HitTest(double x, double y) const; // Hit test for the pin
+ virtual void SetPosition(double x, double y);
 
  /// Get the X coordinate of the pin
  double GetX() const { return mX; }

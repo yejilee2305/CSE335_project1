@@ -34,7 +34,7 @@ private:
     std::shared_ptr<Gate> mGrabbedGate = nullptr;
     PinOutput* mSelectedOutputPin = nullptr;
     std::shared_ptr<Wire> mDraggingWire;
-
+    PinInput* mSelectedInputPin = nullptr;
 public:
     GameView();
     void OnTimer(wxTimerEvent& event);
@@ -56,6 +56,7 @@ public:
     auto OnAddDFLipFlopGate(wxCommandEvent& event) -> void;
     void AddGate(std::shared_ptr<Gate> gate);
     void ToggleControlPoints();
+
 };
 
 

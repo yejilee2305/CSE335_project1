@@ -23,3 +23,7 @@ void PinInput::ConnectTo(PinOutput* pin)
 {
     mConnectedPin = pin;
 }
+void PinInput::SetLocation(double x, double y) {
+    mX = x; // Set the x coordinate
+    mY = y; // Set the y coordinate
+}
