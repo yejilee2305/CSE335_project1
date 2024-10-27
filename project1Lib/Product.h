@@ -73,11 +73,6 @@ public:
      */
     bool ShouldKick() const;
 
-    /**
-     * move the product based on the conveyor speed
-     * @param conveyorSpeed the speed of the conveyor belt
-     */
-    void Move(int conveyorSpeed);
     void Update(double elapsed) override;
     void SetKicked(bool kicked, double kickSpeed);
     void SetOnConveyor(bool onConveyor, double conveyorSpeed);
@@ -86,7 +81,13 @@ public:
 
     double GetWidth() const { return mWidth; }
 
-private:
+
+    void SetLocation(int x, int y) override;
+
+    int GetY() const { return mY; }
+    int GetX() const { return mX; }
+
+   private:
     int mPlacement; // Placement on conveyor
     Properties mShape; // Shape of the product
     Properties mColor; // Color of the product

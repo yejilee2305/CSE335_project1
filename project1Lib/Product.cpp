@@ -193,3 +193,12 @@ bool Product::ShouldKick() const
 {
     return mKick;
 }
+
+
+void Product::SetLocation(int x, int y)
+{
+    mX = x;
+    mY = y;
+}
+
+
