@@ -20,7 +20,9 @@ using namespace std;
 /**
  * Constructor for GameView.
  */
-GameView::GameView() : mCurrentLevel(0){}  // Initialize level to 0
+GameView::GameView() : mCurrentLevel(0)
+{
+} // Initialize level to 0
 
 void GameView::OnTimer(wxTimerEvent& event)
 {
@@ -118,8 +120,6 @@ void GameView::OnLevelOption(wxCommandEvent& event)
  */
 void GameView::OnPaint(wxPaintEvent& event)
 {
-
-
     // Create a double-buffered display context
     wxAutoBufferedPaintDC dc(this);
 
@@ -152,7 +152,6 @@ void GameView::OnPaint(wxPaintEvent& event)
     //
     // // Draw the scoreboard within the graphics context
     // scoreboard->Draw(gc.get());
-
 }
 
 void GameView::ToggleControlPoints()
@@ -171,19 +170,28 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     auto mouseX = event.GetX();
     auto mouseY = event.GetY();
 
+    auto game = &mGame;
+    auto scale = game->GetScale();
+    auto xOffset = game->GetXOffset();
+    auto yOffset = game->GetYOffset();
+
+    double gameX = (mouseX - xOffset) / scale;
+    double gameY = (mouseY - yOffset) / scale;
+
+
     mSelectedOutputPin = nullptr;
 
     for (const auto& gate : mGame.GetGates())
     {
         for (auto& outputPin : gate->GetOutputPins())
         {
-            if (outputPin.HitTest(mouseX, mouseY))
+            if (outputPin.HitTest(gameX, gameY))
             {
                 mSelectedOutputPin = &outputPin;
                 return;
             }
         }
-        if (gate->HitTest(mouseX, mouseY))
+        if (gate->HitTest(gameX, gameY))
         {
             mGrabbedGate = gate;
             return;
@@ -234,11 +242,18 @@ void GameView::OnMouseMove(wxMouseEvent& event)
 
     if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown())
     {
-        mGrabbedGate->SetPosition(x, y);
+        auto game = &mGame;
+        auto scale = game->GetScale();
+        auto xOffset = game->GetXOffset();
+        auto yOffset = game->GetYOffset();
+
+        double gameX = (event.GetX() - xOffset) / scale;
+        double gameY = (event.GetY() - yOffset) / scale;
+
+        mGrabbedGate->SetPosition(gameX, gameY);
         Refresh();
     }
 }
-
 
 
 /**

@@ -52,6 +52,10 @@ public:
     bool GetShowControlPoints() const { return mShowControlPoints; }
     const std::vector<std::shared_ptr<Wire>>& GetWires() const { return mWires; }
 
+    double GetScale() const { return mScale; }
+    double GetXOffset() const { return mXOffset; }
+    double GetYOffset() const { return mYOffset; }
+
 private:
     int mVirtualWidth;
     int mVirtualHeight;
