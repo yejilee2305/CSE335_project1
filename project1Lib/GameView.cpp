@@ -171,9 +171,6 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     auto mouseX = event.GetX();
     auto mouseY = event.GetY();
 
-    mSelectedOutputPin = nullptr; // Reset selection
-    mSelectedInputPin = nullptr;
-
     auto game = &mGame;
     auto scale = game->GetScale();
     auto xOffset = game->GetXOffset();
@@ -182,28 +179,22 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
 
-
+    mSelectedOutputPin = nullptr;
     for (const auto& gate : mGame.GetGates())
     {
         for (auto& outputPin : gate->GetOutputPins())
         {
             if (outputPin.HitTest(gameX, gameY))
             {
-                mSelectedOutputPin = &outputPin; // Select the output pin
-                std::cout << "Output pin clicked!" << std::endl;
-            }
-        }
-        for (auto& inputPin : gate->GetInputPins())
-        {
-            if (inputPin.HitTest(gameX, gameY))
-            {
-                mSelectedInputPin = &inputPin; // Select the input pin
+                mSelectedOutputPin = &outputPin;
                 return;
             }
         }
+
         if (gate->HitTest(gameX, gameY))
         {
-            mGrabbedGate = gate; // Select the gate
+            mGrabbedGate = gate;
+            return;
         }
     }
 }
@@ -225,7 +216,6 @@ void GameView::OnLeftUp(wxMouseEvent& event)
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
 
-
     if (mSelectedOutputPin != nullptr)
     {
         for (const auto& gate : mGame.GetGates())
@@ -234,14 +224,15 @@ void GameView::OnLeftUp(wxMouseEvent& event)
             {
                 if (inputPin.HitTest(gameX, gameY))
                 {
-                    mGame.AddWire(mSelectedOutputPin, &inputPin); // Connect the output pin to the input pin
-                    mSelectedOutputPin = nullptr;
-                    Refresh();
+                    mGame.AddWire(mSelectedOutputPin, &inputPin);
+                    break;
                 }
             }
         }
     }
+
     mSelectedOutputPin = nullptr;
+    mDraggingWire = nullptr;
     mGrabbedGate = nullptr;
     Refresh();
 }
@@ -265,18 +256,18 @@ void GameView::OnMouseMove(wxMouseEvent& event)
     double gameX = (x - xOffset) / scale;
     double gameY = (y - yOffset) / scale;
 
-
     if (mGrabbedGate != nullptr && event.Dragging() && event.LeftIsDown())
     {
         mGrabbedGate->SetPosition(gameX, gameY);
         Refresh();
     }
-
-    if (mSelectedOutputPin != nullptr && event.Dragging() && event.LeftIsDown())
+    else if (mSelectedOutputPin != nullptr && event.Dragging())
     {
-        // Call OnDrag to update the output pin's position
-        mSelectedOutputPin->OnDrag(gameX, gameY);
-        Refresh();
+        if (mDraggingWire)
+        {
+            mDraggingWire->UpdateControlPoints(gameX, gameY);
+            Refresh();
+        }
     }
 }
 
