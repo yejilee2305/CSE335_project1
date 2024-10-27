@@ -38,6 +38,7 @@ set(SOURCE_FILES
 		PinOutput.h
 		Wire.cpp
 		Wire.h
+		IDraggable.h
 		#		Pins.cpp
 #		Pins.h
 )
