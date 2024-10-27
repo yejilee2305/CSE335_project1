@@ -1,5 +1,5 @@
 /**
-  * @file Sensor.h
+* @file Sensor.h
   * @author zhi lin
   *
   *
@@ -10,73 +10,56 @@
 
 #include "pch.h"
 #include "Item.h"
-#include <memory.h>
+#include <memory>
+#include <vector>
 #include "Product.h"
 
 class Sensor : public Item
 {
-private:
-    /// x location of the sensor
-    double mX = 0;
-
-    /// y location of the sensor
-    double mY = 0;
-
-    /// vector to store the active pins
-    std::vector<Product::Properties> mOutputPins;
-
-    /// camera image
-    std::unique_ptr<wxImage> mCameraImage;
-
-    /// cable image
-    std::unique_ptr<wxImage> mCableImage;
-
-protected:
-
 public:
-    /**
-    * constructor
-    */
-    Sensor(Game* game, double x, double y);
-    /// default constructor (disabled)
-    Sensor() = delete;
+ // Constructor to initialize the sensor with camera and cable positions
+ Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY);
 
-    /// copy constructor (disabled)
-    Sensor(const Sensor&) = delete;
+ // Default constructor and copy operations are disabled
+ Sensor() = delete;
+ Sensor(const Sensor&) = delete;
+ Sensor& operator=(const Sensor&) = delete;
 
-    /// assignment operator (disabled)
-    Sensor& operator=(const Sensor&) = delete;
+ // Destructor
+ virtual ~Sensor();
 
+ // Draw method to render the camera and cable
+ void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
+ // Set individual positions for camera and cable
+ void SetCameraPosition(double x, double y);
+ void SetCablePosition(double x, double y);
 
-    /**
-     * destructor
-     */
-    virtual ~Sensor();
+ // Add an output pin based on product properties
+ void AddOutputPin(Product::Properties property);
 
-    //void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
+ // Check if a product is within range of the sensor
+ bool IsProductInRange(const Product* product);
 
-    void AddOutputPin(Product::Properties property);
-    bool IsProductInRange(const Product* product);
+ // Getters for X and Y positions
+ double GetX() const { return mX; }
+ double GetY() const { return mY; }
 
-    /**
-     * updates the sensor state
-     * @param elpased
-     */
-    //void Update(double elpased) override;
+private:
+ // X and Y positions of the sensor base
+ double mX = 0;
+ double mY = 0;
 
-    /**
-     * getter for X
-     * @return mX
-     */
-    double GetX() const { return mX; }
+ // Separate X and Y positions for the camera and cable
+ double mCameraX, mCameraY;
+ double mCableX, mCableY;
 
-    /**
-     * getter for Y
-     * @return mY
-     */
-    double GetY() const { return mY; }
+ // Bitmaps for camera and cable
+ wxGraphicsBitmap mCameraBitmap;
+ wxGraphicsBitmap mCableBitmap;
+
+ // Vector to store the active pins
+ std::vector<Product::Properties> mOutputPins;
 };
 
-
-#endif //SENSOR_H
+#endif // SENSOR_H

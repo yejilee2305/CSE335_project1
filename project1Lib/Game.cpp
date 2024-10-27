@@ -5,31 +5,28 @@
  */
 
 #include "pch.h"
-#include "Game.h"
-
 #include "Beam.h"
 #include "Sensor.h"
 #include "Gate.h"
+#include "Game.h"
 #include "XMLParser.h"
 #include "Scoreboard.h"
 #include "Conveyor.h"
 #include "Pins.h"
 #include "PinInput.h"
 #include "Wire.h"
-#include "PinOutput.h"
 
-const double frameTime = 0.016; //60 fps
 /**
  * Constructor
  */
 Game::Game()
 {
-    mSparty = std::make_shared<Sparty>(this, 345, 340, 100, wxPoint2DDouble(1100, 400), 0.25, 1000);
+    mSparty = std::make_shared<Sparty>(this, 315, 340, 100, wxPoint2DDouble(1100, 400), 0.25, 1000);
+    mSensor = std::make_shared<Sensor>(this, 1, 350, -22, 360);  // Initialize sensor
 }
 
 /**
- * Load the game level from a level XML file
- * @param filename The filename of the level XML file
+ * Load the game level from an XML file.
  */
 void Game::Load(const wxString& filename)
 {
@@ -37,15 +34,17 @@ void Game::Load(const wxString& filename)
     xmlParser.Load(filename);
 }
 
+/**
+ * Start a specific level.
+ */
 void Game::StartLevel(int levelNumber)
 {
-    //starting certain level
+    // Logic for starting the level
 }
 void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
 {
     mWires.push_back(std::make_shared<Wire>(outputPin, inputPin));
 }
-
 void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
 {
     for (const auto& wire : mWires)
@@ -54,28 +53,34 @@ void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
     }
 }
 
-void Game::Update(double elapsed) {
-    // Update kick progress
+/**
+ * Update the game state.
+ */
+void Game::Update(double elapsed)
+{
     if (mSparty->IsKicking()) {
-        mSparty->mKickProgress += elapsed * 4; // Adjust speed as needed
+        mSparty->mKickProgress += elapsed * 4;
         if (mSparty->mKickProgress >= 1.0) {
-            mSparty->mKickProgress = 0.0;  // Reset after kick
-            mSparty->SetKicking(false);    // Stop kicking
+            mSparty->mKickProgress = 0.0;
+            mSparty->SetKicking(false);
         }
     }
 }
 
-
+/**
+ * Handle mouse clicks.
+ */
 void Game::HandleMouseClick(int x, int y)
 {
     auto item = HitTest(x, y);
-    if (item != nullptr)
-    {
+    if (item != nullptr) {
         mGrabbedItem = item;
     }
 }
 
-
+/**
+ * Handle mouse movements.
+ */
 void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
 {
     // Check if an item is currently being moved by the mouse
@@ -94,37 +99,16 @@ void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
     }
 }
 
-void Game::ConnectGates(Gate* outputGate, Gate* inputGate)
-{
-    if (outputGate && inputGate)
-    {
-        //outputGate->ConnectTo(inputGate);
-    }
-}
-
-void Game::AddItem(std::shared_ptr<Item> item)
-{
-    mItems.push_back(item);
-}
-
-void Game::AddGate(std::shared_ptr<Gate> gate)
-{
-    mGates.push_back(gate); // Add the new gate to the list
-}
-
 /**
- * Draws the content of the game on the screen
- * @param graphics The graphics context to be drawn on
- * @param width Width to use to scale
- * @param height Height to use to scale
+ * Draw all game components.
  */
 void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height)
 {
     int pixelWidth = mVirtualWidth;
     int pixelHeight = mVirtualHeight;
 
-    auto scaleX = double(width) / double(pixelWidth);
-    auto scaleY = double(height) / double(pixelHeight);
+    double scaleX = static_cast<double>(width) / pixelWidth;
+    double scaleY = static_cast<double>(height) / pixelHeight;
     mScale = std::min(scaleX, scaleY);
 
     mXOffset = (width - pixelWidth * mScale) / 2.0;
@@ -143,7 +127,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
         // items->Draw(graphics);
     }
 
-
+    // Draw the background
     wxBrush background(wxColour(230, 255, 230));
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
@@ -163,6 +147,11 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     // Draw the scoreboard within the graphics context
     scoreboard->Draw(graphics);
 
+    // Draw the sensor
+    if (mSensor) {
+        mSensor->Draw(graphics);
+    }
+
     auto conveyor = std::make_shared<Conveyor>(this, 150, 400, 100, 800, wxPoint(60, -390));
 
     conveyor->Draw(graphics, 60, -390);
@@ -171,9 +160,12 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     auto beam = std::make_shared<Beam>(this, 242, 437, -175);
     beam->Draw(graphics);
 
+
+    // Draw Sparty
     if (mSparty) {
         mSparty->Draw(graphics);
     }
+
 
 
 
@@ -190,17 +182,38 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     // {
     //     item->Draw(graphics);
     // }
+
     graphics->PopState();
+}
+
+/**
+ * Add an item to the game.
+ */
+void Game::AddItem(std::shared_ptr<Item> item)
+{
+    mItems.push_back(item);
+}
+
+/**
+ * Add a gate to the game.
+ */
+void Game::AddGate(std::shared_ptr<Gate> gate)
+{
+    mGates.push_back(gate);
+}
+
+/**
+ * Add a product to the game.
+ */
+void Game::AddProduct(std::shared_ptr<Product> product)
+{
+    mProducts.push_back(product);
 }
 
 
 
-
 /**
- * Test x,y click location to see if we clicked on a item
- * @param x x location in pixel
- * @param y y location in pixel
- * @return pointer to the item we clicked on or nullptr if none
+ * Test if a click is on an item.
  */
 std::shared_ptr<Item> Game::HitTest(int x, int y)
 {
@@ -215,12 +228,13 @@ std::shared_ptr<Item> Game::HitTest(int x, int y)
     return nullptr;
 }
 
+/**
+ * Test if a click is on a gate.
+ */
 std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
 {
-    for (auto& gate : mGates)
-    {
-        if (gate->HitTest(x, y))
-        {
+    for (auto& gate : mGates) {
+        if (gate->HitTest(x, y)) {
             return gate;
         }
     }
@@ -228,15 +242,10 @@ std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
 }
 
 /**
- * Deletes all the known items in the game
+ * Clear all items from the game.
  */
 void Game::Clear()
 {
     mItems.clear();
     mProducts.clear();
-}
-
-void Game::AddProduct(std::shared_ptr<Product> product)
-{
-    mProducts.push_back(product);
 }

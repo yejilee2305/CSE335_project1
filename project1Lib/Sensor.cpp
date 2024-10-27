@@ -1,69 +1,67 @@
 /**
-  * @file Sensor.cpp
+* @file Sensor.cpp
   * @author zhi lin
   */
+
 #include "pch.h"
 #include "Sensor.h"
 #include "Game.h"
 
-/// The image file for the sensor cable
+// File paths for the camera and cable images
+const std::wstring SensorCameraImage = L"images/sensor-camera.png";
 const std::wstring SensorCableImage = L"images/sensor-cable.png";
 
-/// The image file for the sensor camera
-const std::wstring SensorCameraImage = L"images/sensor-camera.png";
-
-/// How far below Y location of the sensor system is the panel top?
-const int PanelOffsetY = 87;
-
-/// How much space for each property
-const wxSize PropertySize(100, 40);
-
-/// Size of a shape as a property in virtual pixels
-const double PropertyShapeSize = 32;
-
-/// Range where a product is viewed by the sensor relative
-/// to the Y coordinate of the sensor.
-const int SensorRange[] = {-40, 15};
-
-/// The background color to draw the sensor panel
-const wxColour PanelBackgroundColor(128, 128, 128);
-
-
-/**
- * Constructor
- * @param x X location of the sensor
- * @param y Y location of the sensor
- */
-Sensor::Sensor(Game* game, double x, double y) : Item(game, SensorCameraImage)
+Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY)
+    : Item(game, L""), mCameraX(cameraX), mCameraY(cameraY), mCableX(cableX), mCableY(cableY)
 {
-    Item::SetLocation(x, y); // this is using item's default setlocation
-    mCableImage = std::make_unique<wxImage>(SensorCableImage);
+    // Load the camera and cable images into bitmaps
+    wxImage cameraImage(SensorCameraImage);
+    wxImage cableImage(SensorCableImage);
+
+    auto graphics = wxGraphicsContext::Create();
+    mCameraBitmap = graphics->CreateBitmapFromImage(cameraImage);
+    mCableBitmap = graphics->CreateBitmapFromImage(cableImage);
 }
 
+Sensor::~Sensor() {}
 
-/**
- * Destructor
- */
-Sensor::~Sensor()
+void Sensor::SetCameraPosition(double x, double y)
 {
+    mCameraX = x;
+    mCameraY = y;
 }
 
-/**
- * check if the product is in range of the sensor
- * @param product the product to check
- * @return true if in range, else false
- */
-bool Sensor::IsProductInRange(const Product* product)
+void Sensor::SetCablePosition(double x, double y)
 {
-    // add logic here
-    return false;
+    mCableX = x;
+    mCableY = y;
 }
 
-/**
- *
- * @param property
- */
+void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
+{
+    // Dimensions for the camera and cable
+    double cameraWidth = 168;
+    double cameraHeight = 168;
+    double cableWidth = 300;
+    double cableHeight = 164;
+
+    // Draw the camera bitmap at its designated position
+    graphics->DrawBitmap(mCameraBitmap, mCameraX, mCameraY, cameraWidth, cameraHeight);
+
+    // Draw the cable bitmap at its designated position
+    graphics->DrawBitmap(mCableBitmap, mCableX, mCableY, cableWidth, cableHeight);
+}
+
 void Sensor::AddOutputPin(Product::Properties property)
 {
     mOutputPins.push_back(property);
+}
+
+bool Sensor::IsProductInRange(const Product* product)
+{
+    // Example logic to determine if the product is in range
+    if (product->GetPlacement() >= mY - 40 && product->GetPlacement() <= mY + 15) {
+        return true;
+    }
+    return false;
 }
