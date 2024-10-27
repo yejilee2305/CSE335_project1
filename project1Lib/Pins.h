@@ -12,7 +12,7 @@
 #include <wx/graphics.h>
 #include <memory>
 
-class Pin;  // Forward declaration
+class Pins;  // Forward declaration
 
 class Pins
 {

@@ -16,6 +16,9 @@ const std::wstring BeamGreenImage = L"images/beam-green.png";
 /// This is larger than normal to get it past Sparty's feet
 const int BeamPinOffset = 80;
 
+/// for drawing the line towards the output pin
+const int LineThickness = 3;
+
 /**
  * constructor
  * @param x x location
@@ -27,6 +30,8 @@ Beam::Beam(Game* game, int x, int y, int senderOffset)
 {
     mRedImage = std::make_unique<wxImage>(BeamRedImage, wxBITMAP_TYPE_PNG);
     mGreenImage = std::make_unique<wxImage>(BeamGreenImage, wxBITMAP_TYPE_PNG);
+
+    mOutputPin.SetPosition(mX - senderOffset + BeamPinOffset, mY);
 }
 
 /**
@@ -48,6 +53,11 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     // beam
     wxPen laser1(wxColour(255, 200, 200, 100), 8);
     wxPen laser2(wxColour(255, 0, 0, 175), 4);
+
+    // draw the line to the pin
+    graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+    graphics->StrokeLine(mX, mY, mOutputPin.GetX(), mOutputPin.GetY());
+    mOutputPin.Draw(graphics);
 
     graphics->SetPen(laser1);
     graphics->StrokeLine(mX - mSenderOffset, mY, mX, mY);
@@ -73,6 +83,7 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 void Beam::Update(double elpased)
 {
     auto products = GetGame()->GetProducts();
+    bool wasBroken = mBroken;
 
     mBroken = false;
 
@@ -84,6 +95,10 @@ void Beam::Update(double elpased)
             mBroken = true;
             break;
         }
+    }
+    if (wasBroken != mBroken)
+    {
+        // implement later, set output 1 when broken output 0 when not
     }
 }
 

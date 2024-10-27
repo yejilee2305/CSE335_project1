@@ -9,7 +9,7 @@
 #define BEAM_H
 #include "Item.h"
 #include "Product.h"
-
+#include "PinOutput.h"
 
 class Beam : public Item
 {
@@ -23,6 +23,7 @@ private:
     wxGraphicsBitmap mGreenBitmap;
     std::unique_ptr<wxImage> mRedImage; ///< red image
     std::unique_ptr<wxImage> mGreenImage; ///< green image
+    PinOutput mOutputPin;
 
 public:
     /// default constructor (disabled)
