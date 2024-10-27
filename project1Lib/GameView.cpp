@@ -145,7 +145,6 @@ void GameView::OnPaint(wxPaintEvent& event)
         mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, mSelectedInputPin);
         mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
     }
-    Refresh();
 
     // // Create a temporary scoreboard for this draw cycle
     // auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
