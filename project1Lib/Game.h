@@ -57,8 +57,8 @@ public:
     double GetYOffset() const { return mYOffset; }
 
 private:
-    int mVirtualWidth;
-    int mVirtualHeight;
+    double mVirtualWidth;
+    double mVirtualHeight;
     double mScale;
     double mXOffset;
     double mYOffset;

@@ -104,11 +104,11 @@ void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
  */
 void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height)
 {
-    int pixelWidth = mVirtualWidth;
-    int pixelHeight = mVirtualHeight;
+    double pixelWidth = mVirtualWidth;
+    double pixelHeight = mVirtualHeight;
 
-    double scaleX = static_cast<double>(width) / pixelWidth;
-    double scaleY = static_cast<double>(height) / pixelHeight;
+    double scaleX = (width) / pixelWidth;
+    double scaleY = (height) / pixelHeight;
     mScale = std::min(scaleX, scaleY);
 
     mXOffset = (width - pixelWidth * mScale) / 2.0;
