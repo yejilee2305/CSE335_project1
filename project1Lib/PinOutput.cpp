@@ -25,7 +25,10 @@ void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
         DrawConnection(graphics, inputPin);
     }
 }
-
+void PinOutput::OnDrag(double x, double y)
+{
+    SetLocation(x, y);
+}
 void PinOutput::ConnectTo(PinInput* pin)
 {
     mConnectedPins.push_back(pin);

@@ -38,6 +38,7 @@ public:
 
  /// Draw the output pin
  void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
+ void OnDrag(double x, double y) override;
 
  /// Connect this output to an input pin
  void ConnectTo(PinInput* pin);

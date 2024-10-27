@@ -34,6 +34,7 @@ public:
     void SetConnection(PinOutput* connection) { mConnectedPin = connection;}
     static const int DefaultLineLength = 20;
     void SetLocation(double x, double y) override;
+    void OnDrag(double x, double y) override{}
 };
 
 #endif // PININPUT_H
