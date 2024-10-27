@@ -120,6 +120,26 @@ void XMLParser::XmlItems(wxXmlNode* node)
 
             item = make_shared<Beam>(mGame, x, y, sender);
         }
+        else if (name == L"sparty")
+        {
+            int x = 0, y = 0, height = 0;
+            double kickDuration = 0.0, kickSpeed = 0.0;
+            wxString pinStr;
+
+            node->GetAttribute(L"x", "0").ToInt(&x);
+            node->GetAttribute(L"y", "0").ToInt(&y);
+            node->GetAttribute(L"height", "0").ToInt(&height);
+            node->GetAttribute(L"kick-duration", "0.0").ToDouble(&kickDuration);
+            node->GetAttribute(L"kick-speed", "0.0").ToDouble(&kickSpeed);
+            pinStr = node->GetAttribute(L"pin", "0,0");
+
+            int pinX = 0, pinY = 0;
+            pinStr.BeforeFirst(',').ToInt(&pinX);
+            pinStr.AfterFirst(',').ToInt(&pinY);
+            wxPoint pin(pinX, pinY);
+
+            item = make_shared<Sparty>(mGame, x, y, height, pin, kickDuration, kickSpeed);
+        }
 
         if(item != nullptr)
         {
