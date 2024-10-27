@@ -27,7 +27,19 @@ void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 }
 void PinOutput::OnDrag(double x, double y)
 {
-    SetLocation(x, y);
+    if (mDragging)
+    {
+        // Check for connections to input pins after dragging
+        for (auto inputPin : mConnectedPins)
+        {
+            if (inputPin->HitTest(mX, mY)) // Assuming HitTest checks if the pin is in range
+            {
+                ConnectTo(inputPin); // Connect if the input pin is hit
+            }
+        }
+    }
+
+    mDragging = false; // Reset dragging state
 }
 void PinOutput::ConnectTo(PinInput* pin)
 {
@@ -52,9 +64,12 @@ void PinOutput::DisconnectFrom(PinInput* pin)
 
 void PinOutput::SetLocation(double x, double y)
 {
-    return;
-    mX = x;
-    mY = y;
+    // Assuming you have a member variable `mDragging` to indicate the dragging state
+    mDragging = true;  // Set dragging to true
+    mX = x;            // Update the X position
+    mY = y;            // Update the Y position
+    // Reset any connections or states if necessary
+    // For example, if you have a member variable for current connections, you might want to clear it
 }
 void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin) {
     double startX = GetX();

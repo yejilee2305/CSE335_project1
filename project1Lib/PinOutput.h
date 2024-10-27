@@ -28,6 +28,7 @@ private:
  /// Line width for drawing lines between pins
  static const int LineWidth = 3;
  std::vector<PinInput*> mConnections;
+ bool mDragging = false;
 
 public:
  /// Constructor
