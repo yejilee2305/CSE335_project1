@@ -114,9 +114,6 @@ int Conveyor::GetSpeed() const {
 bool Conveyor::IsRunning() const {
     return mIsRunning;
 }
-void Conveyor::AddProduct(std::shared_ptr<Product> product) {
-    //mProducts.push_back(product);
-}
 
 
 

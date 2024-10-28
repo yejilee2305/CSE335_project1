@@ -191,13 +191,6 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
         wire->Draw(graphics.get(), mShowControlPoints);
     }
 
-    // Uncomment to draw each product in the products collection
-    /*
-    for (const auto& product : mProducts) {
-        product->Draw(graphics);
-    }
-    */
-
     // Restore the original graphics state to avoid affecting subsequent draws
     graphics->PopState();
 }
@@ -257,36 +250,6 @@ void Game::Clear()
 {
     mItems.clear();
     mGates.clear();
-    mProducts.clear();
     mWires.clear();
 }
 
-void Game::CheckLastProduct()
-{
-    //if (mProducts.empty())
-    {
-        //return;
-    }
-
-    //auto lastProduct = mProducts.back();
-
-    //if (lastProduct->GetY() > mVirtualHeight)
-    {
-        //mLastProductPassed = true;
-        //mLastProductTimer += 0.016; // 60 fps
-
-        //if (mLastProductTimer >= mLastProductDelay)
-        {
-            // handle end of level here
-            // load next level
-        }
-    }
-}
-
-/**
- * Add a product to the game.
- */
-void Game::AddProduct(std::shared_ptr<Product> product)
-{
-    mProducts.push_back(product);
-}
