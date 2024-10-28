@@ -34,6 +34,7 @@ public:
     std::shared_ptr<Item> HitTest(int x, int y);
     void OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height);
     void AddProduct(std::shared_ptr<Product> product);
+    std::vector<std::shared_ptr<Product>> GetProducts() const { return mProducts; }
     void Clear();
 
     void SetVirtualWidth(int width) { mVirtualWidth = width; }
@@ -74,6 +75,7 @@ private:
     std::vector<std::shared_ptr<Item>> mItems;
     std::vector<std::shared_ptr<Gate>> mGates;
     std::vector<std::shared_ptr<Wire>> mWires;
+    std::vector<std::shared_ptr<Product>> mProducts;
 
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 

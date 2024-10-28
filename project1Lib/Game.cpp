@@ -97,7 +97,9 @@ void Game::Update(double elapsed) {
     if (mConveyor) {
         mConveyor->Update();  // Update the conveyor’s position if it's running
     }
-    // Other game updates...
+
+
+
 }
 
 /**
@@ -258,6 +260,7 @@ void Game::Clear()
 {
     mItems.clear();
     mGates.clear();
+    mProducts.clear();
     mWires.clear();
 }
 
@@ -281,4 +284,12 @@ void Game::CheckLastProduct()
             // load next level
         }
     }
+}
+
+/**
+ * Add a product to the game.
+ */
+void Game::AddProduct(std::shared_ptr<Product> product)
+{
+    mProducts.push_back(product);
 }
