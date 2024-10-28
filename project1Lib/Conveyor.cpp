@@ -26,16 +26,10 @@ Conveyor::Conveyor(Game* game,int x, int y, int speed, int height, const wxPoint
 
 void Conveyor::Update() {
     if (mIsRunning) {
-        // Update belt offset for visual scrolling
+        // Adjust the belt offset to create a downward scrolling effect
         mBeltOffset += mSpeed;
         if (mBeltOffset >= mHeight) {
-            mBeltOffset = 0;
-        }
-
-        // Move each product downwards by conveyor speed
-        for (auto& product : mProducts) {
-            int newY = product->GetY() + mSpeed;
-            product->SetY(newY);  // Ensure Product class has SetY method
+            mBeltOffset -= mHeight;  // Loop the offset to simulate continuous movement
         }
     }
 }
@@ -54,41 +48,39 @@ void Conveyor::ResetProducts() {
     // Logic to reset product positions to their initial placement as defined in the XML.
 }
 
-void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
-{
+void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     if (!graphics) return;
 
-    // Draw the conveyor background only once
-    wxBitmap conveyorBackground(L"images/conveyor-back.png", wxBITMAP_TYPE_PNG);
-    graphics->DrawBitmap(conveyorBackground, mX - (conveyorBackground.GetWidth() / 2), mY - (mHeight / 2), conveyorBackground.GetWidth(), mHeight);
+    // Draw conveyor background
+    wxBitmap conveyorBackground(conveyorBackImage, wxBITMAP_TYPE_PNG);
+    graphics->DrawBitmap(conveyorBackground, mX - (conveyorBackground.GetWidth() / 2),
+                         mY - (mHeight / 2), conveyorBackground.GetWidth(), mHeight);
 
-    // Draw the conveyor belt
+    // Draw the conveyor belt twice for a continuous scrolling effect
     wxBitmap conveyorBelt(L"images/conveyor-belt.png", wxBITMAP_TYPE_PNG);
-    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2), mY - (mHeight / 2), conveyorBelt.GetWidth(), mHeight);
+    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2),
+                         mY - (mHeight / 2) + mBeltOffset, conveyorBelt.GetWidth(), mHeight);
+    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2),
+                         mY - (mHeight / 2) + mBeltOffset - mHeight, conveyorBelt.GetWidth(), mHeight);
 
-    // Load and draw the appropriate control panel image based on conveyor's running state
+    // Draw the control panel based on conveyor state
     wxBitmap panelBitmap = mIsRunning ? wxBitmap(L"images/conveyor-switch-start.png", wxBITMAP_TYPE_PNG)
                                       : wxBitmap(L"images/conveyor-switch-stop.png", wxBITMAP_TYPE_PNG);
-    graphics->DrawBitmap(panelBitmap, mX + mPanelLocation.x, mY + mPanelLocation.y, panelBitmap.GetWidth(), panelBitmap.GetHeight());
+    graphics->DrawBitmap(panelBitmap, mX + mPanelLocation.x, mY + mPanelLocation.y,
+                         panelBitmap.GetWidth(), panelBitmap.GetHeight());
 
-    // Draw start/stop button rings for visual feedback if they are clicked
-    wxRect startRect(mX + mPanelLocation.x + StartButtonRect.GetX(),
-                     mY + mPanelLocation.y + StartButtonRect.GetY(),
-                     StartButtonRect.GetWidth(), StartButtonRect.GetHeight());
-    wxRect stopRect(mX + mPanelLocation.x + StopButtonRect.GetX(),
-                    mY + mPanelLocation.y + StopButtonRect.GetY(),
-                    StopButtonRect.GetWidth(), StopButtonRect.GetHeight());
+    // Temporary simulated product placement based on time (for visual effect only)
+    if (mIsRunning) {
+        // Define initial positions and spacing
+        int initialProductY = mY - (mHeight / 2);
+        int spacing = 100;
 
-    if (CheckStartButtonClick(mX, mY)) {
-        wxPen ringPen(wxColour(0, 255, 0), 3);  // Green ring for Start button
-        graphics->SetPen(ringPen);
-        graphics->DrawRectangle(startRect.GetX(), startRect.GetY(), startRect.GetWidth(), startRect.GetHeight());
-    }
-
-    if (CheckStopButtonClick(mX, mY)) {
-        wxPen ringPen(wxColour(255, 0, 0), 3);  // Red ring for Stop button
-        graphics->SetPen(ringPen);
-        graphics->DrawRectangle(stopRect.GetX(), stopRect.GetY(), stopRect.GetWidth(), stopRect.GetHeight());
+        // Loop to draw several products at regular intervals on the conveyor
+        for (int i = 0; i < 4; ++i) {  // Adjust number as needed
+            int productY = initialProductY + (mBeltOffset + i * spacing) % mHeight;
+            graphics->SetBrush(*wxGREEN_BRUSH);  // Example product color
+            graphics->DrawRectangle(mX - 20, productY, 40, 40);  // Draw a square as a product
+        }
     }
 }
 
@@ -123,7 +115,7 @@ bool Conveyor::IsRunning() const {
     return mIsRunning;
 }
 void Conveyor::AddProduct(std::shared_ptr<Product> product) {
-    mProducts.push_back(product);
+    //mProducts.push_back(product);
 }
 
 
