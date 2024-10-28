@@ -53,7 +53,7 @@ void Conveyor::Stop() {
 void Conveyor::ResetProducts() {
     // Logic to reset product positions to their initial placement as defined in the XML.
 }
-/**
+
 void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     if (!graphics) return;
@@ -91,27 +91,7 @@ void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
         graphics->DrawRectangle(stopRect.GetX(), stopRect.GetY(), stopRect.GetWidth(), stopRect.GetHeight());
     }
 }
-*/
-void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
-    if (!graphics) return;
 
-    // Draw the conveyor background (stationary part)
-    wxBitmap conveyorBackground(L"images/conveyor-back.png", wxBITMAP_TYPE_PNG);
-    graphics->DrawBitmap(conveyorBackground, mX - (conveyorBackground.GetWidth() / 2), mY - (mHeight / 2), conveyorBackground.GetWidth(), mHeight);
-
-    // Draw the control panel image based on running state
-    wxBitmap panelBitmap = mIsRunning ? wxBitmap(L"images/conveyor-switch-start.png", wxBITMAP_TYPE_PNG)
-                                      : wxBitmap(L"images/conveyor-switch-stop.png", wxBITMAP_TYPE_PNG);
-    graphics->DrawBitmap(panelBitmap, mX + mPanelLocation.x, mY + mPanelLocation.y, panelBitmap.GetWidth(), panelBitmap.GetHeight());
-
-    // Draw the conveyor belt using mBeltOffset for vertical scrolling
-    wxBitmap conveyorBelt(L"images/conveyor-belt.png", wxBITMAP_TYPE_PNG);
-    int beltHeight = conveyorBelt.GetHeight();
-
-    // Draw two copies of the belt to create a seamless scrolling effect
-    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2), mY - (mHeight / 2) + mBeltOffset - beltHeight, conveyorBelt.GetWidth(), beltHeight);
-    graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2), mY - (mHeight / 2) + mBeltOffset, conveyorBelt.GetWidth(), beltHeight);
-}
 
 bool Conveyor::CheckStartButtonClick(int mouseX, int mouseY) const {
     wxRect startRect(mX + mPanelLocation.x + StartButtonRect.GetX(),

@@ -13,8 +13,7 @@
 
 class Conveyor : public Item {
 private:
- // Positions and dimensions of the conveyor
- std::vector<std::shared_ptr<Product>> mProducts;
+
  int mX;
  int mY;
  int mHeight;
