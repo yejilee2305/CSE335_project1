@@ -171,9 +171,20 @@ void XMLParser::XmlItems(wxXmlNode* node)
             node->GetAttribute(L"good", "0").ToInt(&goodScore);
             node->GetAttribute(L"bad", "0").ToInt(&badScore);
 
-            wxString instructions = node->GetNodeContent().Trim(true).Trim(false);
+            wxString instructions;
+            for (auto child = node->GetChildren(); child; child = child->GetNext())
+            {
+                if (child->GetType() == wxXML_TEXT_NODE)
+                {
+                    instructions += child->GetContent();
+                }
+                else if (child->GetName() == L"br")
+                {
+                    instructions += L"\n";
+                }
+            }
 
-            item = make_shared<Scoreboard>(mGame, x, y, goodScore, badScore);
+            item = make_shared<Scoreboard>(mGame, x, y, goodScore, badScore, instructions);
         }
         else if (name == L"beam")
         {

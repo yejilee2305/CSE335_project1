@@ -20,17 +20,17 @@ private:
     int mGameScore;
     int mGoodScoreIncrement;
     int mBadScoreDecrement;
-    std::string mInstructions;
+    wxString mInstructions;
 
 public:
-    Scoreboard(Game* game, int x, int y, int goodScore = 10, int badScore = 0);
+    Scoreboard(Game* game, int x, int y, int goodScore = 10, int badScore = 0, wxString instructions = "");
 
     void ResetLevelScore();
     void AddGoodScore();
     void AddBadScore();
     void UpdateGameScore();
     void Draw(std::shared_ptr<wxGraphicsContext> graphics);
-    void SetInstructions(const std::string& instructions);
+    void SetInstructions(const wxString& instructions);
 
     int GetLevelScore() const;
     int GetGameScore() const;

@@ -135,52 +135,25 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     graphics->Translate(mXOffset, mYOffset);
     graphics->Scale(mScale, mScale);
 
-    for (auto items : mItems)
-    {
-        // items->Draw(graphics);
-    }
-
     // Draw the background
     wxBrush background(wxColour(230, 255, 230));
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
+
+    for (auto items : mItems)
+    {
+        items->Draw(graphics);
+    }
+
     for (const auto& gate : mGates)
     {
         gate->Draw(graphics);
     }
+
     for (const auto& wire : mWires)
     {
         wire->Draw(graphics.get(), mShowControlPoints);
     }
-    // Create a temporary scoreboard for this draw cycle
-    auto scoreboard = std::make_shared<Scoreboard>(this, 600, 40, 10, -5);
-    scoreboard->SetInstructions(
-        "Make Sparty kick all product from the conveyor\n that are not Izzo or Smith.");
-
-    // Draw the scoreboard within the graphics context
-    scoreboard->Draw(graphics);
-
-    // Draw the sensor
-    if (mSensor)
-    {
-        mSensor->Draw(graphics);
-    }
-
-    auto conveyor = std::make_shared<Conveyor>(this, 150, 400, 100, 800, wxPoint(60, -390));
-
-    conveyor->Draw(graphics, 60, -390);
-
-
-    auto beam = std::make_shared<Beam>(this, 242, 437, -175);
-    beam->Draw(graphics);
-
-
-    // Draw Sparty
-    if (mSparty)
-    {
-        mSparty->Draw(graphics);
-    }
-
 
     // auto product = std::make_shared<Product>(this, 100, // placement
     //                                          Product::Properties::Circle, // shape
@@ -189,11 +162,6 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     //                                          false); // don't kick
     // product->SetOnConveyor(true, 100);
     // AddItem(product);
-
-    // for (const auto& item : mItems)
-    // {
-    //     item->Draw(graphics);
-    // }
 
     // for (auto& product : mProducts)
     // {

@@ -12,11 +12,11 @@ const wxSize ScoreboardSize(380, 100);
 const int SpacingScoresToInstructions = 40;
 const int SpacingInstructionLines = 17;
 
-Scoreboard::Scoreboard(Game* game, int x, int y, int goodScore, int badScore)
+Scoreboard::Scoreboard(Game* game, int x, int y, int goodScore, int badScore, wxString instructions)
     : Item(game, L""), mX(x + 160), mY(y), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
       mLevelScore(0), mGameScore(0)
 {
-    mInstructions = "Level: 1 Game: 0\nMake Sparty kick all product from the conveyor that are not Izzo or Smith.";
+    SetInstructions(instructions);
 }
 
 void Scoreboard::ResetLevelScore()
@@ -102,7 +102,7 @@ void Scoreboard::DrawWrappedText(std::shared_ptr<wxGraphicsContext> graphics, co
     }
 }
 
-void Scoreboard::SetInstructions(const std::string& instructions)
+void Scoreboard::SetInstructions(const wxString& instructions)
 {
     mInstructions = instructions;
 }
