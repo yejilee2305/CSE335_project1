@@ -22,7 +22,7 @@
 Game::Game()
 {
     mSparty = std::make_shared<Sparty>(this, 315, 340, 100, wxPoint2DDouble(1100, 400), 0.25, 1000);
-    mSensor = std::make_shared<Sensor>(this, 1, 350, -22, 360);  // Initialize sensor
+    mSensor = std::make_shared<Sensor>(this, 1, 350, -22, 360); // Initialize sensor
 }
 
 /**
@@ -41,10 +41,12 @@ void Game::StartLevel(int levelNumber)
 {
     // Logic for starting the level
 }
+
 void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
 {
     mWires.push_back(std::make_shared<Wire>(outputPin, inputPin));
 }
+
 void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
 {
     for (const auto& wire : mWires)
@@ -58,13 +60,23 @@ void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
  */
 void Game::Update(double elapsed)
 {
-    if (mSparty->IsKicking()) {
+    if (mSparty->IsKicking())
+    {
         mSparty->mKickProgress += elapsed * 4;
-        if (mSparty->mKickProgress >= 1.0) {
+        if (mSparty->mKickProgress >= 1.0)
+        {
             mSparty->mKickProgress = 0.0;
             mSparty->SetKicking(false);
         }
     }
+
+    for (auto& product : mProducts)
+    {
+        product->Update(elapsed);
+    }
+
+    // check if last product has touched the bottom of the screen
+    CheckLastProduct();
 }
 
 /**
@@ -73,7 +85,8 @@ void Game::Update(double elapsed)
 void Game::HandleMouseClick(int x, int y)
 {
     auto item = HitTest(x, y);
-    if (item != nullptr) {
+    if (item != nullptr)
+    {
         mGrabbedItem = item;
     }
 }
@@ -148,7 +161,8 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     scoreboard->Draw(graphics);
 
     // Draw the sensor
-    if (mSensor) {
+    if (mSensor)
+    {
         mSensor->Draw(graphics);
     }
 
@@ -162,12 +176,10 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
 
     // Draw Sparty
-    if (mSparty) {
+    if (mSparty)
+    {
         mSparty->Draw(graphics);
     }
-
-
-
 
 
     // auto product = std::make_shared<Product>(this, 100, // placement
@@ -181,6 +193,11 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     // for (const auto& item : mItems)
     // {
     //     item->Draw(graphics);
+    // }
+
+    // for (auto& product : mProducts)
+    // {
+    //     product->Draw(graphics);
     // }
 
     graphics->PopState();
@@ -211,7 +228,6 @@ void Game::AddProduct(std::shared_ptr<Product> product)
 }
 
 
-
 /**
  * Test if a click is on an item.
  */
@@ -233,8 +249,10 @@ std::shared_ptr<Item> Game::HitTest(int x, int y)
  */
 std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
 {
-    for (auto& gate : mGates) {
-        if (gate->HitTest(x, y)) {
+    for (auto& gate : mGates)
+    {
+        if (gate->HitTest(x, y))
+        {
             return gate;
         }
     }
@@ -248,4 +266,28 @@ void Game::Clear()
 {
     mItems.clear();
     mProducts.clear();
+    mGates.clear();
+    mWires.clear();
+}
+
+void Game::CheckLastProduct()
+{
+    if (mProducts.empty())
+    {
+        return;
+    }
+
+    auto lastProduct = mProducts.back();
+
+    if (lastProduct->GetY() > mVirtualHeight)
+    {
+        mLastProductPassed = true;
+        mLastProductTimer += 0.016; // 60 fps
+
+        if (mLastProductTimer >= mLastProductDelay)
+        {
+            // handle end of level here
+            // load next level
+        }
+    }
 }

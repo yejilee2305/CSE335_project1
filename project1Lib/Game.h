@@ -56,6 +56,9 @@ public:
     double GetXOffset() const { return mXOffset; }
     double GetYOffset() const { return mYOffset; }
 
+    bool HasLastProductPassed() const { return mLastProductPassed; }
+    void CheckLastProduct();
+
 private:
     double mVirtualWidth;
     double mVirtualHeight;
@@ -63,6 +66,10 @@ private:
     double mXOffset;
     double mYOffset;
     std::wstring mImagesDirectory;
+    bool mLastProductPassed = false;
+    double mLastProductTimer = 0;
+    double mLastProductDelay = 1.0;
+
 
     std::vector<std::shared_ptr<Item>> mItems;
     std::vector<std::shared_ptr<Gate>> mGates;
