@@ -37,6 +37,7 @@ private:
 public:
  // Constructor
  Conveyor(Game* game, int x, int y, int speed, int height, const wxPoint& panelLocation);
+ void Accept(ItemVisitor* visitor) override { visitor->VisitConveyor(this); }
 
  void AddProduct(std::shared_ptr<Product> product);
 

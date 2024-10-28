@@ -21,6 +21,8 @@ public:
     // Constructor
     Sparty(Game* game, int x, int y, int height, wxPoint2DDouble pin, double kickDuration, double kickSpeed);
 
+    void Accept(ItemVisitor* visitor) override { visitor->VisitSparty(this); }
+
     // Draw function to render Sparty with layers
     void Draw(std::shared_ptr<wxGraphicsContext> graphics);
 

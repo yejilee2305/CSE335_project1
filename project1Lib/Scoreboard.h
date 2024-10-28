@@ -24,6 +24,7 @@ private:
 
 public:
     Scoreboard(Game* game, int x, int y, int goodScore = 10, int badScore = 0, wxString instructions = "");
+    void Accept(ItemVisitor* visitor) override { visitor->VisitScoreBoard(this); }
 
     void ResetLevelScore();
     void AddGoodScore();

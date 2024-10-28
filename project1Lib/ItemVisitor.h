@@ -9,7 +9,8 @@ class Product;
 class Conveyor;
 class Beam;
 class Sensor;
-
+class Scoreboard;
+class Sparty;
 
 #ifndef ITEMVISITOR_H
 #define ITEMVISITOR_H
@@ -40,6 +41,14 @@ public:
     }
 
     virtual void VisitSensor(Sensor* sensor)
+    {
+    }
+
+    virtual void VisitScoreBoard(Scoreboard* scoreboard)
+    {
+    }
+
+    virtual void VisitSparty(Sparty* sparty)
     {
     }
 };

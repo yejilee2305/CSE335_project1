@@ -18,6 +18,7 @@ class Sensor : public Item
 public:
  // Constructor to initialize the sensor with camera and cable positions
  Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY);
+    void Accept(ItemVisitor* visitor) override { visitor->VisitSensor(this); }
 
  // Default constructor and copy operations are disabled
  Sensor() = delete;
