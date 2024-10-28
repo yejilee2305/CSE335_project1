@@ -220,12 +220,10 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     double gameY = (mouseY - yOffset) / scale;
 
     if (mGame.GetConveyor()->CheckStartButtonClick(gameX, gameY)) {
-        wxLogMessage("Start button clicked.");
         mGame.GetConveyor()->Start();
         return;
     }
     else if (mGame.GetConveyor()->CheckStopButtonClick(gameX, gameY)) {
-        wxLogMessage("Stop button clicked.");
         mGame.GetConveyor()->Stop();
         return;
     }
