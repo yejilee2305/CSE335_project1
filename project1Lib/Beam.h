@@ -29,6 +29,8 @@ public:
     /// default constructor (disabled)
     Beam() = delete;
 
+    void Accept(ItemVisitor* visitor) override { visitor->VisitBeam(this); }
+
     /// copy consturctor (disabled)
     Beam(const Beam&) = delete;
 

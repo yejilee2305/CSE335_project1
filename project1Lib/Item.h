@@ -10,6 +10,8 @@
 
 #include <vector>
 
+#include "ItemVisitor.h"
+
 class Game;
 
 class Item
@@ -51,6 +53,8 @@ public:
      */
     ~Item();
 
+    virtual void Accept(ItemVisitor* visitor) = 0;
+
     /**
      *  getter for x of item
      * @return x location
@@ -83,7 +87,9 @@ public:
      * update the class in time
      * @param elpased elapsed time in ms
      */
-    virtual void Update(double elapsed){}
+    virtual void Update(double elapsed)
+    {
+    }
 
     /**
      * handles a click on item

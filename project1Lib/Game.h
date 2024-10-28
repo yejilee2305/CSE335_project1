@@ -33,8 +33,6 @@ public:
     void HandleMouseMove(int x, int y, wxMouseEvent& event);
     std::shared_ptr<Item> HitTest(int x, int y);
     void OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height);
-    void AddProduct(std::shared_ptr<Product> product);
-    std::vector<std::shared_ptr<Product>> GetProducts() const { return mProducts; }
     void Clear();
 
     void SetVirtualWidth(int width) { mVirtualWidth = width; }
@@ -56,9 +54,7 @@ public:
     double GetYOffset() const { return mYOffset; }
     double GetWidth() const { return mVirtualWidth; }
     double GetHeight() const { return mVirtualHeight; }
-
-    bool HasLastProductPassed() const { return mLastProductPassed; }
-    void CheckLastProduct();
+    std::shared_ptr<Conveyor> GetConveyor() const { return mConveyor; }
 
 private:
     double mVirtualWidth;
@@ -75,7 +71,6 @@ private:
     std::vector<std::shared_ptr<Item>> mItems;
     std::vector<std::shared_ptr<Gate>> mGates;
     std::vector<std::shared_ptr<Wire>> mWires;
-    std::vector<std::shared_ptr<Product>> mProducts;
 
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 

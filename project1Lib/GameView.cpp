@@ -28,18 +28,9 @@ const auto LevelNoticeColor = wxColour(0, 100, 0);
  */
 GameView::GameView() : mCurrentLevel(0)
 {
+    mTimer.Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    mTimer.Start(16);
 }
-
-void GameView::OnTimer(wxTimerEvent& event)
-{
-    auto newTime = mStopWatch.Time();
-    auto elapsed = (double)(newTime - mTime) * 0.001;
-    mTime = newTime;
-
-    mGame.Update(elapsed);
-    Refresh();
-}
-
 
 /**
  * Initialize the game view class.
@@ -73,16 +64,19 @@ void GameView::Initialize(wxFrame* mainFrame)
     Bind(wxEVT_LEFT_UP, &GameView::OnLeftUp, this);
     Bind(wxEVT_MOTION, &GameView::OnMouseMove, this);
 
+    // Bind gate-adding menu events
+    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddORGate, this);
+    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddANDGate, this);
+
     // Load the initial level (default to mCurrentLevel)
     mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
     Refresh();
 
-    Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    //Bind(wxEVT_TIMER, &GameView::OnTimer, this);
     mTimer.SetOwner(this);
-    mTimer.Start(60);
-    mStopWatch.Start();
+    mTimer.Start(16); // ~60 FPS (16 ms interval)
 
-    Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    Bind(wxEVT_TIMER, &GameView::OnUpdate, this);
 }
 
 /**
@@ -135,9 +129,6 @@ void GameView::OnLevelOption(wxCommandEvent& event)
         break;
     }
 
-    mStopWatch.Start();
-    mTime = 0;
-
     // Reload the game with the selected level
     mGame = Game();
     mGame.Load(filename);
@@ -154,6 +145,9 @@ void GameView::OnLevelOption(wxCommandEvent& event)
  */
 void GameView::OnPaint(wxPaintEvent& event)
 {
+    // Update the game state before drawing
+    mGame.Update(0.016);  // Pass a fixed timestep (e.g., ~16ms for 60 FPS)
+
     // Create a double-buffered display context
     wxAutoBufferedPaintDC dc(this);
 
@@ -171,17 +165,9 @@ void GameView::OnPaint(wxPaintEvent& event)
     // Instruct the game to draw its elements
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
 
+    // Display level message if needed
     if (mDisplayLevelMessage)
     {
-        long elapsedTime = mStopWatch.Time() - mMessageStartTime;
-
-        if (elapsedTime > 2000)
-        {
-            mDisplayLevelMessage = false;
-            Refresh();
-            return;
-        }
-
         wxString noticeText = wxString::Format("Level %d Begin", mCurrentLevel);
         wxFont font(NoticeSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
         gc->SetFont(font, LevelNoticeColor);
@@ -197,16 +183,17 @@ void GameView::OnPaint(wxPaintEvent& event)
         gc->DrawText(noticeText, xPos, yPos);
     }
 
-    // for (const auto& wire : mGame.GetWires())
-    // {
-    //     wire->Draw(gc.get(), mGame.GetShowControlPoints());
-    // }
+    // Draw dragging wire if one exists
     if (mSelectedOutputPin != nullptr && mSelectedInputPin != nullptr)
     {
         mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, mSelectedInputPin);
         mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
     }
+
+    // Request another repaint to create a continuous update loop
+    Refresh();
 }
+
 
 void GameView::ToggleControlPoints()
 {
@@ -231,6 +218,15 @@ void GameView::OnLeftDown(wxMouseEvent& event)
 
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
+
+    if (mGame.GetConveyor()->CheckStartButtonClick(gameX, gameY)) {
+        mGame.GetConveyor()->Start();
+        return;
+    }
+    else if (mGame.GetConveyor()->CheckStopButtonClick(gameX, gameY)) {
+        mGame.GetConveyor()->Stop();
+        return;
+    }
 
     mSelectedOutputPin = nullptr;
     for (const auto& gate : mGame.GetGates())
@@ -414,6 +410,16 @@ void GameView::DisplayLevelMessage(int level)
 {
     mCurrentLevel = level;
     mDisplayLevelMessage = true;
-    mMessageStartTime = mStopWatch.Time();
 
+}
+
+void GameView::OnUpdate(wxTimerEvent& event)
+{
+    mGame.Update(0.016);  // Pass elapsed time if necessary
+    Refresh();
+}
+
+void GameView::OnTimer(wxTimerEvent&) {
+    mGame.Update(0.016);  // Pass the elapsed time in seconds (16 ms)
+    Refresh();            // Trigger OnDraw to repaint the game view
 }
