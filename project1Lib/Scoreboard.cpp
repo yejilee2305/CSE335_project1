@@ -3,6 +3,7 @@
  * @author Martin Sattam
  */
 
+#include "pch.h"
 #include "Scoreboard.h"
 #include <wx/graphics.h>
 #include <wx/pen.h>

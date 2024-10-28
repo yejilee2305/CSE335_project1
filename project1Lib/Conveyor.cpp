@@ -3,6 +3,7 @@
  * @author Martin Sattam
  */
 
+#include "pch.h"
 #include "Conveyor.h"
 #include <wx/graphics.h>
 #include <wx/bitmap.h>
@@ -25,9 +26,10 @@ Conveyor::Conveyor(Game* game,int x, int y, int speed, int height, const wxPoint
 
 void Conveyor::Update() {
     if (mIsRunning) {
-        mX -= mSpeed;  // Move horizontally to the left based on speed
+        mX -= mSpeed;  // Move conveyor belt to the left
+        wxLogMessage("Conveyor updating, new mX: %d", mX);  // Debug message to track mX changes
 
-        // Reset position if conveyor has moved completely off-screen to create a continuous loop effect
+        // Loop conveyor position for continuous movement
         if (mX < -mWidth) {
             mX = 0;
         }
@@ -36,11 +38,12 @@ void Conveyor::Update() {
 
 void Conveyor::Start() {
     mIsRunning = true;
-    ResetProducts();  // Reset products to their initial positions
+    wxLogMessage("Conveyor started");  // Debug message to confirm start
 }
 
 void Conveyor::Stop() {
     mIsRunning = false;
+    wxLogMessage("Conveyor stopped");  // Debug message to confirm stop
 }
 
 void Conveyor::ResetProducts() {

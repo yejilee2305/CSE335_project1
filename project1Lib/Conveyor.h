@@ -16,7 +16,7 @@ private:
  int mX;
  int mY;
  int mHeight;
- int mWidth;
+ int mWidth = 800;
 
  // Speed of the conveyor
  int mSpeed;

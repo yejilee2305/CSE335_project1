@@ -93,11 +93,10 @@ void Game::ComputeGateOutputs() {
 /**
  * Update the game state.
  */
-void Game::Update() {
+void Game::Update(double elapsed) {
     if (mConveyor) {
         mConveyor->Update();  // Update the conveyor’s position if it's running
     }
-
     // Other game updates...
 }
 
@@ -106,10 +105,15 @@ void Game::Update() {
  */
 void Game::HandleMouseClick(int x, int y) {
     if (mConveyor->CheckStartButtonClick(x, y)) {
-        mConveyor->Start();  // Start the conveyor when start button is clicked
+        wxLogMessage("Start button clicked.");  // Debug message
+        mConveyor->Start();  // Start the conveyor
     }
     else if (mConveyor->CheckStopButtonClick(x, y)) {
-        mConveyor->Stop();   // Stop the conveyor when stop button is clicked
+        wxLogMessage("Stop button clicked.");  // Debug message
+        mConveyor->Stop();   // Stop the conveyor
+    }
+    else {
+        wxLogMessage("Clicked outside start/stop buttons.");  // Debug message for other clicks
     }
 }
 

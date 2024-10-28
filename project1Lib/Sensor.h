@@ -8,7 +8,6 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#include "pch.h"
 #include "Item.h"
 #include <memory>
 #include <vector>

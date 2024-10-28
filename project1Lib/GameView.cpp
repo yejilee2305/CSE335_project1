@@ -30,7 +30,7 @@ void GameView::OnTimer(wxTimerEvent& event)
     auto elapsed = (double)(newTime - mTime) * 0.001;
     mTime = newTime;
 
-    mGame.Update();
+    mGame.Update(elapsed);
     Refresh();
 }
 

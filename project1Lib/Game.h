@@ -23,7 +23,7 @@ public:
     void Load(const wxString& filename);
     void StartLevel(int Number);
     void ComputeGateOutputs();
-    void Update();
+    void Update(double elapsed);
 
     void ConnectGates(Gate* outputGate, Gate* inputGate);
     void AddItem(std::shared_ptr<Item> item);

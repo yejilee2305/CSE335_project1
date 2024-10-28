@@ -3,8 +3,8 @@
  * @author zhi lin
  */
 
+#include "pch.h"
 #include "Beam.h"
-
 #include "Game.h"
 /// Image for the beam sender and receiver when red
 const std::wstring BeamRedImage = L"images/beam-red.png";
