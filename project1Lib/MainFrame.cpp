@@ -11,7 +11,7 @@
 void MainFrame::Initialize()
 {
     Create(nullptr, wxID_ANY, L"Sparty's Boots",
-        wxDefaultPosition, wxSize(1000, 800),
+        wxDefaultPosition, wxSize(1150, 800),
         wxFULL_REPAINT_ON_RESIZE | wxDEFAULT_FRAME_STYLE);
 
     // Create a sizer that will lay out child windows vertically
@@ -35,13 +35,13 @@ void MainFrame::Initialize()
     auto helpMenu = new wxMenu();
     auto levelMenu = new wxMenu();
     auto gateMenu = new wxMenu();
+    auto viewMenu = new wxMenu();
 
     menuBar->Append(fileMenu, "&File");
     menuBar->Append(helpMenu, "&Help");
     menuBar->Append(levelMenu, "&Level");
     menuBar->Append(gateMenu, "&Gates");
-    SetMenuBar(menuBar);
-    auto viewMenu = new wxMenu();
+    menuBar->Append(viewMenu, "&View");
 
     fileMenu->Append(wxID_EXIT, "E&xit\tAlt-X", "Quit this program");
     helpMenu->Append(wxID_ABOUT, "&About\tF1", "Show about dialog");
@@ -61,19 +61,20 @@ void MainFrame::Initialize()
     gateMenu->Append(IDM_DRFLIP_GATE, "Add D-Flip Flop Gate");
     mControlPointsMenuItem = viewMenu->AppendCheckItem(wxID_ANY, "Show Control Points", "Toggle display of Bézier curve control points");
 
-    menuBar->Append(viewMenu, "&View");
+    SetMenuBar(menuBar);
     CreateStatusBar(1, wxSTB_SIZEGRIP, wxID_ANY);
 
-    Bind(wxEVT_MENU, &MainFrame::OnAddORGate, this, ID_ORGate);
-    Bind(wxEVT_MENU, &MainFrame::OnAddANDGate, this, ID_ANDGate);
-    Bind(wxEVT_MENU, &MainFrame::OnAddNOTGate, this, ID_NOTGate);
-    Bind(wxEVT_MENU, &MainFrame::OnAddSRFlipFlopGate, this, IDM_SRFLIP_GATE);
-    Bind(wxEVT_MENU, &MainFrame::OnAddDFlipFlopGate, this, IDM_DRFLIP_GATE);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddORGate, this, ID_ORGate);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddANDGate, this, ID_ANDGate);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddNOTGate, this, ID_NOTGate);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddSRFlipFlopGate, this, IDM_SRFLIP_GATE);
+    Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddDFlipFlopGate, this, IDM_DRFLIP_GATE);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnExit, this, wxID_EXIT);
     Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnClose, this);
     Bind(wxEVT_MENU, &MainFrame::OnToggleControlPoints, this, mControlPointsMenuItem->GetId());
 }
+
 void MainFrame::OnToggleControlPoints(wxCommandEvent& event)
 {
     mGameView->ToggleControlPoints();

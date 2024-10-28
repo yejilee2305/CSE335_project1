@@ -17,21 +17,17 @@
 
 using namespace std;
 
+/// Size of notices displayed on screen in virtual pixels
+const int NoticeSize = 100;
+
+/// Color to draw the level notices
+const auto LevelNoticeColor = wxColour(0, 100, 0);
+
 /**
  * Constructor for GameView.
  */
 GameView::GameView() : mCurrentLevel(0)
 {
-} // Initialize level to 0
-
-void GameView::OnTimer(wxTimerEvent& event)
-{
-    auto newTime = mStopWatch.Time();
-    auto elapsed = (double)(newTime - mTime) * 0.001;
-    mTime = newTime;
-
-    mGame.Update(elapsed);
-    Refresh();
 }
 
 /**
@@ -67,16 +63,14 @@ void GameView::Initialize(wxFrame* mainFrame)
     Bind(wxEVT_MOTION, &GameView::OnMouseMove, this);
 
     // Bind gate-adding menu events
-    mainFrame->Bind(wxEVT_MENU, &GameView::OnAddORGate, this);
-    mainFrame->Bind(wxEVT_MENU, &GameView::OnAddANDGate, this);
+    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddORGate, this);
+    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddANDGate, this);
 
     // Load the initial level (default to mCurrentLevel)
     mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
+    Refresh();
 
-    Bind(wxEVT_TIMER, &GameView::OnTimer, this);
-    mTimer.SetOwner(this);
-    mTimer.Start(60);
-    mStopWatch.Start();
+    //Bind(wxEVT_TIMER, &GameView::OnTimer, this);
 }
 
 /**
@@ -86,23 +80,47 @@ void GameView::Initialize(wxFrame* mainFrame)
 void GameView::OnLevelOption(wxCommandEvent& event)
 {
     wxString filename;
+    int levelNumber = 0;
 
     // Switch based on the selected level
     switch (event.GetId())
     {
     case IDM_LEVEL0:
-        filename = L"resources/levels/level0.xml";
-        mCurrentLevel = 0; // Update the current level
+        filename = L"levels/level0.xml";
+        levelNumber = 0;
         break;
     case IDM_LEVEL1:
-        filename = L"resources/levels/level1.xml";
-        mCurrentLevel = 1; // Update the current level
+        filename = L"levels/level1.xml";
+        levelNumber = 1;
         break;
     case IDM_LEVEL2:
-        filename = L"resources/levels/level2.xml";
-        mCurrentLevel = 2; // Update the current level
+        filename = L"levels/level2.xml";
+        levelNumber = 2;
         break;
-    // Add other cases for different levels...
+    case IDM_LEVEL3:
+        filename = L"levels/level3.xml";
+        levelNumber = 3;
+        break;
+    case IDM_LEVEL4:
+        filename = L"levels/level4.xml";
+        levelNumber = 4;
+        break;
+    case IDM_LEVEL5:
+        filename = L"levels/level5.xml";
+        levelNumber = 5;
+        break;
+    case IDM_LEVEL6:
+        filename = L"levels/level6.xml";
+        levelNumber = 6;
+        break;
+    case IDM_LEVEL7:
+        filename = L"levels/level7.xml";
+        levelNumber = 7;
+        break;
+    case IDM_LEVEL8:
+        filename = L"levels/level8.xml";
+        levelNumber = 8;
+        break;
     }
 
     // Reload the game with the selected level
@@ -111,6 +129,7 @@ void GameView::OnLevelOption(wxCommandEvent& event)
 
     // Request a repaint to reflect the loaded level
     Refresh();
+    DisplayLevelMessage(levelNumber);
 }
 
 /**
@@ -136,6 +155,24 @@ void GameView::OnPaint(wxPaintEvent& event)
 
     // Instruct the game to draw its elements
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
+
+    if (mDisplayLevelMessage)
+    {
+        wxString noticeText = wxString::Format("Level %d Begin", mCurrentLevel);
+        wxFont font(NoticeSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+        gc->SetFont(font, LevelNoticeColor);
+
+        // Measure text size
+        double textWidth, textHeight;
+        gc->GetTextExtent(noticeText, &textWidth, &textHeight, nullptr, nullptr);
+
+        // Calculate positions to center the text
+        double xPos = (mGame.GetWidth() - textWidth) / 2;
+        double yPos = (mGame.GetHeight() - textHeight) / 2;
+
+        gc->DrawText(noticeText, xPos, yPos);
+    }
+
     // for (const auto& wire : mGame.GetWires())
     // {
     //     wire->Draw(gc.get(), mGame.GetShowControlPoints());
@@ -145,14 +182,6 @@ void GameView::OnPaint(wxPaintEvent& event)
         mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, mSelectedInputPin);
         mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
     }
-
-    // // Create a temporary scoreboard for this draw cycle
-    // auto scoreboard = std::make_shared<Scoreboard>(700, 40, 10, -5);
-    // scoreboard->SetInstructions(
-    //     "Make Sparty kick all product from the conveyor\n that are not Izzo or Smith.");
-    //
-    // // Draw the scoreboard within the graphics context
-    // scoreboard->Draw(gc.get());
 }
 
 void GameView::ToggleControlPoints()
@@ -355,4 +384,11 @@ auto GameView::OnAddDFLipFlopGate(wxCommandEvent& event) -> void
 
     // Add the D gate to the game
     mGame.AddGate(dFlipFlop);
+}
+
+void GameView::DisplayLevelMessage(int level)
+{
+    mCurrentLevel = level;
+    mDisplayLevelMessage = true;
+
 }

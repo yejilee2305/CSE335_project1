@@ -16,13 +16,6 @@
 class GameView : public wxWindow
 {
 private:
-    /// The timer that allows for animation
-    wxTimer mTimer;
-
-    wxStopWatch mStopWatch;
-
-    long mTime = 0;
-
     /// The game
     Game mGame;
 
@@ -35,6 +28,7 @@ private:
     PinOutput* mSelectedOutputPin = nullptr;
     std::shared_ptr<Wire> mDraggingWire;
     PinInput* mSelectedInputPin = nullptr;
+    bool mDisplayLevelMessage = false;
 public:
     GameView();
     void OnTimer(wxTimerEvent& event);
@@ -48,7 +42,6 @@ public:
     void OnLeftUp(wxMouseEvent& event);
 
     void OnLevelOption(wxCommandEvent& event);
-    void OnDraw(wxGraphicsContext* gc, int width, int height);
     void OnAddORGate(wxCommandEvent& event);
     auto OnAddANDGate(wxCommandEvent& event) -> void;
     auto OnAddNOTGate(wxCommandEvent& event) -> void;
@@ -56,6 +49,7 @@ public:
     auto OnAddDFLipFlopGate(wxCommandEvent& event) -> void;
     void AddGate(std::shared_ptr<Gate> gate);
     void ToggleControlPoints();
+    void DisplayLevelMessage(int level);
 
 };
 

@@ -38,6 +38,7 @@ public:
 
     void SetVirtualWidth(int width) { mVirtualWidth = width; }
     void SetVirtualHeight(int height) { mVirtualHeight = height; }
+
     std::shared_ptr<Gate> HitTestGate(double x, double y);
 
     size_t GetItemSize() const { return mItems.size(); }
@@ -52,6 +53,8 @@ public:
     double GetScale() const { return mScale; }
     double GetXOffset() const { return mXOffset; }
     double GetYOffset() const { return mYOffset; }
+    double GetWidth() const { return mVirtualWidth; }
+    double GetHeight() const { return mVirtualHeight; }
 
     bool HasLastProductPassed() const { return mLastProductPassed; }
     void CheckLastProduct();
