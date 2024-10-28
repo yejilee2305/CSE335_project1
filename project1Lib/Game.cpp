@@ -103,17 +103,21 @@ void Game::Update(double elapsed) {
 /**
  * Handle mouse clicks.
  */
-void Game::HandleMouseClick(int x, int y) {
+void Game::HandleMouseClick(wxMouseEvent& event)
+{
+    int x = event.GetX();
+    int y = event.GetY();
+
     if (mConveyor->CheckStartButtonClick(x, y)) {
-        wxLogMessage("Start button clicked.");  // Debug message
-        mConveyor->Start();  // Start the conveyor
+        wxLogMessage("Start button clicked.");
+        mConveyor->Start();
     }
     else if (mConveyor->CheckStopButtonClick(x, y)) {
-        wxLogMessage("Stop button clicked.");  // Debug message
-        mConveyor->Stop();   // Stop the conveyor
+        wxLogMessage("Stop button clicked.");
+        mConveyor->Stop();
     }
     else {
-        wxLogMessage("Clicked outside start/stop buttons.");  // Debug message for other clicks
+        wxLogMessage("Clicked outside start/stop buttons.");
     }
 }
 

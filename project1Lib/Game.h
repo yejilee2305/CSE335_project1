@@ -29,7 +29,7 @@ public:
     void AddItem(std::shared_ptr<Item> item);
     void AddGate(std::shared_ptr<Gate> gate);
 
-    void HandleMouseClick(int x, int y);
+    void HandleMouseClick(wxMouseEvent& event);
     void HandleMouseMove(int x, int y, wxMouseEvent& event);
     std::shared_ptr<Item> HitTest(int x, int y);
     void OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height);
