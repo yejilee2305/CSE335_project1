@@ -41,6 +41,10 @@ set(SOURCE_FILES
 		IDraggable.h
 		ItemVisitor.h
 		ProductVisitor.h
+		SensorVisitor.h
+		BeamVisitor.h
+		ConveyorVisitor.cpp
+		ConveyorVisitor.h
 		#		Pins.cpp
 #		Pins.h
 )
