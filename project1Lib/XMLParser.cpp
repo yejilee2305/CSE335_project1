@@ -158,7 +158,7 @@ void XMLParser::XmlItems(wxXmlNode* node)
                     bool kick = (kickStr == L"yes");
 
                     auto product = make_shared<Product>(mGame, placement, shape, color, content, kick);
-                    mGame->AddProduct(product);
+                    mGame->AddItem(product);
                 }
             }
         }

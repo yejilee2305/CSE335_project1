@@ -55,9 +55,6 @@ public:
     double GetWidth() const { return mVirtualWidth; }
     double GetHeight() const { return mVirtualHeight; }
 
-    bool HasLastProductPassed() const { return mLastProductPassed; }
-    void CheckLastProduct();
-
 private:
     double mVirtualWidth;
     double mVirtualHeight;
