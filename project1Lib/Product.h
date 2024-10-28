@@ -84,17 +84,15 @@ public:
 
     void SetLocation(int x, int y) override;
 
-   int GetX() const { return mX; }
-   int GetY() const { return mY; }
+    int GetX() const { return mX; }
+    int GetY() const { return mY; }
 
-   void SetX(int x) { mX = x; }
-   void SetY(int y) { mY = y; }
+    void SetX(int x) { mX = x; }
+    void SetY(int y) { mY = y; }
 
-   //void Draw(std::shared_ptr<wxGraphicsContext> graphics);
+    void Accept(ItemVisitor* visitor) override { visitor->VisitProduct(this); }
 
-
- private:
-
+private:
     int mPlacement; // Placement on conveyor
     Properties mShape; // Shape of the product
     Properties mColor; // Color of the product
