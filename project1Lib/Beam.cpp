@@ -82,21 +82,21 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
  */
 void Beam::Update(double elpased)
 {
-    auto products = GetGame()->GetProducts();
+    //auto products = GetGame()->GetProducts();
     bool wasBroken = mBroken;
 
     mBroken = false;
 
 
-    for (auto product : products)
-    {
-        if (IsIntersecting(product))
-        {
-            mBroken = true;
-            break;
-        }
-    }
-    if (wasBroken != mBroken)
+    //for (auto product : products)
+    //
+        //if (IsIntersecting(product))
+        //{
+            //mBroken = true;
+            //break;
+        //}
+    //}
+    //if (wasBroken != mBroken)
     {
         // implement later, set output 1 when broken output 0 when not
     }

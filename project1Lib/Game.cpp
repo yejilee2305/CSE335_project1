@@ -24,8 +24,6 @@
  */
 Game::Game()
 {
-    mSparty = std::make_shared<Sparty>(this, 315, 340, 100, wxPoint2DDouble(1100, 400), 0.25, 1000);
-    mSensor = std::make_shared<Sensor>(this, 1, 350, -22, 360); // Initialize sensor
 }
 
 /**
@@ -96,19 +94,19 @@ void Game::ComputeGateOutputs() {
  */
 void Game::Update(double elapsed)
 {
-    if (mSparty->IsKicking())
+    //if (mSparty->IsKicking())
     {
-        mSparty->mKickProgress += elapsed * 4;
-        if (mSparty->mKickProgress >= 1.0)
+        //mSparty->mKickProgress += elapsed * 4;
+        //if (mSparty->mKickProgress >= 1.0)
         {
-            mSparty->mKickProgress = 0.0;
-            mSparty->SetKicking(false);
+            //mSparty->mKickProgress = 0.0;
+            //mSparty->SetKicking(false);
         }
     }
 
-    for (auto& product : mProducts)
+    //for (auto& product : mProducts)
     {
-        product->Update(elapsed);
+        //product->Update(elapsed);
     }
 
     // check if last product has touched the bottom of the screen
@@ -225,15 +223,6 @@ void Game::AddGate(std::shared_ptr<Gate> gate)
 }
 
 /**
- * Add a product to the game.
- */
-void Game::AddProduct(std::shared_ptr<Product> product)
-{
-    mProducts.push_back(product);
-}
-
-
-/**
  * Test if a click is on an item.
  */
 std::shared_ptr<Item> Game::HitTest(int x, int y)
@@ -270,26 +259,25 @@ std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
 void Game::Clear()
 {
     mItems.clear();
-    mProducts.clear();
     mGates.clear();
     mWires.clear();
 }
 
 void Game::CheckLastProduct()
 {
-    if (mProducts.empty())
+    //if (mProducts.empty())
     {
-        return;
+        //return;
     }
 
-    auto lastProduct = mProducts.back();
+    //auto lastProduct = mProducts.back();
 
-    if (lastProduct->GetY() > mVirtualHeight)
+    //if (lastProduct->GetY() > mVirtualHeight)
     {
-        mLastProductPassed = true;
-        mLastProductTimer += 0.016; // 60 fps
+        //mLastProductPassed = true;
+        //mLastProductTimer += 0.016; // 60 fps
 
-        if (mLastProductTimer >= mLastProductDelay)
+        //if (mLastProductTimer >= mLastProductDelay)
         {
             // handle end of level here
             // load next level

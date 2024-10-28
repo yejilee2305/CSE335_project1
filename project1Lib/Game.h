@@ -11,11 +11,8 @@
 #include <vector>
 #include <memory>
 #include "Gate.h"
-#include "Sparty.h"
-#include "Sensor.h"
 #include "Conveyor.h"
 #include "Wire.h"
-#include "Scoreboard.h"
 #include "Beam.h"
 
 class Game
@@ -45,7 +42,6 @@ public:
 
     size_t GetItemSize() const { return mItems.size(); }
 
-    std::vector<std::shared_ptr<Product>> GetProducts() const { return mProducts; }
     const std::vector<std::shared_ptr<Gate>>& GetGates() const { return mGates; }
     void AddWire(PinOutput* outputPin, PinInput* inputPin);
     void DrawWires(std::shared_ptr<wxGraphicsContext> graphics);
@@ -74,15 +70,9 @@ private:
 
     std::vector<std::shared_ptr<Item>> mItems;
     std::vector<std::shared_ptr<Gate>> mGates;
-    std::vector<std::shared_ptr<Product>> mProducts;
     std::vector<std::shared_ptr<Wire>> mWires;
 
     std::shared_ptr<Item> mGrabbedItem = nullptr;
-    std::shared_ptr<Sparty> mSparty;
-    std::shared_ptr<Sensor> mSensor;
-    std::shared_ptr<Conveyor> mConveyor;
-    std::shared_ptr<Beam> mBeam;
-    std::shared_ptr<Scoreboard> mScoreboard;
 
     bool mShowControlPoints = false;
 };
