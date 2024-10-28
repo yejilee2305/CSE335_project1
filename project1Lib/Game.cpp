@@ -114,15 +114,12 @@ void Game::HandleMouseClick(wxMouseEvent& event)
     int y = event.GetY();
 
     if (mConveyor->CheckStartButtonClick(x, y)) {
-        wxLogMessage("Start button clicked.");
         mConveyor->Start();
     }
     else if (mConveyor->CheckStopButtonClick(x, y)) {
-        wxLogMessage("Stop button clicked.");
         mConveyor->Stop();
     }
     else {
-        wxLogMessage("Clicked outside start/stop buttons.");
     }
 }
 
