@@ -175,9 +175,9 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);  // Fill the virtual area
 
     // Draw the conveyor
-    if (mConveyor) {
-        mConveyor->Draw(graphics);  // Assuming conveyor coordinates are set within its own Draw method
-    }
+    // if (mConveyor) {
+    //     mConveyor->Draw(graphics);  // Assuming conveyor coordinates are set within its own Draw method
+    // }
 
     // Draw each item in the game (e.g., products, obstacles) with the applied scaling
     for (const auto& item : mItems) {
