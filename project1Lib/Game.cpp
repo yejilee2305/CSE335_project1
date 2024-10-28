@@ -24,7 +24,6 @@
  */
 Game::Game()
 {
-    mConveyor = std::make_shared<Conveyor>(this, 200, 400, 5, 800, wxPoint(60, -390));
 }
 
 /**
@@ -94,10 +93,7 @@ void Game::ComputeGateOutputs() {
  * Update the game state.
  */
 void Game::Update(double elapsed) {
-    if (mConveyor) {
-        mConveyor->Update();  // Update the conveyor’s position if it's running
-    }
-    // Other game updates...
+
 }
 
 /**
@@ -107,18 +103,6 @@ void Game::HandleMouseClick(wxMouseEvent& event)
 {
     int x = event.GetX();
     int y = event.GetY();
-
-    if (mConveyor->CheckStartButtonClick(x, y)) {
-        wxLogMessage("Start button clicked.");
-        mConveyor->Start();
-    }
-    else if (mConveyor->CheckStopButtonClick(x, y)) {
-        wxLogMessage("Stop button clicked.");
-        mConveyor->Stop();
-    }
-    else {
-        wxLogMessage("Clicked outside start/stop buttons.");
-    }
 }
 
 /**
@@ -171,11 +155,6 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     wxBrush background(wxColour(230, 255, 230));  // Light green background
     graphics->SetBrush(background);
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);  // Fill the virtual area
-
-    // Draw the conveyor
-    if (mConveyor) {
-        mConveyor->Draw(graphics);  // Assuming conveyor coordinates are set within its own Draw method
-    }
 
     // Draw each item in the game (e.g., products, obstacles) with the applied scaling
     for (const auto& item : mItems) {

@@ -30,6 +30,17 @@ GameView::GameView() : mCurrentLevel(0)
 {
 }
 
+void GameView::OnTimer(wxTimerEvent& event)
+{
+    auto newTime = mStopWatch.Time();
+    auto elapsed = (double)(newTime - mTime) * 0.001;
+    mTime = newTime;
+
+    mGame.Update(elapsed);
+    Refresh();
+}
+
+
 /**
  * Initialize the game view class.
  * @param mainFrame The parent window for this class
@@ -62,15 +73,16 @@ void GameView::Initialize(wxFrame* mainFrame)
     Bind(wxEVT_LEFT_UP, &GameView::OnLeftUp, this);
     Bind(wxEVT_MOTION, &GameView::OnMouseMove, this);
 
-    // Bind gate-adding menu events
-    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddORGate, this);
-    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddANDGate, this);
-
     // Load the initial level (default to mCurrentLevel)
     mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
     Refresh();
 
-    //Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    mTimer.SetOwner(this);
+    mTimer.Start(60);
+    mStopWatch.Start();
+
+    Bind(wxEVT_TIMER, &GameView::OnTimer, this);
 }
 
 /**
@@ -123,6 +135,9 @@ void GameView::OnLevelOption(wxCommandEvent& event)
         break;
     }
 
+    mStopWatch.Start();
+    mTime = 0;
+
     // Reload the game with the selected level
     mGame = Game();
     mGame.Load(filename);
@@ -158,6 +173,15 @@ void GameView::OnPaint(wxPaintEvent& event)
 
     if (mDisplayLevelMessage)
     {
+        long elapsedTime = mStopWatch.Time() - mMessageStartTime;
+
+        if (elapsedTime > 2000)
+        {
+            mDisplayLevelMessage = false;
+            Refresh();
+            return;
+        }
+
         wxString noticeText = wxString::Format("Level %d Begin", mCurrentLevel);
         wxFont font(NoticeSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
         gc->SetFont(font, LevelNoticeColor);
@@ -390,5 +414,6 @@ void GameView::DisplayLevelMessage(int level)
 {
     mCurrentLevel = level;
     mDisplayLevelMessage = true;
+    mMessageStartTime = mStopWatch.Time();
 
 }

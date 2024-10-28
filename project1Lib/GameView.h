@@ -16,6 +16,15 @@
 class GameView : public wxWindow
 {
 private:
+    /// The timer that allows for animation
+    wxTimer mTimer;
+
+    wxStopWatch mStopWatch;
+
+    long mTime = 0;
+
+    long mMessageStartTime = 0; // Time when the level message was displayed
+
     /// The game
     Game mGame;
 

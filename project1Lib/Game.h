@@ -78,7 +78,6 @@ private:
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 
     bool mShowControlPoints = false;
-    std::shared_ptr<Conveyor> mConveyor;
 };
 
 #endif // GAME_H
