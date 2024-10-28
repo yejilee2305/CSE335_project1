@@ -49,7 +49,7 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->DrawBitmap(mCameraBitmap, mCameraX - 118, mCameraY - 70, cameraWidth, cameraHeight);
 
     // Draw the cable bitmap at its designated position
-    graphics->DrawBitmap(mCableBitmap, mCableX - 140, mCableY - 60, cableWidth, cableHeight);
+    graphics->DrawBitmap(mCableBitmap, mCableX - 140, mCableY -60, cableWidth, cableHeight);
 }
 
 void Sensor::AddOutputPin(Product::Properties property)
