@@ -50,7 +50,7 @@ void Conveyor::ResetProducts() {
     // Logic to reset product positions to their initial placement as defined in the XML.
 }
 
-void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics, int mouseX, int mouseY)
+void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     if (!graphics) return;
 
@@ -75,13 +75,13 @@ void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics, int mouseX, int
                     mY + mPanelLocation.y + StopButtonRect.GetY(),
                     StopButtonRect.GetWidth(), StopButtonRect.GetHeight());
 
-    if (CheckStartButtonClick(mouseX, mouseY)) {
+    if (CheckStartButtonClick(mX, mY)) {
         wxPen ringPen(wxColour(0, 255, 0), 3);  // Green ring for Start button
         graphics->SetPen(ringPen);
         graphics->DrawRectangle(startRect.GetX(), startRect.GetY(), startRect.GetWidth(), startRect.GetHeight());
     }
 
-    if (CheckStopButtonClick(mouseX, mouseY)) {
+    if (CheckStopButtonClick(mX, mY)) {
         wxPen ringPen(wxColour(255, 0, 0), 3);  // Red ring for Stop button
         graphics->SetPen(ringPen);
         graphics->DrawRectangle(stopRect.GetX(), stopRect.GetY(), stopRect.GetWidth(), stopRect.GetHeight());
