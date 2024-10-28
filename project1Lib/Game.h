@@ -23,7 +23,7 @@ public:
     void Load(const wxString& filename);
     void StartLevel(int Number);
     void ComputeGateOutputs();
-    void Update(double elapsed);
+    void Update();
 
     void ConnectGates(Gate* outputGate, Gate* inputGate);
     void AddItem(std::shared_ptr<Item> item);
@@ -75,6 +75,7 @@ private:
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 
     bool mShowControlPoints = false;
+    std::shared_ptr<Conveyor> mConveyor;
 };
 
 #endif // GAME_H

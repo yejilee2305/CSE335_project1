@@ -24,6 +24,7 @@
  */
 Game::Game()
 {
+    mConveyor = std::make_shared<Conveyor>(this, 200, 400, 5, 800, wxPoint(60, -390));
 }
 
 /**
@@ -92,37 +93,23 @@ void Game::ComputeGateOutputs() {
 /**
  * Update the game state.
  */
-void Game::Update(double elapsed)
-{
-    //if (mSparty->IsKicking())
-    {
-        //mSparty->mKickProgress += elapsed * 4;
-        //if (mSparty->mKickProgress >= 1.0)
-        {
-            //mSparty->mKickProgress = 0.0;
-            //mSparty->SetKicking(false);
-        }
+void Game::Update() {
+    if (mConveyor) {
+        mConveyor->Update();  // Update the conveyor’s position if it's running
     }
 
-    //for (auto& product : mProducts)
-    {
-        //product->Update(elapsed);
-    }
-
-    // check if last product has touched the bottom of the screen
-    CheckLastProduct();
-    ComputeGateOutputs();
+    // Other game updates...
 }
 
 /**
  * Handle mouse clicks.
  */
-void Game::HandleMouseClick(int x, int y)
-{
-    auto item = HitTest(x, y);
-    if (item != nullptr)
-    {
-        mGrabbedItem = item;
+void Game::HandleMouseClick(int x, int y) {
+    if (mConveyor->CheckStartButtonClick(x, y)) {
+        mConveyor->Start();  // Start the conveyor when start button is clicked
+    }
+    else if (mConveyor->CheckStopButtonClick(x, y)) {
+        mConveyor->Stop();   // Stop the conveyor when stop button is clicked
     }
 }
 
@@ -152,59 +139,62 @@ void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
  */
 void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height)
 {
+    // Define the virtual game area dimensions (pixelWidth and pixelHeight) for scaling calculations
     double pixelWidth = mVirtualWidth;
     double pixelHeight = mVirtualHeight;
 
-    double scaleX = (width) / pixelWidth;
-    double scaleY = (height) / pixelHeight;
-    mScale = std::min(scaleX, scaleY);
+    // Calculate scaling factors for both X and Y directions
+    double scaleX = width / pixelWidth;
+    double scaleY = height / pixelHeight;
 
+    // Choose the minimum scale to maintain the aspect ratio
+    mScale = (scaleX < scaleY) ? scaleX : scaleY;
+
+    // Center the scaled game content within the window by calculating offsets
     mXOffset = (width - pixelWidth * mScale) / 2.0;
-    mYOffset = 0;
-    if (height > pixelHeight * mScale)
-    {
-        mYOffset = (double)((height - pixelHeight * mScale) / 2.0);
-    }
+    mYOffset = (height - pixelHeight * mScale) / 2.0;
 
+    // Set the initial graphics state and apply translation and scaling
     graphics->PushState();
-    graphics->Translate(mXOffset, mYOffset);
-    graphics->Scale(mScale, mScale);
+    graphics->Translate(mXOffset, mYOffset);  // Centering offset
+    graphics->Scale(mScale, mScale);          // Apply scaling for consistent sizing
 
-    // Draw the background
-    wxBrush background(wxColour(230, 255, 230));
+    // Draw the background color for the entire virtual game area
+    wxBrush background(wxColour(230, 255, 230));  // Light green background
     graphics->SetBrush(background);
-    graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);
+    graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);  // Fill the virtual area
 
-    for (auto items : mItems)
-    {
-        items->Draw(graphics);
+    // Draw the conveyor
+    if (mConveyor) {
+        mConveyor->Draw(graphics, 0, 0);  // Assuming conveyor coordinates are set within its own Draw method
     }
 
-    for (const auto& gate : mGates)
-    {
+    // Draw each item in the game (e.g., products, obstacles) with the applied scaling
+    for (const auto& item : mItems) {
+        item->Draw(graphics);
+    }
+
+    // Draw all gates
+    for (const auto& gate : mGates) {
         gate->Draw(graphics);
     }
 
-    for (const auto& wire : mWires)
-    {
+    // Draw wires with optional control points for visualization (e.g., debugging or editor mode)
+    for (const auto& wire : mWires) {
         wire->Draw(graphics.get(), mShowControlPoints);
     }
 
-    // auto product = std::make_shared<Product>(this, 100, // placement
-    //                                          Product::Properties::Circle, // shape
-    //                                          Product::Properties::Blue, // color
-    //                                          Product::Properties::Izzo, // content
-    //                                          false); // don't kick
-    // product->SetOnConveyor(true, 100);
-    // AddItem(product);
+    // Uncomment to draw each product in the products collection
+    /*
+    for (const auto& product : mProducts) {
+        product->Draw(graphics);
+    }
+    */
 
-    // for (auto& product : mProducts)
-    // {
-    //     product->Draw(graphics);
-    // }
-
+    // Restore the original graphics state to avoid affecting subsequent draws
     graphics->PopState();
 }
+
 
 /**
  * Add an item to the game.
