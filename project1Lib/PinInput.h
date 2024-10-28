@@ -11,8 +11,11 @@
 
 #include "Pins.h"
 #include "PinOutput.h"
+#include "Gate.h"
 
 class Pin;  // Forward declaration
+class PinOutput; // Forward declaration
+class Gate;      // Forward declaration
 
 class PinInput : public Pins
 {
@@ -31,10 +34,13 @@ public:
     /// Get the connected pin
     PinOutput* GetConnectedPin() const { return mConnectedPin; }
     void ConnectTo(PinOutput* pin);
-    void SetConnection(PinOutput* connection) { mConnectedPin = connection;}
+    // void SetConnection(PinOutput* connection) { mConnectedPin = connection;}
     static const int DefaultLineLength = 20;
     void SetLocation(double x, double y) override;
     void OnDrag(double x, double y) override{}
+    Gate* GetConnectedGate() const;
+    void SetConnection(PinOutput* outputPin);
+    bool HasConnection() const { return mConnectedPin != nullptr; }
 };
 
 #endif // PININPUT_H

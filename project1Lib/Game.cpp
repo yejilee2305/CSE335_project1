@@ -15,6 +15,9 @@
 #include "Pins.h"
 #include "PinInput.h"
 #include "Wire.h"
+#include <unordered_map>
+#include <unordered_set>
+#include <stack>
 
 /**
  * Constructor
@@ -42,9 +45,12 @@ void Game::StartLevel(int levelNumber)
     // Logic for starting the level
 }
 
-void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
-{
+void Game::AddWire(PinOutput* outputPin, PinInput* inputPin) {
+    // Set the parent gate for the output pin
+    outputPin->SetParentGate(outputPin->GetParentGate());
+
     mWires.push_back(std::make_shared<Wire>(outputPin, inputPin));
+    inputPin->SetConnection(outputPin); // Connect the input pin to the output pin
 }
 
 void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
@@ -54,7 +60,37 @@ void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
         wire->Draw(graphics.get(), mShowControlPoints);
     }
 }
+void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack) {
+    visited.insert(gate);
 
+    for (auto& inputPin : gate->GetInputPins()) {
+        if (inputPin.HasConnection()) {
+            auto connectedGate = inputPin.GetConnectedGate();
+            if (connectedGate && visited.find(connectedGate) == visited.end()) {
+                topologicalSortUtil(connectedGate, visited, Stack);
+            }
+        }
+    }
+
+    Stack.push(gate);
+}
+void Game::ComputeGateOutputs() {
+    std::unordered_set<Gate*> visited;
+    std::stack<Gate*> Stack;
+
+    for (auto& gate : mGates) {
+        if (visited.find(gate.get()) == visited.end()) {
+            topologicalSortUtil(gate.get(), visited, Stack);
+        }
+    }
+
+    // Now process the gates in reverse order
+    while (!Stack.empty()) {
+        Gate* gate = Stack.top();
+        Stack.pop();
+        gate->ComputeOutput(); // Compute the output of the gate
+    }
+}
 /**
  * Update the game state.
  */
@@ -77,6 +113,7 @@ void Game::Update(double elapsed)
 
     // check if last product has touched the bottom of the screen
     CheckLastProduct();
+    ComputeGateOutputs();
 }
 
 /**

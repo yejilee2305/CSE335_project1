@@ -15,7 +15,8 @@
 #include <wx/brush.h>
 #include "ids.h"
 
-
+class PinInput;  // Forward declaration
+class PinOutput; // Forward declaration
 enum class States { One, Zero, Unknown };
 const wxSize OrGateSize(75, 50);
 // Size of the AND gate in pixels

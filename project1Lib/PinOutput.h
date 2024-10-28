@@ -13,7 +13,8 @@
 
 #include "Pins.h"
 #include <vector>
-
+#include "Gate.h"
+class Gate;
 class PinInput;  // Forward declaration
 
 class PinOutput : public Pins
@@ -29,6 +30,8 @@ private:
  static const int LineWidth = 3;
  std::vector<PinInput*> mConnections;
  bool mDragging = false;
+ Gate* mParentGate; // Pointer to the parent gate
+
 
 public:
  /// Constructor
@@ -52,6 +55,8 @@ public:
  void AddConnection(PinInput* connection) { mConnections.push_back(connection); }
  bool HitTest(double x, double y) const override;
  void SetLocation(double x, double y) override;
+ void SetParentGate(Gate* gate) { mParentGate = gate; }
+ Gate* GetParentGate() const { return mParentGate; }
  // const std::vector<PinInput*>& GetConnections() const { return mConnections; }
 };
 

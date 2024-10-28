@@ -23,6 +23,12 @@ void PinInput::ConnectTo(PinOutput* pin)
 {
     mConnectedPin = pin;
 }
+Gate* PinInput::GetConnectedGate() const {
+    return mConnectedPin ? mConnectedPin->GetParentGate() : nullptr;
+}
+void PinInput::SetConnection(PinOutput* outputPin) {
+    mConnectedPin = outputPin;
+}
 void PinInput::SetLocation(double x, double y) {
     mX = x; // Set the x coordinate
     mY = y; // Set the y coordinate
