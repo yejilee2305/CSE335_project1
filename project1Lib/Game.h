@@ -25,6 +25,7 @@ public:
 
     void Load(const wxString& filename);
     void StartLevel(int Number);
+    void ComputeGateOutputs();
     void Update(double elapsed);
 
     void ConnectGates(Gate* outputGate, Gate* inputGate);
