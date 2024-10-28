@@ -54,6 +54,7 @@ public:
     double GetYOffset() const { return mYOffset; }
     double GetWidth() const { return mVirtualWidth; }
     double GetHeight() const { return mVirtualHeight; }
+    std::shared_ptr<Conveyor> GetConveyor() const { return mConveyor; }
 
 private:
     double mVirtualWidth;
