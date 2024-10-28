@@ -164,6 +164,7 @@ void ORGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     // graphics->StrokeLine(x + w/2, y, x + w/2 + 20, y);
 
     // Draw pins
+    graphics->StrokeLine(x + w/2, y, x + w/2 + 20, y);
     for (auto& pin : mInputPins) {
         pin.Draw(graphics);
     }
@@ -184,7 +185,7 @@ void ORGate::UpdatePinPositions()
     mInputPins[1].SetPosition(x - w/2 + curveOffset - PinInput::DefaultLineLength, y + h/4);
 
     // Position output pin
-    mOutputPins[0].SetPosition(x + w/2, y);
+    mOutputPins[0].SetPosition(x + w/2 + 20, y);
 }
 
 ANDGate::ANDGate() : inputA(States::Unknown), inputB(States::Unknown)
