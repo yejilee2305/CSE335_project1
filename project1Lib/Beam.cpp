@@ -82,7 +82,7 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
  */
 void Beam::Update(double elpased)
 {
-    //auto products = GetGame()->GetProducts();
+    // auto products = GetGame()->GetProducts();
     bool wasBroken = mBroken;
 
     mBroken = false;

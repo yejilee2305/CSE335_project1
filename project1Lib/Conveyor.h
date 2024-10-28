@@ -9,10 +9,12 @@
 #include <wx/wx.h>
 #include <string>
 #include "Item.h"  // Inherit from Item
+#include "Product.h"
 
 class Conveyor : public Item {
 private:
  // Positions and dimensions of the conveyor
+ std::vector<std::shared_ptr<Product>> mProducts;
  int mX;
  int mY;
  int mHeight;
@@ -31,9 +33,14 @@ private:
  static const wxRect StartButtonRect;
  static const wxRect StopButtonRect;
 
+ int mBeltOffset = 0;
+
 public:
  // Constructor
  Conveyor(Game* game, int x, int y, int speed, int height, const wxPoint& panelLocation);
+
+ void AddProduct(std::shared_ptr<Product> product);
+
  void Update();
 
  // Starts the conveyor and resets the products' positions
