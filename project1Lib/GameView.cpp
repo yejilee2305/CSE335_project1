@@ -71,6 +71,10 @@ void GameView::Initialize(wxFrame* mainFrame)
     Refresh();
 
     //Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    mUpdateTimer.SetOwner(this);
+    mUpdateTimer.Start(16); // ~60 FPS (16 ms interval)
+
+    Bind(wxEVT_TIMER, &GameView::OnUpdate, this);
 }
 
 /**
@@ -139,6 +143,9 @@ void GameView::OnLevelOption(wxCommandEvent& event)
  */
 void GameView::OnPaint(wxPaintEvent& event)
 {
+    // Update the game state before drawing
+    mGame.Update(0.016);  // Pass a fixed timestep (e.g., ~16ms for 60 FPS)
+
     // Create a double-buffered display context
     wxAutoBufferedPaintDC dc(this);
 
@@ -156,6 +163,7 @@ void GameView::OnPaint(wxPaintEvent& event)
     // Instruct the game to draw its elements
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
 
+    // Display level message if needed
     if (mDisplayLevelMessage)
     {
         wxString noticeText = wxString::Format("Level %d Begin", mCurrentLevel);
@@ -173,16 +181,17 @@ void GameView::OnPaint(wxPaintEvent& event)
         gc->DrawText(noticeText, xPos, yPos);
     }
 
-    // for (const auto& wire : mGame.GetWires())
-    // {
-    //     wire->Draw(gc.get(), mGame.GetShowControlPoints());
-    // }
+    // Draw dragging wire if one exists
     if (mSelectedOutputPin != nullptr && mSelectedInputPin != nullptr)
     {
         mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, mSelectedInputPin);
         mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
     }
+
+    // Request another repaint to create a continuous update loop
+    Refresh();
 }
+
 
 void GameView::ToggleControlPoints()
 {
@@ -391,4 +400,10 @@ void GameView::DisplayLevelMessage(int level)
     mCurrentLevel = level;
     mDisplayLevelMessage = true;
 
+}
+
+void GameView::OnUpdate(wxTimerEvent& event)
+{
+    mGame.Update(0.016);  // Pass elapsed time if necessary
+    Refresh();
 }
