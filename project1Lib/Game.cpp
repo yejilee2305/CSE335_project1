@@ -178,6 +178,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);  // Fill the virtual area
 
 
+    /// WE ARE ONLY ALLOW TO HAVE ONE LIST  https://cse335.egr.msu.edu/project1-fs24/description.php read Rules and Requirements
     // Draw each item in the game (e.g., products, obstacles) with the applied scaling
     for (const auto& item : mItems) {
         item->Draw(graphics);
@@ -187,7 +188,6 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     for (const auto& gate : mGates) {
         gate->Draw(graphics);
     }
-
     // Draw wires with optional control points for visualization (e.g., debugging or editor mode)
     for (const auto& wire : mWires) {
         wire->Draw(graphics.get(), mShowControlPoints);

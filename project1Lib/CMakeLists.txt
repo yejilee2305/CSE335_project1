@@ -39,6 +39,8 @@ set(SOURCE_FILES
 		Wire.cpp
 		Wire.h
 		IDraggable.h
+		ItemVisitor.h
+		ProductVisitor.h
 		#		Pins.cpp
 #		Pins.h
 )
