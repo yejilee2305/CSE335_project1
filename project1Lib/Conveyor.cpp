@@ -18,31 +18,34 @@ const std::wstring LevelXMLFile = L"levels/level1.xml";  // Example level file
 const std::wstring conveyorBackImage = L"images/conveyor-back.png";
 
 
-Conveyor::Conveyor(Game* game,int x, int y, int speed, int height, const wxPoint& panelLocation)
-    : Item(game, conveyorBackImage),  // Pass the appropriate XML file to the Item constructor
-      mX(x), mY(y), mSpeed(speed), mHeight(height), mPanelLocation(panelLocation), mIsRunning(false) {
-    // Calculate mWidth here based on the aspect ratio of the conveyor image if needed.
+Conveyor::Conveyor(Game* game, int x, int y, int speed, int height, const wxPoint& panelLocation)
+    : Item(game, conveyorBackImage),
+      mX(x), mY(y), mSpeed(speed), mHeight(height), mPanelLocation(panelLocation), mIsRunning(false) {  // Set mIsRunning to false initially
+    // Other initialization code...
 }
 
+
 void Conveyor::Update() {
+    //mIsRunning = true;  // Temporary hardcoding for testing
     if (mIsRunning) {
-        // Adjust the belt offset to create a downward scrolling effect
         mBeltOffset += mSpeed;
+        //wxLogMessage("Updating mBeltOffset: %d", mBeltOffset);
         if (mBeltOffset >= mHeight) {
-            mBeltOffset -= mHeight;  // Loop the offset to simulate continuous movement
+            mBeltOffset -= mHeight;
         }
     }
 }
 
 void Conveyor::Start() {
     mIsRunning = true;
-    wxLogMessage("Conveyor started");  // Debug message to confirm start
+    //wxLogMessage("Conveyor started, mIsRunning=%d", mIsRunning);  // Confirm mIsRunning is set to true
 }
 
 void Conveyor::Stop() {
     mIsRunning = false;
-    wxLogMessage("Conveyor stopped");  // Debug message to confirm stop
+    //wxLogMessage("Conveyor stopped, mIsRunning=%d", mIsRunning);  // Confirm mIsRunning is set to false
 }
+
 
 void Conveyor::ResetProducts() {
     // Logic to reset product positions to their initial placement as defined in the XML.
@@ -50,13 +53,13 @@ void Conveyor::ResetProducts() {
 
 void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     if (!graphics) return;
-
+    //wxLogMessage("Drawing conveyor with mBeltOffset: %d", mBeltOffset);
     // Draw conveyor background
     wxBitmap conveyorBackground(conveyorBackImage, wxBITMAP_TYPE_PNG);
     graphics->DrawBitmap(conveyorBackground, mX - (conveyorBackground.GetWidth() / 2),
                          mY - (mHeight / 2), conveyorBackground.GetWidth(), mHeight);
 
-    // Draw the conveyor belt twice for a continuous scrolling effect
+    // Draw the conveyor belt twice to create a continuous scrolling effect
     wxBitmap conveyorBelt(L"images/conveyor-belt.png", wxBITMAP_TYPE_PNG);
     graphics->DrawBitmap(conveyorBelt, mX - (conveyorBelt.GetWidth() / 2),
                          mY - (mHeight / 2) + mBeltOffset, conveyorBelt.GetWidth(), mHeight);

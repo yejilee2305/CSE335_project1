@@ -94,9 +94,9 @@ void Game::ComputeGateOutputs() {
  * Update the game state.
  */
 void Game::Update(double elapsed) {
-    // if (mConveyor) {
-    //     mConveyor->Update();  // Update the conveyor’s position if it's running
-    // }
+     if (mConveyor) {
+         mConveyor->Update();  // Update the conveyor’s position if it's running
+    }
 
     // DO NOT REMOVE THIS
     for (auto& item : mItems)
@@ -192,6 +192,11 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     for (const auto& wire : mWires) {
         wire->Draw(graphics.get(), mShowControlPoints);
     }
+    if (mConveyor) {
+        mConveyor->Draw(graphics);
+    }
+
+
 
     // Restore the original graphics state to avoid affecting subsequent draws
     graphics->PopState();

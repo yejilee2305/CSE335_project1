@@ -28,6 +28,8 @@ const auto LevelNoticeColor = wxColour(0, 100, 0);
  */
 GameView::GameView() : mCurrentLevel(0)
 {
+    mTimer.Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    mTimer.Start(16);
 }
 
 /**
@@ -71,8 +73,8 @@ void GameView::Initialize(wxFrame* mainFrame)
     Refresh();
 
     //Bind(wxEVT_TIMER, &GameView::OnTimer, this);
-    mUpdateTimer.SetOwner(this);
-    mUpdateTimer.Start(16); // ~60 FPS (16 ms interval)
+    mTimer.SetOwner(this);
+    mTimer.Start(16); // ~60 FPS (16 ms interval)
 
     Bind(wxEVT_TIMER, &GameView::OnUpdate, this);
 }
@@ -417,4 +419,9 @@ void GameView::OnUpdate(wxTimerEvent& event)
 {
     mGame.Update(0.016);  // Pass elapsed time if necessary
     Refresh();
+}
+
+void GameView::OnTimer(wxTimerEvent&) {
+    mGame.Update(0.016);  // Pass the elapsed time in seconds (16 ms)
+    Refresh();            // Trigger OnDraw to repaint the game view
 }

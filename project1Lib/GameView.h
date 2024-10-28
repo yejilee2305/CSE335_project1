@@ -29,7 +29,7 @@ private:
     std::shared_ptr<Wire> mDraggingWire;
     PinInput* mSelectedInputPin = nullptr;
     bool mDisplayLevelMessage = false;
-    wxTimer mUpdateTimer;
+    wxTimer mTimer;
 
 public:
     GameView();
