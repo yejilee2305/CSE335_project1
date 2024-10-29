@@ -189,7 +189,7 @@ void XMLParser::XmlItems(wxXmlNode* node)
                 }
                 else if (child->GetName() == L"br")
                 {
-                    instructions += L"\n";
+                    instructions += wxT("\n");
                 }
             }
 

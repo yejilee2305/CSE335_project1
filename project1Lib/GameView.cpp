@@ -63,10 +63,6 @@ void GameView::Initialize(wxFrame* mainFrame)
     Bind(wxEVT_LEFT_UP, &GameView::OnLeftUp, this);
     Bind(wxEVT_MOTION, &GameView::OnMouseMove, this);
 
-    // Bind gate-adding menu events
-    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddORGate, this);
-    //mainFrame->Bind(wxEVT_COMMAND_MENU_SELECTED, &GameView::OnAddANDGate, this);
-
     // Load the initial level (default to mCurrentLevel)
     mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
 
@@ -162,6 +158,14 @@ void GameView::OnPaint(wxPaintEvent& event)
     // Display level message if needed
     if (mDisplayLevelMessage)
     {
+        long elapsedTime = mStopWatch.Time() - mMessageStartTime;
+
+        if (elapsedTime > 2000)
+        {
+            mDisplayLevelMessage = false;
+            Refresh();
+            return;
+        }
         wxString noticeText = wxString::Format("Level %d Begin", mCurrentLevel);
         wxFont font(NoticeSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
         gc->SetFont(font, LevelNoticeColor);
@@ -410,6 +414,7 @@ void GameView::DisplayLevelMessage(int level)
 {
     mCurrentLevel = level;
     mDisplayLevelMessage = true;
+    mMessageStartTime = mStopWatch.Time();
 }
 
 void GameView::OnTimer(wxTimerEvent&)
