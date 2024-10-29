@@ -152,7 +152,7 @@ void XMLParser::XmlItems(wxXmlNode* node)
                     else if (contentStr == L"football")
                         content = Product::Properties::Football;
                     else
-                        content = Product::Properties::Football; // default if fail
+                        content = Product::Properties::None; // default if fail
 
                     // kick attribute
                     wxString kickStr = productNode->GetAttribute(L"kick", L"no");
@@ -162,14 +162,10 @@ void XMLParser::XmlItems(wxXmlNode* node)
                     product->XmlLoad(productNode);
                     product->SetConveyor(conveyor.get());
 
-                    int conveyorX = conveyor->GetX();
                     int conveyorY = conveyor->GetY();
-                    int conveyorHeight = conveyor->GetHeight();
-                    int productPlacement = placement;
-
-                    int productY = conveyorY - (conveyorHeight / 2) + productPlacement;
-
-                    product->SetLocation(conveyorX, productY);
+                    int productY = 0 - (mProductCounter * 200);
+                    product->SetLocation(conveyor->GetX(), productY);
+                    mProductCounter++;
 
                     mGame->AddItem(product);
                 }

@@ -19,6 +19,8 @@ private:
     /// The game the level will be loaded into
     Game* mGame;
 
+    int mProductCounter;
+
 public:
     XMLParser(Game *game);
 
