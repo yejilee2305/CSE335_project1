@@ -66,40 +66,16 @@ void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 void Scoreboard::DrawWrappedText(std::shared_ptr<wxGraphicsContext> graphics, const wxString& text,
                                  int x, int y, int maxWidth)
 {
-    // Split the input text into words
-    wxArrayString words = wxSplit(text, ' ');
-    wxString currentLine;
-    int currentY = y;
+    wxArrayString lines = wxSplit(text, '\n');
 
-    // Variables to store the width and height of text
     double width, height;
 
-    // Iterate through each word and build lines within the max width
-    for (size_t i = 0; i < words.size(); ++i)
+    for (const auto& line : lines)
     {
-        wxString testLine = currentLine + words[i] + " ";
 
-        // Measure the width of the test line
-        graphics->GetTextExtent(testLine, &width, &height);
-
-        if (width > maxWidth)
-        {
-            // Draw the current line if it exceeds the width
-            graphics->DrawText(currentLine, x, currentY);
-            currentLine = words[i] + " "; // Start a new line with the current word
-            currentY += SpacingInstructionLines; // Move to the next line
-        }
-        else
-        {
-            // If it fits, keep adding words to the current line
-            currentLine = testLine;
-        }
-    }
-
-    // Draw the last line
-    if (!currentLine.IsEmpty())
-    {
-        graphics->DrawText(currentLine, x, currentY);
+        graphics->GetTextExtent(line, &width, &height);
+        graphics->DrawText(line, x, y);
+        y += height;
     }
 }
 
