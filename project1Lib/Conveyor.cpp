@@ -29,10 +29,8 @@ Conveyor::Conveyor(Game* game, int x, int y, int speed, int height, const wxPoin
 
 
 void Conveyor::Update(double elapsed) {
-    //mIsRunning = true;  // Temporary hardcoding for testing
     if (mIsRunning) {
         mBeltOffset += mSpeed;
-        //wxLogMessage("Updating mBeltOffset: %d", mBeltOffset);
         if (mBeltOffset >= mHeight) {
             mBeltOffset -= mHeight;
         }

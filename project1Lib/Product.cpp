@@ -154,8 +154,6 @@ void Product::Update(double elapsed)
 {
     if (mKick) {
         mX -= mKickSpeed * elapsed;
-    } else if (mIsOnConveyor && mConveyor != nullptr && mConveyor->IsRunning()) {
-        MoveDown(mConveyor->GetSpeed() * elapsed);
     }
 }
 
