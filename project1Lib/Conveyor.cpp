@@ -46,7 +46,7 @@ void Conveyor::MoveProducts(double elapsed) {
 
     for (const auto& product : visitor.GetProducts()) {
         if (product->IsOnConveyor(this)) {
-            product->MoveDown(mSpeed * elapsed);
+            // product->MoveDown(mSpeed * elapsed);
         }
     }
 }

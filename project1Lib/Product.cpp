@@ -157,7 +157,7 @@ void Product::Update(double elapsed)
     }
 
     if (mIsOnConveyor && mConveyor != nullptr && mConveyor->IsRunning())
-        MoveDown(0 * elapsed);
+        MoveDown(mConveyor->GetSpeed() * elapsed);
 }
 
 void Product::SetKicked(bool kicked, double kickSpeed)
