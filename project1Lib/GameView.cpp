@@ -210,22 +210,16 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
 
-    for (const auto& item : mGame.GetItems())
-    {
+    for (const auto& item : game->GetItems()) {
         ConveyorVisitor conveyorVisitor;
         item->Accept(&conveyorVisitor);
-
-        if (conveyorVisitor.IsConveyor())
-        {
+        if (conveyorVisitor.IsConveyor()) {
             Conveyor* conveyor = conveyorVisitor.GetConveyor();
-            if (conveyor->CheckStartButtonClick(gameX, gameY))
-            {
+            if (conveyor->CheckStartButtonClick(gameX, gameY)) {
                 conveyor->Start();
                 Refresh();
                 return;
-            }
-            else if (conveyor->CheckStopButtonClick(gameX, gameY))
-            {
+            } else if (conveyor->CheckStopButtonClick(gameX, gameY)) {
                 conveyor->Stop();
                 Refresh();
                 return;

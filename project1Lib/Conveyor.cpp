@@ -7,6 +7,9 @@
 #include "Conveyor.h"
 #include <wx/graphics.h>
 #include <wx/bitmap.h>
+#include "Game.h"
+
+#include "ProductVisitor.h"
 
 // Initialize static button rectangles
 const wxRect Conveyor::StartButtonRect(35, 29, 95, 36);
@@ -25,7 +28,7 @@ Conveyor::Conveyor(Game* game, int x, int y, int speed, int height, const wxPoin
 }
 
 
-void Conveyor::Update() {
+void Conveyor::Update(double elapsed) {
     //mIsRunning = true;  // Temporary hardcoding for testing
     if (mIsRunning) {
         mBeltOffset += mSpeed;
@@ -33,11 +36,26 @@ void Conveyor::Update() {
         if (mBeltOffset >= mHeight) {
             mBeltOffset -= mHeight;
         }
+        MoveProducts(elapsed);
+    }
+}
+
+void Conveyor::MoveProducts(double elapsed) {
+    ProductVisitor visitor;
+    for (const auto& item : GetGame()->GetItems()) {
+        item->Accept(&visitor);
+    }
+
+    for (const auto& product : visitor.GetProducts()) {
+        if (product->IsOnConveyor(this)) {
+            product->MoveDown(mSpeed * elapsed);
+        }
     }
 }
 
 void Conveyor::Start() {
     mIsRunning = true;
+    ResetProducts();
     //wxLogMessage("Conveyor started, mIsRunning=%d", mIsRunning);  // Confirm mIsRunning is set to true
 }
 
@@ -48,9 +66,17 @@ void Conveyor::Stop() {
 
 
 void Conveyor::ResetProducts() {
-    // Logic to reset product positions to their initial placement as defined in the XML.
-}
+    ProductVisitor visitor;
+    for (const auto& item : GetGame()->GetItems()) {
+        item->Accept(&visitor);
+    }
 
+    for (auto& product : visitor.GetProducts()) {
+        if (product->IsOnConveyor(this)) {
+            product->ResetPosition();
+        }
+    }
+}
 void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     if (!graphics) return;
     //wxLogMessage("Drawing conveyor with mBeltOffset: %d", mBeltOffset);
@@ -72,19 +98,6 @@ void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     graphics->DrawBitmap(panelBitmap, mX + mPanelLocation.x, mY + mPanelLocation.y,
                          panelBitmap.GetWidth(), panelBitmap.GetHeight());
 
-    // Temporary simulated product placement based on time (for visual effect only)
-    if (mIsRunning) {
-        // Define initial positions and spacing
-        int initialProductY = mY - (mHeight / 2);
-        int spacing = 100;
-
-        // Loop to draw several products at regular intervals on the conveyor
-        for (int i = 0; i < 4; ++i) {  // Adjust number as needed
-            int productY = initialProductY + (mBeltOffset + i * spacing) % mHeight;
-            graphics->SetBrush(*wxGREEN_BRUSH);  // Example product color
-            graphics->DrawRectangle(mX - 20, productY, 40, 40);  // Draw a square as a product
-        }
-    }
 }
 
 
