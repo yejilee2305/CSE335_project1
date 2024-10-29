@@ -15,6 +15,7 @@
 #include <memory>
 #include "Item.h"
 #include "Product.h"
+#include "PinInput.h"
 
 class Sparty : public Item {
 public:
@@ -64,6 +65,7 @@ private:
     static constexpr double AspectRatio = 1.2;
     static constexpr double SpartyBootPercentage = 0.80;
     static constexpr double SpartyBootMaxRotation = 0.8; // Max rotation for kick
+    std::unique_ptr<PinInput> mInputPin;
 };
 
 #endif //SPARTY_H

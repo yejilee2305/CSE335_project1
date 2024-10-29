@@ -26,6 +26,21 @@ const std::wstring SpartyFrontImage = L"images/sparty-front.png";
 /// the width and height.
 wxPoint2DDouble SpartyBootPivot = wxPoint2DDouble(0.5, 0.55);
 
+/// X offset for the Sparty pin in pixels
+/// This is medium size to barely poke out of Sparty
+const int SpartyPinFirstOffset = 80;
+
+/// Y offset for the Sparty pin in pixels
+/// This is large size to reach above scoreboard
+const int SpartyPinSecondOffset = 320;
+
+/// X offset for the Sparty pin in pixels
+/// This is small size to connect to the pin
+const int SpartyPinThirdOffset = 20;
+
+/// for drawing the line towards the input pin
+const int LineThickness = 3;
+
 Sparty::Sparty(Game* game, int x, int y, int height, wxPoint2DDouble pin, double kickDuration, double kickSpeed)
     : Item(game, SpartyFrontImage), mX(x), mY(y), mHeight(height), mPin(pin),
       mKickDuration(kickDuration), mKickSpeed(kickSpeed)
@@ -35,6 +50,8 @@ Sparty::Sparty(Game* game, int x, int y, int height, wxPoint2DDouble pin, double
 
     // Initialize other properties if needed
     mRotation = 0;  // Initial boot rotation state
+    mInputPin = std::make_unique<PinInput>();
+    mInputPin->SetPosition(mPin.m_x,mPin.m_y);
 }
 
 
@@ -91,6 +108,15 @@ void Sparty::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
     // Draw the back layer (aligned with boot and front)
     graphics->DrawBitmap(mBackBitmap, centerX, centerY, mBackWidth, mBackHeight);
+
+    // draw the line to the pin
+    graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+    graphics->StrokeLine(mX, mY, mX+SpartyPinFirstOffset, mY);
+    graphics->StrokeLine(mX+SpartyPinFirstOffset, mY, mX+SpartyPinFirstOffset, mY-SpartyPinSecondOffset);
+    graphics->StrokeLine(mX+SpartyPinFirstOffset, mY-SpartyPinSecondOffset, mPin.m_x+SpartyPinThirdOffset, mY-SpartyPinSecondOffset);
+    graphics->StrokeLine(mPin.m_x+SpartyPinThirdOffset,mY-SpartyPinSecondOffset, mPin.m_x+SpartyPinThirdOffset, mPin.m_y);
+    graphics->StrokeLine(mPin.m_x+SpartyPinThirdOffset,mPin.m_y, mPin.m_x, mPin.m_y);
+    mInputPin->Draw(graphics);
 
     // Draw the boot layer with kicking offsets and rotation
     graphics->PushState();

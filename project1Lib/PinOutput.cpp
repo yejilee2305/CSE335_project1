@@ -25,6 +25,7 @@ void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
         DrawConnection(graphics, inputPin);
     }
 }
+
 void PinOutput::OnDrag(double x, double y)
 {
     if (mDragging)
@@ -41,11 +42,13 @@ void PinOutput::OnDrag(double x, double y)
 
     mDragging = false; // Reset dragging state
 }
+
 void PinOutput::ConnectTo(PinInput* pin)
 {
     mConnectedPins.push_back(pin);
     pin->ConnectTo(this);
 }
+
 bool PinOutput::HitTest(double x, double y) const {
     // Calculate the distance from the click point to the center of the pin
     double distance = std::sqrt(std::pow(x - mX, 2) + std::pow(y - mY, 2));
@@ -71,6 +74,7 @@ void PinOutput::SetLocation(double x, double y)
     // Reset any connections or states if necessary
     // For example, if you have a member variable for current connections, you might want to clear it
 }
+
 void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin) {
     double startX = GetX();
     double startY = GetY();
