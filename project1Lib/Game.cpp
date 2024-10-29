@@ -301,10 +301,15 @@ void Game::Clear()
 
 void Game::StartNextLevel()
 {
-    static int currentLevel = 0;
-    currentLevel++;
+    mCurrentLevel += 1;
 
-    std::wstring nextLevelFile = L"levels/level" + std::to_wstring(currentLevel) + L".xml";
+    if (mCurrentLevel > 9)
+    {
+        // max level
+        return;
+    }
+
+    std::wstring nextLevelFile = L"levels/level" + std::to_wstring(mCurrentLevel) + L".xml";
 
     Load(nextLevelFile);
 

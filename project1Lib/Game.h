@@ -55,6 +55,8 @@ public:
     double GetWidth() const { return mVirtualWidth; }
     double GetHeight() const { return mVirtualHeight; }
     const std::vector<std::shared_ptr<Item>>& GetItems() const { return mItems; }
+    int GetCurrentLevel() const { return mCurrentLevel; }
+    void SetCurrentLevel(int level) { mCurrentLevel = level; }
 
 private:
     double mVirtualWidth;
@@ -69,6 +71,8 @@ private:
 
     bool mAllProductsPassed = false;
     double mPassTimer = 0.0;
+
+    int mCurrentLevel = 0;
 
 
     std::vector<std::shared_ptr<Item>> mItems;

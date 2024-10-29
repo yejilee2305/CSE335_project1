@@ -126,6 +126,8 @@ void GameView::OnLevelOption(wxCommandEvent& event)
     mGame = Game();
     mGame.Load(filename);
 
+    mGame.SetCurrentLevel(levelNumber);
+
     // Request a repaint to reflect the loaded level
     Refresh();
     DisplayLevelMessage(levelNumber);
