@@ -13,6 +13,7 @@
 #include "Gate.h"
 #include "Scoreboard.h"
 #include "Beam.h"
+#include "ConveyorVisitor.h"
 #include "Product.h"
 
 using namespace std;
@@ -209,16 +210,29 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
 
-    if (mGame.GetConveyor()->CheckStartButtonClick(gameX, gameY))
+    for (const auto& item : mGame.GetItems())
     {
-        mGame.GetConveyor()->Start();
-        return;
+        ConveyorVisitor conveyorVisitor;
+        item->Accept(&conveyorVisitor);
+
+        if (conveyorVisitor.IsConveyor())
+        {
+            Conveyor* conveyor = conveyorVisitor.GetConveyor();
+            if (conveyor->CheckStartButtonClick(gameX, gameY))
+            {
+                conveyor->Start();
+                Refresh();
+                return;
+            }
+            else if (conveyor->CheckStopButtonClick(gameX, gameY))
+            {
+                conveyor->Stop();
+                Refresh();
+                return;
+            }
+        }
     }
-    else if (mGame.GetConveyor()->CheckStopButtonClick(gameX, gameY))
-    {
-        mGame.GetConveyor()->Stop();
-        return;
-    }
+
 
     mSelectedOutputPin = nullptr;
     for (const auto& gate : mGame.GetGates())

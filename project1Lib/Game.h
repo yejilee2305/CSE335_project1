@@ -54,7 +54,7 @@ public:
     double GetYOffset() const { return mYOffset; }
     double GetWidth() const { return mVirtualWidth; }
     double GetHeight() const { return mVirtualHeight; }
-    std::shared_ptr<Conveyor> GetConveyor() const { return mConveyor; }
+    const std::vector<std::shared_ptr<Item>>& GetItems() const { return mItems; }
 
 private:
     double mVirtualWidth;
@@ -75,7 +75,6 @@ private:
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 
     bool mShowControlPoints = false;
-    std::shared_ptr<Conveyor> mConveyor;
 };
 
 #endif // GAME_H

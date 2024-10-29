@@ -6,9 +6,3 @@
 
 #include "ConveyorVisitor.h"
 
-
-void ConveyorVisitor::VisitConveyor(Conveyor* conveyor)
-{
-    mIsConveyor = true;
-    mConveyor = conveyor;
-}
