@@ -16,6 +16,12 @@
 
 class Conveyor;
 
+/// Default product size in pixels
+const double ProductDefaultSize = 100.0;
+
+/// Size to draw content relative to the product size
+const double ContentScale = 0.8;
+
 class Product : public Item
 {
 public:
@@ -105,7 +111,7 @@ private:
     Properties mColor; // Color of the product
     Properties mContent; // Content inside the product
     bool mKick; // Should the product be kicked?
-    double mWidth = 80; // Default width in pixels
+    double mWidth = ProductDefaultSize; // Default width in pixels
     double mContentScale = 0.8; // Scale of content relative to the product size
     int mX, mY; // Position on conveyor
     double mKickSpeed = 0;

@@ -10,11 +10,7 @@
 
 #include "Conveyor.h"
 
-/// Default product size in pixels
-std::wstring ProductDefaultSize = L"80";
 
-/// Size to draw content relative to the product size
-double ContentScale = 0.8;
 
 /// Color to use for "red"
 const wxColour OhioStateRed(187, 0, 0);
@@ -68,10 +64,10 @@ const std::map<Product::Properties, std::wstring> Product::PropertiesToContentIm
 };
 
 
-// Constructor
 Product::Product(Game* game, int placement, Properties shape, Properties color, Properties content, bool kick)
     : Item(game, L""), mPlacement(placement), mShape(shape), mColor(color), mContent(content), mKick(kick), mX(0), mY(0)
 {
+    mWidth = ProductDefaultSize;
 }
 
 
@@ -115,11 +111,12 @@ void Product::Draw(std::shared_ptr<wxGraphicsContext> graphics)
         break;
     case Properties::Diamond:
         {
+            double diamondHalfSize = halfSize * 1.2;
             auto path = graphics->CreatePath();
-            path.MoveToPoint(mX, mY - halfSize);
-            path.AddLineToPoint(mX + halfSize, mY);
-            path.AddLineToPoint(mX, mY + halfSize);
-            path.AddLineToPoint(mX - halfSize, mY);
+            path.MoveToPoint(mX, mY - diamondHalfSize);
+            path.AddLineToPoint(mX + diamondHalfSize, mY);
+            path.AddLineToPoint(mX, mY + diamondHalfSize);
+            path.AddLineToPoint(mX - diamondHalfSize, mY);
             path.CloseSubpath();
             graphics->DrawPath(path);
         }
