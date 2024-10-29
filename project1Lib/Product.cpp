@@ -30,7 +30,6 @@ const wxColor UofMBlue(0, 39, 76);
 const double LastProductDelay = 3;
 
 
-
 const std::map<std::wstring, Product::Properties> Product::NamesToProperties = {
     {L"red", Product::Properties::Red},
     {L"green", Product::Properties::Green},
@@ -152,9 +151,13 @@ void Product::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 
 void Product::Update(double elapsed)
 {
-    if (mKick) {
+    if (mKick)
+    {
         mX -= mKickSpeed * elapsed;
     }
+
+    if (mIsOnConveyor && mConveyor != nullptr && mConveyor->IsRunning())
+        MoveDown(0 * elapsed);
 }
 
 void Product::SetKicked(bool kicked, double kickSpeed)
