@@ -21,19 +21,19 @@ const std::wstring LevelXMLFile = L"levels/level1.xml";  // Example level file
 const std::wstring conveyorBackImage = L"images/conveyor-back.png";
 
 
-Conveyor::Conveyor(Game* game, int x, int y, int speed, int height, const wxPoint& panelLocation)
+Conveyor::Conveyor(Game* game, int x, int y, double speed, int height, const wxPoint& panelLocation)
     : Item(game, conveyorBackImage),
       mX(x), mY(y), mSpeed(speed), mHeight(height), mPanelLocation(panelLocation), mIsRunning(false) {  // Set mIsRunning to false initially
     // Other initialization code...
 }
-
-
 void Conveyor::Update(double elapsed) {
     if (mIsRunning) {
-        mBeltOffset += mSpeed;
+        mBeltOffset += mSpeed * elapsed;
+
         if (mBeltOffset >= mHeight) {
             mBeltOffset -= mHeight;
         }
+
         MoveProducts(elapsed);
     }
 }
@@ -44,11 +44,6 @@ void Conveyor::MoveProducts(double elapsed) {
         item->Accept(&visitor);
     }
 
-    for (const auto& product : visitor.GetProducts()) {
-        if (product->IsOnConveyor(this)) {
-            // product->MoveDown(mSpeed * elapsed);
-        }
-    }
 }
 
 void Conveyor::Start() {
@@ -77,7 +72,6 @@ void Conveyor::ResetProducts() {
 }
 void Conveyor::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     if (!graphics) return;
-    //wxLogMessage("Drawing conveyor with mBeltOffset: %d", mBeltOffset);
     // Draw conveyor background
     wxBitmap conveyorBackground(conveyorBackImage, wxBITMAP_TYPE_PNG);
     graphics->DrawBitmap(conveyorBackground, mX - (conveyorBackground.GetWidth() / 2),
@@ -121,7 +115,7 @@ int Conveyor::GetY() const {
     return mY;
 }
 
-int Conveyor::GetSpeed() const {
+double Conveyor::GetSpeed() const {
     return mSpeed;
 }
 

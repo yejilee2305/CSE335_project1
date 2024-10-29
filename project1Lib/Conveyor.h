@@ -20,7 +20,7 @@ private:
  int mWidth = 800;
 
  // Speed of the conveyor
- int mSpeed;
+ double mSpeed;
 
  // Panel location based on conveyor position
  wxPoint mPanelLocation;
@@ -32,11 +32,11 @@ private:
  static const wxRect StartButtonRect;
  static const wxRect StopButtonRect;
 
- int mBeltOffset = 0;
+ double mBeltOffset = 0;
 
 public:
  // Constructor
- Conveyor(Game* game, int x, int y, int speed, int height, const wxPoint& panelLocation);
+ Conveyor(Game* game, int x, int y, double speed, int height, const wxPoint& panelLocation);
  void Accept(ItemVisitor* visitor) override { visitor->VisitConveyor(this); }
 
  void AddProduct(std::shared_ptr<Product> product);
@@ -63,7 +63,7 @@ public:
  // Getters for conveyor position
  int GetX() const;
  int GetY() const;
- int GetSpeed() const;
+ double GetSpeed() const;
  bool IsRunning() const;
 
 };
