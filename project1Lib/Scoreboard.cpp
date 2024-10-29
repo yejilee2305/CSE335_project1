@@ -14,7 +14,7 @@ const int SpacingScoresToInstructions = 40;
 const int SpacingInstructionLines = 17;
 
 Scoreboard::Scoreboard(Game* game, int x, int y, int goodScore, int badScore, wxString instructions)
-    : Item(game, L""), mX(x + 160), mY(y), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
+    : Item(game, L""), mX(x), mY(y), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
       mLevelScore(0), mGameScore(0)
 {
     SetInstructions(instructions);
@@ -72,7 +72,6 @@ void Scoreboard::DrawWrappedText(std::shared_ptr<wxGraphicsContext> graphics, co
 
     for (const auto& line : lines)
     {
-
         graphics->GetTextExtent(line, &width, &height);
         graphics->DrawText(line, x, y);
         y += height;
