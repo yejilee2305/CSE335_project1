@@ -13,6 +13,7 @@
 #include "Gate.h"
 #include "Scoreboard.h"
 #include "Beam.h"
+#include "ConveyorVisitor.h"
 #include "Product.h"
 
 using namespace std;
@@ -28,8 +29,6 @@ const auto LevelNoticeColor = wxColour(0, 100, 0);
  */
 GameView::GameView() : mCurrentLevel(0)
 {
-    mTimer.Bind(wxEVT_TIMER, &GameView::OnTimer, this);
-    mTimer.Start(16);
 }
 
 /**
@@ -70,13 +69,11 @@ void GameView::Initialize(wxFrame* mainFrame)
 
     // Load the initial level (default to mCurrentLevel)
     mGame.Load(wxString::Format("levels/level%d.xml", mCurrentLevel));
-    Refresh();
 
-    //Bind(wxEVT_TIMER, &GameView::OnTimer, this);
+    Bind(wxEVT_TIMER, &GameView::OnTimer, this);
     mTimer.SetOwner(this);
-    mTimer.Start(16); // ~60 FPS (16 ms interval)
-
-    Bind(wxEVT_TIMER, &GameView::OnUpdate, this);
+    mTimer.Start(60);
+    mStopWatch.Start();
 }
 
 /**
@@ -145,9 +142,6 @@ void GameView::OnLevelOption(wxCommandEvent& event)
  */
 void GameView::OnPaint(wxPaintEvent& event)
 {
-    // Update the game state before drawing
-    mGame.Update(0.016);  // Pass a fixed timestep (e.g., ~16ms for 60 FPS)
-
     // Create a double-buffered display context
     wxAutoBufferedPaintDC dc(this);
 
@@ -189,9 +183,6 @@ void GameView::OnPaint(wxPaintEvent& event)
         mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, mSelectedInputPin);
         mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
     }
-
-    // Request another repaint to create a continuous update loop
-    Refresh();
 }
 
 
@@ -219,14 +210,23 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
 
-    if (mGame.GetConveyor()->CheckStartButtonClick(gameX, gameY)) {
-        mGame.GetConveyor()->Start();
-        return;
+    for (const auto& item : game->GetItems()) {
+        ConveyorVisitor conveyorVisitor;
+        item->Accept(&conveyorVisitor);
+        if (conveyorVisitor.IsConveyor()) {
+            Conveyor* conveyor = conveyorVisitor.GetConveyor();
+            if (conveyor->CheckStartButtonClick(gameX, gameY)) {
+                conveyor->Start();
+                Refresh();
+                return;
+            } else if (conveyor->CheckStopButtonClick(gameX, gameY)) {
+                conveyor->Stop();
+                Refresh();
+                return;
+            }
+        }
     }
-    else if (mGame.GetConveyor()->CheckStopButtonClick(gameX, gameY)) {
-        mGame.GetConveyor()->Stop();
-        return;
-    }
+
 
     mSelectedOutputPin = nullptr;
     for (const auto& gate : mGame.GetGates())
@@ -410,16 +410,14 @@ void GameView::DisplayLevelMessage(int level)
 {
     mCurrentLevel = level;
     mDisplayLevelMessage = true;
-
 }
 
-void GameView::OnUpdate(wxTimerEvent& event)
+void GameView::OnTimer(wxTimerEvent&)
 {
-    mGame.Update(0.016);  // Pass elapsed time if necessary
-    Refresh();
-}
+    auto newTime = mStopWatch.Time();
+    auto elapsed = (double)(newTime - mTime) * 0.001;
+    mTime = newTime;
 
-void GameView::OnTimer(wxTimerEvent&) {
-    mGame.Update(0.016);  // Pass the elapsed time in seconds (16 ms)
-    Refresh();            // Trigger OnDraw to repaint the game view
+    mGame.Update(elapsed);
+    Refresh();
 }

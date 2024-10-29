@@ -41,7 +41,8 @@ public:
 
  void AddProduct(std::shared_ptr<Product> product);
 
- void Update();
+ void Update(double elapsed);
+ void MoveProducts(double elapsed);
 
  // Starts the conveyor and resets the products' positions
  void Start();

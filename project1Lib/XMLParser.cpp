@@ -83,7 +83,6 @@ void XMLParser::XmlItems(wxXmlNode* node)
             int x = 0, y = 0, speed = 0, height = 0;
             wxString panelStr;
 
-
             node->GetAttribute(L"x", "0").ToInt(&x);
             node->GetAttribute(L"y", "0").ToInt(&y);
             node->GetAttribute(L"speed", "0").ToInt(&speed);
@@ -96,7 +95,9 @@ void XMLParser::XmlItems(wxXmlNode* node)
 
             wxPoint panelPnt(panelX, panelY);
 
-            item = make_shared<Conveyor>(mGame, x, y, speed, height, panelPnt);
+            auto conveyor = make_shared<Conveyor>(mGame, x, y, speed, height, panelPnt);
+            conveyor->XmlLoad(node);
+            mGame->AddItem(conveyor);
 
             auto productNode = node->GetChildren();
             for (; productNode; productNode = productNode->GetNext())
@@ -158,6 +159,18 @@ void XMLParser::XmlItems(wxXmlNode* node)
                     bool kick = (kickStr == L"yes");
 
                     auto product = make_shared<Product>(mGame, placement, shape, color, content, kick);
+                    product->XmlLoad(productNode);
+                    product->SetConveyor(conveyor.get());
+
+                    int conveyorX = conveyor->GetX();
+                    int conveyorY = conveyor->GetY();
+                    int conveyorHeight = conveyor->GetHeight();
+                    int productPlacement = placement;
+
+                    int productY = conveyorY - (conveyorHeight / 2) + productPlacement;
+
+                    product->SetLocation(conveyorX, productY);
+
                     mGame->AddItem(product);
                 }
             }

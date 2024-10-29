@@ -24,7 +24,6 @@
  */
 Game::Game()
 {
-    mConveyor = std::make_shared<Conveyor>(this, 200, 400, 5, 800, wxPoint(60, -390));
 }
 
 /**
@@ -94,9 +93,6 @@ void Game::ComputeGateOutputs() {
  * Update the game state.
  */
 void Game::Update(double elapsed) {
-     if (mConveyor) {
-         mConveyor->Update();  // Update the conveyor’s position if it's running
-    }
 
     // DO NOT REMOVE THIS
     for (auto& item : mItems)
@@ -113,14 +109,6 @@ void Game::HandleMouseClick(wxMouseEvent& event)
     int x = event.GetX();
     int y = event.GetY();
 
-    if (mConveyor->CheckStartButtonClick(x, y)) {
-        mConveyor->Start();
-    }
-    else if (mConveyor->CheckStopButtonClick(x, y)) {
-        mConveyor->Stop();
-    }
-    else {
-    }
 }
 
 /**
@@ -188,9 +176,6 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     // Draw wires with optional control points for visualization (e.g., debugging or editor mode)
     for (const auto& wire : mWires) {
         wire->Draw(graphics.get(), mShowControlPoints);
-    }
-    if (mConveyor) {
-        mConveyor->Draw(graphics);
     }
 
 

@@ -8,6 +8,8 @@
 #include "pch.h"
 #include "Product.h"
 
+#include "Conveyor.h"
+
 /// Default product size in pixels
 std::wstring ProductDefaultSize = L"80";
 
@@ -26,6 +28,8 @@ const wxColor UofMBlue(0, 39, 76);
 /// Delay after last product has left beam or
 /// been kicked before we end the level.
 const double LastProductDelay = 3;
+
+
 
 const std::map<std::wstring, Product::Properties> Product::NamesToProperties = {
     {L"red", Product::Properties::Red},
@@ -148,15 +152,10 @@ void Product::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 
 void Product::Update(double elapsed)
 {
-    if (mKick)
-    {
-        // if kicked, move left
+    if (mKick) {
         mX -= mKickSpeed * elapsed;
-    }
-    else if (mIsOnConveyor)
-    {
-        // if on conveyor, move down
-        mY += mConveyorSpeed * elapsed;
+    } else if (mIsOnConveyor && mConveyor != nullptr && mConveyor->IsRunning()) {
+        MoveDown(mConveyor->GetSpeed() * elapsed);
     }
 }
 
@@ -197,8 +196,14 @@ bool Product::ShouldKick() const
 
 void Product::SetLocation(int x, int y)
 {
+    mInitialX = x;
+    mInitialY = y;
     mX = x;
     mY = y;
 }
 
-
+void Product::ResetPosition()
+{
+    mX = mInitialX;
+    mY = mInitialY;
+}

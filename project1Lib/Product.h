@@ -12,7 +12,9 @@
 #include <map>
 #include <string>
 #include <Sparty.h>
-#include <Item.h>
+#include "Item.h"
+
+class Conveyor;
 
 class Product : public Item
 {
@@ -80,6 +82,9 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
     double GetWidth() const { return mWidth; }
+    void SetConveyor(Conveyor* conveyor) { mConveyor = conveyor; }
+    bool IsOnConveyor(const Conveyor* conveyor) const { return mConveyor == conveyor; }
+    void MoveDown(double distance) { mY += distance; }
 
 
     void SetLocation(int x, int y) override;
@@ -92,8 +97,10 @@ public:
 
     void Accept(ItemVisitor* visitor) override { visitor->VisitProduct(this); }
 
+    void ResetPosition();
+
 private:
-    int mPlacement; // Placement on conveyor
+    int mPlacement = 0; // Placement on conveyor
     Properties mShape; // Shape of the product
     Properties mColor; // Color of the product
     Properties mContent; // Content inside the product
@@ -107,9 +114,14 @@ private:
     std::unique_ptr<wxImage> mContentImage;
     wxGraphicsBitmap mContentBitmap;
 
+    int mInitialX = 0;
+    int mInitialY = 0;
+
+
     // Maps for product properties
     static const std::map<std::wstring, Properties> NamesToProperties;
     static const std::map<Properties, std::wstring> PropertiesToContentImages;
+    Conveyor* mConveyor = nullptr;
 };
 
 #endif //PRODUCT_H
