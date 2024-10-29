@@ -19,6 +19,9 @@
 #include <unordered_set>
 #include <stack>
 
+#include "BeamVisitor.h"
+#include "ProductVisitor.h"
+
 /**
  * Constructor
  */
@@ -40,7 +43,8 @@ void Game::Load(const wxString& filename)
  */
 void Game::StartLevel(int levelNumber)
 {
-    // Logic for starting the level
+    std::wstring levelFile = L"levels/level" + std::to_wstring(levelNumber) + L".xml";
+    Load(levelFile);
 }
 
 void Game::AddWire(PinOutput* outputPin, PinInput* inputPin) {
@@ -98,6 +102,55 @@ void Game::Update(double elapsed) {
     for (auto& item : mItems)
     {
         item->Update(elapsed);
+    }
+
+    BeamVisitor beamVisitor;
+    for (const auto& item : mItems){
+        item->Accept(&beamVisitor);
+    }
+
+    bool anyBeamBroken = false;
+    const auto& beams = beamVisitor.GetBeams();
+    for (auto beam : beams) {
+        if (beam->IsBroken()) {
+            anyBeamBroken = true;
+            break;
+        }
+    }
+
+    ProductVisitor productVisitor;
+    for (const auto& item : mItems) {
+        item->Accept(&productVisitor);
+    }
+    const auto& products = productVisitor.GetProducts();
+
+    bool allProductsPassed = true;
+    for (auto product : products) {
+        if (!product->HasPassedBeam()) {
+            allProductsPassed = false;
+            break;
+        }
+    }
+
+    if (allProductsPassed && !anyBeamBroken) {
+        if (!mAllProductsPassed) {
+            // start the 3-second timer
+            mAllProductsPassed = true;
+            mPassTimer = 0.0;
+        }
+        else {
+            mPassTimer += elapsed;
+            if (mPassTimer >= 3.0) {
+                StartNextLevel();
+                mAllProductsPassed = false;
+                mPassTimer = 0.0;
+            }
+        }
+    }
+    else {
+        // if not all products have passed or any beam is broken, reset the timer
+        mAllProductsPassed = false;
+        mPassTimer = 0.0;
     }
 }
 
@@ -240,5 +293,19 @@ void Game::Clear()
     mItems.clear();
     mGates.clear();
     mWires.clear();
+
+    mAllProductsPassed = false;
+    mPassTimer = 0.0;
 }
 
+
+void Game::StartNextLevel()
+{
+    static int currentLevel = 0;
+    currentLevel++;
+
+    std::wstring nextLevelFile = L"levels/level" + std::to_wstring(currentLevel) + L".xml";
+
+    Load(nextLevelFile);
+
+}

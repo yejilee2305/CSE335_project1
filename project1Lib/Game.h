@@ -67,6 +67,9 @@ private:
     double mLastProductTimer = 0;
     double mLastProductDelay = 1.0;
 
+    bool mAllProductsPassed = false;
+    double mPassTimer = 0.0;
+
 
     std::vector<std::shared_ptr<Item>> mItems;
     std::vector<std::shared_ptr<Gate>> mGates;
@@ -75,6 +78,8 @@ private:
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 
     bool mShowControlPoints = false;
+
+    void StartNextLevel();
 };
 
 #endif // GAME_H

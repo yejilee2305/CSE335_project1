@@ -17,7 +17,7 @@
 class Conveyor;
 
 /// Default product size in pixels
-const double ProductDefaultSize = 100.0;
+const double ProductDefaultSize = 80.0;
 
 /// Size to draw content relative to the product size
 const double ContentScale = 0.8;
@@ -105,6 +105,9 @@ public:
 
     void ResetPosition();
 
+    bool HasPassedBeam() const { return mPassedBeam; }
+    void SetPassedBeam(bool passed) { mPassedBeam = passed; }
+
 private:
     int mPlacement = 0; // Placement on conveyor
     Properties mShape; // Shape of the product
@@ -119,6 +122,7 @@ private:
     double mConveyorSpeed = 0;
     std::unique_ptr<wxImage> mContentImage;
     wxGraphicsBitmap mContentBitmap;
+    bool mPassedBeam = false;
 
     int mInitialX = 0;
     int mInitialY = 0;

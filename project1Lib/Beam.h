@@ -45,7 +45,7 @@ public:
 
     void SetBroken(bool broken) { mBroken = broken; }
 
-    bool IsIntersecting(const std::shared_ptr<Product>& product);
+    bool IsIntersecting(const Product* product);
 
     /**
      * getter for x location

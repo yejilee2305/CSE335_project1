@@ -8,8 +8,9 @@
 #include "pch.h"
 #include "Product.h"
 
+#include "BeamVisitor.h"
 #include "Conveyor.h"
-
+#include "Game.h"
 
 
 /// Color to use for "red"
@@ -111,7 +112,7 @@ void Product::Draw(std::shared_ptr<wxGraphicsContext> graphics)
         break;
     case Properties::Diamond:
         {
-            double diamondHalfSize = halfSize * 1.2;
+            double diamondHalfSize = halfSize * 1.4;
             auto path = graphics->CreatePath();
             path.MoveToPoint(mX, mY - diamondHalfSize);
             path.AddLineToPoint(mX + diamondHalfSize, mY);
@@ -155,6 +156,18 @@ void Product::Update(double elapsed)
 
     if (mIsOnConveyor && mConveyor != nullptr && mConveyor->IsRunning())
         MoveDown(mConveyor->GetSpeed() * elapsed);
+
+    BeamVisitor beamVisitor;
+    for (const auto& item : GetGame()->GetItems()) {
+        item->Accept(&beamVisitor);
+    }
+
+    for (auto beam : beamVisitor.GetBeams()) {
+        if (beam->IsIntersecting(this)) {
+            SetPassedBeam(true);
+            break;
+        }
+    }
 }
 
 void Product::SetKicked(bool kicked, double kickSpeed)

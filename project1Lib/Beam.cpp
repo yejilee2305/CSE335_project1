@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "Beam.h"
 #include "Game.h"
+#include "ProductVisitor.h"
 /// Image for the beam sender and receiver when red
 const std::wstring BeamRedImage = L"images/beam-red.png";
 
@@ -80,29 +81,30 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
  * update the beam state
  * @param elpased time
  */
-void Beam::Update(double elpased)
+void Beam::Update(double elapsed)
 {
-    // auto products = GetGame()->GetProducts();
     bool wasBroken = mBroken;
-
     mBroken = false;
 
+    ProductVisitor productVisitor;
+    for (const auto& item : GetGame()->GetItems()) {
+        item->Accept(&productVisitor);
+    }
 
-    //for (auto product : products)
-    //
-        //if (IsIntersecting(product))
-        //{
-            //mBroken = true;
-            //break;
-        //}
-    //}
-    //if (wasBroken != mBroken)
-    {
-        // implement later, set output 1 when broken output 0 when not
+    for (auto product : productVisitor.GetProducts()) {
+        if (IsIntersecting(product)) {
+            mBroken = true;
+            product->SetPassedBeam(true);
+            break;
+        }
+    }
+
+    if (wasBroken != mBroken) {
+        // set the output pin
     }
 }
 
-bool Beam::IsIntersecting(const std::shared_ptr<Product>& product)
+bool Beam::IsIntersecting(const Product* product)
 {
     const int Padding = 5;
     double productX = product->GetX();
