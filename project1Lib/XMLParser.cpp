@@ -99,6 +99,8 @@ void XMLParser::XmlItems(wxXmlNode* node)
             conveyor->XmlLoad(node);
             mGame->AddItem(conveyor);
 
+            int lastPlacement = 0;
+
             auto productNode = node->GetChildren();
             for (; productNode; productNode = productNode->GetNext())
             {
@@ -106,15 +108,24 @@ void XMLParser::XmlItems(wxXmlNode* node)
                 {
                     wxString placementStr = productNode->GetAttribute(L"placement", L"0");
                     int placement = 0;
+
+                    // check if placement starts with '+'
                     if (placementStr.StartsWith(L"+"))
                     {
                         placementStr = placementStr.Mid(1);
-                        placementStr.ToInt(&placement);
+
+                        int delta = 0;
+                        placementStr.ToInt(&delta);
+
+                        // update placement as relative to the last placement
+                        placement = lastPlacement + delta;
                     }
                     else
                     {
                         placementStr.ToInt(&placement);
                     }
+
+                    lastPlacement = placement;
 
                     // shape
                     wxString shapeStr = productNode->GetAttribute(L"shape", L"square");
@@ -162,10 +173,10 @@ void XMLParser::XmlItems(wxXmlNode* node)
                     product->XmlLoad(productNode);
                     product->SetConveyor(conveyor.get());
 
-                    int conveyorY = conveyor->GetY();
-                    int productY = 0 - (mProductCounter * 200);
-                    product->SetLocation(conveyor->GetX(), productY);
-                    mProductCounter++;
+                    int productX = conveyor->GetX();
+                    int productY = conveyor->GetY() - placement;
+
+                    product->SetLocation(productX, productY);
 
                     mGame->AddItem(product);
                 }
