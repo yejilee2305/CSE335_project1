@@ -76,7 +76,18 @@ void XMLParser::XmlItems(wxXmlNode* node)
             int x = 0, y = 0;
             node->GetAttribute(L"x", "0").ToInt(&x);
             node->GetAttribute(L"y", "0").ToInt(&y);
-            item = make_shared<Sensor>(mGame, x, y, x, y);
+
+            wxString sensorOutputs;
+
+            for (auto child = node->GetChildren(); child; child = child->GetNext())
+            {
+                if (child->GetType() == wxXML_ELEMENT_NODE)
+                {
+                    sensorOutputs += child->GetName() + " ";
+                }
+            }
+
+            item = make_shared<Sensor>(mGame, x, y, x, y, sensorOutputs);
         }
         else if (name == L"conveyor")
         {

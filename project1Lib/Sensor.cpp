@@ -11,7 +11,7 @@
 const std::wstring SensorCameraImage = L"images/sensor-camera.png";
 const std::wstring SensorCableImage = L"images/sensor-cable.png";
 
-Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY)
+Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs)
     : Item(game, L""), mCameraX(cameraX), mCameraY(cameraY), mCableX(cableX), mCableY(cableY)
 {
     // Load the camera and cable images into bitmaps
@@ -21,6 +21,8 @@ Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double
     auto graphics = wxGraphicsContext::Create();
     mCameraBitmap = graphics->CreateBitmapFromImage(cameraImage);
     mCableBitmap = graphics->CreateBitmapFromImage(cableImage);
+
+    mOutputPins = sensorOutputs;
 }
 
 Sensor::~Sensor() {}
@@ -52,9 +54,14 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->DrawBitmap(mCableBitmap, mCableX - 140, mCableY -60, cableWidth, cableHeight);
 }
 
+void Sensor::GetOutputPins(wxString sensorOutputs)
+{
+
+}
+
 void Sensor::AddOutputPin(Product::Properties property)
 {
-    mOutputPins.push_back(property);
+    // Create new output pin
 }
 
 bool Sensor::IsProductInRange(const Product* product)

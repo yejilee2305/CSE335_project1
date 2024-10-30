@@ -17,7 +17,7 @@ class Sensor : public Item
 {
 public:
  // Constructor to initialize the sensor with camera and cable positions
- Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY);
+ Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs);
     void Accept(ItemVisitor* visitor) override { visitor->VisitSensor(this); }
 
  // Default constructor and copy operations are disabled
@@ -34,6 +34,8 @@ public:
  // Set individual positions for camera and cable
  void SetCameraPosition(double x, double y);
  void SetCablePosition(double x, double y);
+
+    void GetOutputPins(wxString sensorOutputs);
 
  // Add an output pin based on product properties
  void AddOutputPin(Product::Properties property);
@@ -58,8 +60,10 @@ private:
  wxGraphicsBitmap mCameraBitmap;
  wxGraphicsBitmap mCableBitmap;
 
- // Vector to store the active pins
- std::vector<Product::Properties> mOutputPins;
+ // String to store the active pins
+ wxString mOutputPins;
+
+
 };
 
 #endif // SENSOR_H
