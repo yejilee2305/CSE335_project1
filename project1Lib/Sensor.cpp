@@ -23,6 +23,7 @@ Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double
     mCableBitmap = graphics->CreateBitmapFromImage(cableImage);
 
     mOutputPins = sensorOutputs;
+    GetOutputPins(mOutputPins);
 }
 
 Sensor::~Sensor() {}
@@ -56,7 +57,44 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 
 void Sensor::GetOutputPins(wxString sensorOutputs)
 {
+    while (!sensorOutputs.IsEmpty())
+    {
+        // Get the first word before the next space
+        wxString token = sensorOutputs.BeforeFirst(' ');
 
+        // Process the token
+        if (token == "red")
+        {
+            AddOutputPin(Product::Properties::Red);
+        }
+        else if (token == "green")
+        {
+            AddOutputPin(Product::Properties::Green);
+        }
+        else if (token == "blue")
+        {
+            AddOutputPin(Product::Properties::Blue);
+        }
+        else if (token == "square")
+        {
+            AddOutputPin(Product::Properties::Square);
+        }
+        else if (token == "circle")
+        {
+            AddOutputPin(Product::Properties::Circle);
+        }
+        else if (token == "izzo")
+        {
+            AddOutputPin(Product::Properties::Izzo);
+        }
+        else if (token == "basketball")
+        {
+            AddOutputPin(Product::Properties::Basketball);
+        }
+
+        // Remove the processed word and the leading space
+        sensorOutputs = sensorOutputs.AfterFirst(' ');
+    }
 }
 
 void Sensor::AddOutputPin(Product::Properties property)
