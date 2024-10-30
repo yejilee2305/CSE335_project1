@@ -75,6 +75,10 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
         {
             AddOutputPin(Product::Properties::Blue);
         }
+        else if (token == "white")
+        {
+            AddOutputPin(Product::Properties::White);
+        }
         else if (token == "square")
         {
             AddOutputPin(Product::Properties::Square);
@@ -83,13 +87,25 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
         {
             AddOutputPin(Product::Properties::Circle);
         }
+        else if (token == "diamond")
+        {
+            AddOutputPin(Product::Properties::Diamond);
+        }
         else if (token == "izzo")
         {
             AddOutputPin(Product::Properties::Izzo);
         }
+        else if (token == "smith")
+        {
+            AddOutputPin(Product::Properties::Smith);
+        }
         else if (token == "basketball")
         {
             AddOutputPin(Product::Properties::Basketball);
+        }
+        else if (token == "football")
+        {
+            AddOutputPin(Product::Properties::Football);
         }
 
         // Remove the processed word and the leading space
