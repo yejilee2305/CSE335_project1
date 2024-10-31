@@ -21,6 +21,7 @@ private:
     int mGoodScoreIncrement;
     int mBadScoreDecrement;
     wxString mInstructions;
+    Game* mGame;
 
 public:
     Scoreboard(Game* game, int x, int y, int goodScore = 10, int badScore = 0, wxString instructions = "");

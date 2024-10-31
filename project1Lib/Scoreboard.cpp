@@ -4,6 +4,7 @@
  */
 
 #include "pch.h"
+#include "Game.h"
 #include "Scoreboard.h"
 #include <wx/graphics.h>
 #include <wx/pen.h>
@@ -14,7 +15,7 @@ const int SpacingScoresToInstructions = 40;
 const int SpacingInstructionLines = 17;
 
 Scoreboard::Scoreboard(Game* game, int x, int y, int goodScore, int badScore, wxString instructions)
-    : Item(game, L""), mX(x), mY(y), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
+    : Item(game, L""), mX(x), mY(y), mGame(game), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
       mLevelScore(0), mGameScore(0)
 {
     SetInstructions(instructions);
@@ -52,9 +53,10 @@ void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     auto instructionFont = graphics->CreateFont(15, L"Arial", wxFONTFLAG_BOLD, *wxBLACK);
 
     // Draw the scores at the top
+    int currentLevel = mGame->GetCurrentLevel();
     graphics->SetFont(scoreFont);
     graphics->DrawText(
-        wxString::Format("Level: %d  Game: %d", 0, mGameScore),
+        wxString::Format("Level: %d  Game: %d", currentLevel, mGameScore),
         mX + 10, mY + 10
     );
 
