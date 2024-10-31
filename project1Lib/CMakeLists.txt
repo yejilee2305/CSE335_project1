@@ -46,6 +46,7 @@ set(SOURCE_FILES
 		ConveyorVisitor.cpp
 		ConveyorVisitor.h
 		GateVisitor.h
+		WireVisitor.h
 		#		Pins.cpp
 #		Pins.h
 )
