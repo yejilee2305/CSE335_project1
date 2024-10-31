@@ -4,8 +4,6 @@
  *
  *
  */
-#include "Pch.h"
-
 
 #ifndef ITEMVISITOR_H
 #define ITEMVISITOR_H
