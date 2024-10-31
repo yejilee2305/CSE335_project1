@@ -63,6 +63,19 @@ private:
  // String to store the active pins
  wxString mOutputPins;
 
+    int mSensorCount = 0;
+
+    std::unique_ptr<PinOutput> mRedOutput;
+    std::unique_ptr<PinOutput> mGreenOutput;
+    std::unique_ptr<PinOutput> mBlueOutput;
+    std::unique_ptr<PinOutput> mWhiteOutput;
+    std::unique_ptr<PinOutput> mSquareOutput;
+    std::unique_ptr<PinOutput> mCircleOutput;
+    std::unique_ptr<PinOutput> mDiamondOutput;
+    std::unique_ptr<PinOutput> mIzzoOutput;
+    std::unique_ptr<PinOutput> mSmithOutput;
+    std::unique_ptr<PinOutput> mFootballOutput;
+    std::unique_ptr<PinOutput> mBasketballOutput;
 
 };
 

@@ -11,6 +11,21 @@
 const std::wstring SensorCameraImage = L"images/sensor-camera.png";
 const std::wstring SensorCableImage = L"images/sensor-cable.png";
 
+/// How much space for each property
+const wxSize PropertySize(100, 40);
+
+/// for drawing the line towards the output pin
+const int LineThickness = 3;
+
+/// Color to use for "red"
+const wxColour OhioStateRed(187, 0, 0);
+
+/// Color to use for "green"
+const wxColour MSUGreen(24, 69, 59);
+
+/// Color to use for "blue"
+const wxColor UofMBlue(0, 39, 76);
+
 Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs)
     : Item(game, L""), mCameraX(cameraX), mCameraY(cameraY), mCableX(cableX), mCableY(cableY)
 {
@@ -53,6 +68,131 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 
     // Draw the cable bitmap at its designated position
     graphics->DrawBitmap(mCableBitmap, mCableX - 140, mCableY -60, cableWidth, cableHeight);
+
+    double boxX = mCableX+(cableWidth/2)+10;
+    double boxY = mCableY+(cableHeight/2);
+    double currentY = boxY;
+
+    if (mRedOutput)
+    {
+        graphics->SetBrush(OhioStateRed);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mRedOutput->Draw(graphics);
+    }
+    if (mGreenOutput)
+    {
+        graphics->SetBrush(MSUGreen);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mGreenOutput->Draw(graphics);
+    }
+    if (mBlueOutput)
+    {
+        graphics->SetBrush(UofMBlue);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mBlueOutput->Draw(graphics);
+    }
+    if (mWhiteOutput)
+    {
+        graphics->SetBrush(*wxWHITE_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mWhiteOutput->Draw(graphics);
+    }
+    if (mSquareOutput)
+    {
+        graphics->SetBrush(*wxGREY_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mSquareOutput->Draw(graphics);
+    }
+    if (mCircleOutput)
+    {
+        graphics->SetBrush(*wxGREY_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mCircleOutput->Draw(graphics);
+    }
+    if (mDiamondOutput)
+    {
+        graphics->SetBrush(*wxGREY_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mDiamondOutput->Draw(graphics);
+    }
+    if (mIzzoOutput)
+    {
+        graphics->SetBrush(*wxGREY_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mIzzoOutput->Draw(graphics);
+    }
+    if (mSmithOutput)
+    {
+        graphics->SetBrush(*wxGREY_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mSmithOutput->Draw(graphics);
+    }
+    if (mBasketballOutput)
+    {
+        graphics->SetBrush(*wxGREY_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        currentY += PropertySize.GetHeight();
+        mBasketballOutput->Draw(graphics);
+    }
+    if (mFootballOutput)
+    {
+        graphics->SetBrush(*wxGREY_BRUSH);
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
+            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
+        mFootballOutput->Draw(graphics);
+    }
 }
 
 void Sensor::GetOutputPins(wxString sensorOutputs)
@@ -115,7 +255,83 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
 
 void Sensor::AddOutputPin(Product::Properties property)
 {
-    // Create new output pin
+    double cableWidth = 300;
+    double cableHeight = 164;
+
+    std::unique_ptr<PinOutput> outputPin = nullptr;
+
+    double pinX = mCableX+(cableWidth/2)+130;
+    double pinY = mCableY+(cableHeight/2)+20+(mSensorCount * 40);
+
+    // Determine which pin to create based on the property
+    switch (property) {
+        case Product::Properties::Red:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mRedOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Green:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mGreenOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Blue:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mBlueOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::White:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mWhiteOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Square:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mSquareOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Circle:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mCircleOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Diamond:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mDiamondOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Izzo:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mIzzoOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Smith:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mSmithOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Basketball:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mBasketballOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+        case Product::Properties::Football:
+            outputPin = std::make_unique<PinOutput>();
+            outputPin->SetLocation(pinX, pinY);
+            mFootballOutput = std::move(outputPin);
+            mSensorCount++;
+            break;
+    }
 }
 
 bool Sensor::IsProductInRange(const Product* product)
