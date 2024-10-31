@@ -93,50 +93,49 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
         // Get the first word before the next space
         wxString token = sensorOutputs.BeforeFirst(' ');
 
-        // Process the token
         if (token == "red")
         {
-            AddOutputPin(Product::Properties::Red);
+            AddOutputPin(mRedOutput);
         }
         else if (token == "green")
         {
-            AddOutputPin(Product::Properties::Green);
+            AddOutputPin(mGreenOutput);
         }
         else if (token == "blue")
         {
-            AddOutputPin(Product::Properties::Blue);
+            AddOutputPin(mBlueOutput);
         }
         else if (token == "white")
         {
-            AddOutputPin(Product::Properties::White);
+            AddOutputPin(mWhiteOutput);
         }
         else if (token == "square")
         {
-            AddOutputPin(Product::Properties::Square);
+            AddOutputPin(mSquareOutput);
         }
         else if (token == "circle")
         {
-            AddOutputPin(Product::Properties::Circle);
+            AddOutputPin(mCircleOutput);
         }
         else if (token == "diamond")
         {
-            AddOutputPin(Product::Properties::Diamond);
+            AddOutputPin(mDiamondOutput);
         }
         else if (token == "izzo")
         {
-            AddOutputPin(Product::Properties::Izzo);
+            AddOutputPin(mIzzoOutput);
         }
         else if (token == "smith")
         {
-            AddOutputPin(Product::Properties::Smith);
-        }
-        else if (token == "basketball")
-        {
-            AddOutputPin(Product::Properties::Basketball);
+            AddOutputPin(mSmithOutput);
         }
         else if (token == "football")
         {
-            AddOutputPin(Product::Properties::Football);
+            AddOutputPin(mFootballOutput);
+        }
+        else if (token == "basketball")
+        {
+            AddOutputPin(mBasketballOutput);
         }
 
         // Remove the processed word and the leading space
@@ -162,25 +161,7 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
     }
 }
 
-void Sensor::AddOutputPin(Product::Properties property)
-{
-    switch (property)
-    {
-        case Product::Properties::Red:    CreateAndSetOutputPin(mRedOutput);    break;
-        case Product::Properties::Green:  CreateAndSetOutputPin(mGreenOutput);  break;
-        case Product::Properties::Blue:   CreateAndSetOutputPin(mBlueOutput);   break;
-        case Product::Properties::White:  CreateAndSetOutputPin(mWhiteOutput);  break;
-        case Product::Properties::Square: CreateAndSetOutputPin(mSquareOutput); break;
-        case Product::Properties::Circle: CreateAndSetOutputPin(mCircleOutput); break;
-        case Product::Properties::Diamond: CreateAndSetOutputPin(mDiamondOutput); break;
-        case Product::Properties::Izzo:   CreateAndSetOutputPin(mIzzoOutput);   break;
-        case Product::Properties::Smith:  CreateAndSetOutputPin(mSmithOutput);  break;
-        case Product::Properties::Football: CreateAndSetOutputPin(mFootballOutput); break;
-        case Product::Properties::Basketball:   CreateAndSetOutputPin(mBasketballOutput);   break;
-    }
-}
-
-void Sensor::CreateAndSetOutputPin(std::unique_ptr<PinOutput>& pin)
+void Sensor::AddOutputPin(std::unique_ptr<PinOutput>& pin)
 {
     double cableWidth = 300;
     double cableHeight = 164;

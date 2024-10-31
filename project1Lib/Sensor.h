@@ -39,10 +39,7 @@ public:
 
     void GetOutputPins(wxString sensorOutputs);
 
-    void CreateAndSetOutputPin(std::unique_ptr<PinOutput>& pin);
-
-    // Add an output pin based on product properties
-    void AddOutputPin(Product::Properties property);
+    void AddOutputPin(std::unique_ptr<PinOutput>& pin);
 
     // Check if a product is within range of the sensor
     bool IsProductInRange(const Product* product);
