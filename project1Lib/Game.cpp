@@ -118,6 +118,11 @@ void Game::Update(double elapsed) {
         }
     }
 
+    if (anyBeamBroken && sparty)
+    {
+        sparty->Kick();
+    }
+
     ProductVisitor productVisitor;
     for (const auto& item : mItems) {
         item->Accept(&productVisitor);
@@ -161,7 +166,6 @@ void Game::HandleMouseClick(wxMouseEvent& event)
 {
     int x = event.GetX();
     int y = event.GetY();
-
 }
 
 /**

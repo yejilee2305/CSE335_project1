@@ -5,6 +5,7 @@
  *
  *
  */
+#include "Gate.h"
 #include "Pch.h"
 
 class Product;
@@ -13,6 +14,12 @@ class Beam;
 class Sensor;
 class Scoreboard;
 class Sparty;
+class Gate;
+class ORGate;
+class ANDGate;
+class NOTGate;
+class SRFlipFlopGate;
+class DFlipFlopGate;
 
 #ifndef ITEMVISITOR_H
 #define ITEMVISITOR_H
@@ -52,6 +59,30 @@ public:
 
     virtual void VisitSparty(Sparty* sparty)
     {
+    }
+    virtual void VisitGate(Gate* gate)
+    {
+
+    }
+    virtual void VisitORGate(ORGate* orgate)
+    {
+
+    }
+    virtual void VisitANDGate(ANDGate* andgate)
+    {
+
+    }
+    virtual void VisitNOTGate(NOTGate* notgate)
+    {
+
+    }
+    virtual void VisitSRFlipFlopGate(SRFlipFlopGate* srflip)
+    {
+
+    }
+    virtual void VisitDFlipFlopGate(DFlipFlopGate* dflip)
+    {
+
     }
 };
 

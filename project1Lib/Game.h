@@ -58,6 +58,9 @@ public:
     int GetCurrentLevel() const { return mCurrentLevel; }
     void SetCurrentLevel(int level) { mCurrentLevel = level; }
 
+    void SetSparty(std::shared_ptr<Sparty> spartyInstance) { sparty = spartyInstance; }
+
+
 private:
     double mVirtualWidth;
     double mVirtualHeight;
@@ -84,6 +87,8 @@ private:
     bool mShowControlPoints = false;
 
     void StartNextLevel();
+
+    std::shared_ptr<Sparty> sparty;
 };
 
 #endif // GAME_H

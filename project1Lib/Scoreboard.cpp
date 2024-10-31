@@ -54,7 +54,7 @@ void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     // Draw the scores at the top
     graphics->SetFont(scoreFont);
     graphics->DrawText(
-        wxString::Format("Level: %d  Game: %d", 1, mGameScore),
+        wxString::Format("Level: %d  Game: %d", 0, mGameScore),
         mX + 10, mY + 10
     );
 
