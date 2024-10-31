@@ -14,6 +14,7 @@
 #include "Scoreboard.h"
 #include "Beam.h"
 #include "ConveyorVisitor.h"
+#include "GateVisitor.h"
 #include "Product.h"
 
 using namespace std;
@@ -240,22 +241,24 @@ void GameView::OnLeftDown(wxMouseEvent& event)
 
 
     mSelectedOutputPin = nullptr;
-    for (const auto& gate : mGame.GetGates())
-    {
-        for (auto& outputPin : gate->GetOutputPins())
-        {
-            if (outputPin.HitTest(gameX, gameY))
-            {
-                mSelectedOutputPin = &outputPin;
-                return;
-            }
-        }
+    GateOutputPinHitTestVisitor outputPinVisitor(gameX, gameY);
+    game->Accept(&outputPinVisitor);
+    mSelectedOutputPin = outputPinVisitor.GetSelectedOutputPin();
 
-        if (gate->HitTest(gameX, gameY))
-        {
-            mGrabbedGate = gate;
-            return;
-        }
+    if (mSelectedOutputPin != nullptr)
+    {
+        mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, nullptr);
+        Refresh();
+        return;
+    }
+
+    GateGrabVisitor grabVisitor(gameX, gameY);
+    game->Accept(&grabVisitor);
+    Gate* grabbedGate = grabVisitor.GetGrabbedGate();
+    if (grabbedGate)
+    {
+        mGrabbedGate = std::shared_ptr<Gate>(grabbedGate, [](Gate*){}); // no one owns the pointer
+        return;
     }
 }
 
@@ -278,16 +281,12 @@ void GameView::OnLeftUp(wxMouseEvent& event)
 
     if (mSelectedOutputPin != nullptr)
     {
-        for (const auto& gate : mGame.GetGates())
+        GateInputPinHitTestVisitor inputPinVisitor(gameX, gameY);
+        game->Accept(&inputPinVisitor);
+        PinInput* inputPin = inputPinVisitor.GetInputPin();
+        if (inputPin != nullptr)
         {
-            for (auto& inputPin : gate->GetInputPins())
-            {
-                if (inputPin.HitTest(gameX, gameY))
-                {
-                    mGame.AddWire(mSelectedOutputPin, &inputPin);
-                    break;
-                }
-            }
+            mGame.AddWire(mSelectedOutputPin, inputPin);
         }
     }
 

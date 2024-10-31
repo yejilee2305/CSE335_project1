@@ -25,7 +25,6 @@ public:
     void ComputeGateOutputs();
     void Update(double elapsed);
 
-    void ConnectGates(Gate* outputGate, Gate* inputGate);
     void AddItem(std::shared_ptr<Item> item);
     void AddGate(std::shared_ptr<Gate> gate);
 
@@ -38,11 +37,10 @@ public:
     void SetVirtualWidth(int width) { mVirtualWidth = width; }
     void SetVirtualHeight(int height) { mVirtualHeight = height; }
 
-    std::shared_ptr<Gate> HitTestGate(double x, double y);
+    std::shared_ptr<Item> HitTestGate(double x, double y);
 
     size_t GetItemSize() const { return mItems.size(); }
 
-    const std::vector<std::shared_ptr<Gate>>& GetGates() const { return mGates; }
     void AddWire(PinOutput* outputPin, PinInput* inputPin);
     void DrawWires(std::shared_ptr<wxGraphicsContext> graphics);
     void SetShowControlPoints(bool show) { mShowControlPoints = show; }
@@ -59,6 +57,7 @@ public:
     void SetCurrentLevel(int level) { mCurrentLevel = level; }
 
     void SetSparty(std::shared_ptr<Sparty> spartyInstance) { sparty = spartyInstance; }
+    void Accept(ItemVisitor* visitor);
 
 
 private:
@@ -79,7 +78,6 @@ private:
 
 
     std::vector<std::shared_ptr<Item>> mItems;
-    std::vector<std::shared_ptr<Gate>> mGates;
     std::vector<std::shared_ptr<Wire>> mWires;
 
     std::shared_ptr<Item> mGrabbedItem = nullptr;

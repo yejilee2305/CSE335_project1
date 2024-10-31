@@ -20,6 +20,7 @@
 #include <stack>
 
 #include "BeamVisitor.h"
+#include "GateVisitor.h"
 #include "ProductVisitor.h"
 
 const int BigNumberBorder = 2000;
@@ -87,24 +88,8 @@ void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::st
 
 void Game::ComputeGateOutputs()
 {
-    std::unordered_set<Gate*> visited;
-    std::stack<Gate*> Stack;
-
-    for (auto& gate : mGates)
-    {
-        if (visited.find(gate.get()) == visited.end())
-        {
-            topologicalSortUtil(gate.get(), visited, Stack);
-        }
-    }
-
-    // Now process the gates in reverse order
-    while (!Stack.empty())
-    {
-        Gate* gate = Stack.top();
-        Stack.pop();
-        gate->ComputeOutput(); // Compute the output of the gate
-    }
+    GateComputeOutputVisitor computeVisitor;
+    Accept(&computeVisitor);
 }
 
 /**
@@ -253,11 +238,7 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
         item->Draw(graphics);
     }
 
-    // Draw all gates
-    for (const auto& gate : mGates)
-    {
-        gate->Draw(graphics);
-    }
+
     // Draw wires with optional control points for visualization (e.g., debugging or editor mode)
     for (const auto& wire : mWires)
     {
@@ -297,7 +278,7 @@ void Game::AddItem(std::shared_ptr<Item> item)
  */
 void Game::AddGate(std::shared_ptr<Gate> gate)
 {
-    mGates.push_back(gate);
+    AddItem(gate);
 }
 
 /**
@@ -319,13 +300,19 @@ std::shared_ptr<Item> Game::HitTest(int x, int y)
 /**
  * Test if a click is on a gate.
  */
-std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
+std::shared_ptr<Item> Game::HitTestGate(double x, double y)
 {
-    for (auto& gate : mGates)
+    GateHitTestVisitor hitTestVisitor(x, y);
+    Accept(&hitTestVisitor);
+    Gate* hitGate = hitTestVisitor.GetHitGate();
+    if (hitGate)
     {
-        if (gate->HitTest(x, y))
+        for (const auto& gate : mItems)
         {
-            return gate;
+            if (gate.get() == hitGate)
+            {
+                return gate;
+            }
         }
     }
     return nullptr;
@@ -337,7 +324,6 @@ std::shared_ptr<Gate> Game::HitTestGate(double x, double y)
 void Game::Clear()
 {
     mItems.clear();
-    mGates.clear();
     mWires.clear();
 
     mAllProductsPassed = false;
@@ -358,4 +344,16 @@ void Game::StartNextLevel()
     std::wstring nextLevelFile = L"levels/level" + std::to_wstring(mCurrentLevel) + L".xml";
 
     Load(nextLevelFile);
+}
+
+
+void Game::Accept(ItemVisitor* visitor)
+{
+    for (const auto& item : mItems)
+    {
+        if (item)
+        {
+            item->Accept(visitor);
+        }
+    }
 }
