@@ -58,6 +58,7 @@ public:
      * @return y location
      */
     int GetY() const { return mY; }
+
 };
 
 

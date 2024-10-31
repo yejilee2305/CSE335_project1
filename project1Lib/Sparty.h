@@ -27,6 +27,7 @@ public:
     // Draw function to render Sparty with layers
     void Draw(std::shared_ptr<wxGraphicsContext> graphics);
 
+    void Kick(); // for logic only
     // Method to trigger the kick action
     void Kick(wxGraphicsContext* graphics);
 

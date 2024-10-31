@@ -66,6 +66,13 @@ void Sparty::Kick(wxGraphicsContext* graphics) {
     team.TriggerNoise();
 }
 
+void Sparty::Kick()
+{
+    mIsKicking = true;
+    mKickProgress = 0.0;  // Reset kick progress if applicable
+    std::cout << "Sparty is kicking!" << std::endl;
+}
+
 // Method to check if a product is in the correct position to be kicked
 /**
 bool Sparty::CheckProductLocation(Product* product) {
@@ -81,7 +88,16 @@ void Sparty::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     // Scaling factor for Sparty's size
     double scaleFactor = 0.3;
 
-    // Kick parameters (adjust as needed)
+    // Update kick progress if Sparty is kicking
+    if (mIsKicking) {
+        mKickProgress += 0.1;  // Adjust increment for speed; 0.1 gives 10 frames for the kick
+        if (mKickProgress >= 1.0) {
+            mKickProgress = 0.0;  // Reset progress
+            mIsKicking = false;   // Stop kicking
+        }
+    }
+
+    // Kick parameters
     double kickOffsetX = 20 * mKickProgress; // Horizontal offset
     double kickOffsetY = -10 * mKickProgress; // Upward offset
     double kickRotation = SpartyBootMaxRotation * mKickProgress; // Rotation for kick
@@ -106,16 +122,16 @@ void Sparty::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     double centerX = mX - mBackWidth / 2;
     double centerY = mY - mBackHeight / 2;
 
-    // Draw the back layer (aligned with boot and front)
+    // Draw the back layer
     graphics->DrawBitmap(mBackBitmap, centerX, centerY, mBackWidth, mBackHeight);
 
-    // draw the line to the pin
+    // Draw the connecting lines
     graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-    graphics->StrokeLine(mX, mY, mX+SpartyPinFirstOffset, mY);
-    graphics->StrokeLine(mX+SpartyPinFirstOffset, mY, mX+SpartyPinFirstOffset, mY-SpartyPinSecondOffset);
-    graphics->StrokeLine(mX+SpartyPinFirstOffset, mY-SpartyPinSecondOffset, mPin.m_x+SpartyPinThirdOffset, mY-SpartyPinSecondOffset);
-    graphics->StrokeLine(mPin.m_x+SpartyPinThirdOffset,mY-SpartyPinSecondOffset, mPin.m_x+SpartyPinThirdOffset, mPin.m_y);
-    graphics->StrokeLine(mPin.m_x+SpartyPinThirdOffset,mPin.m_y, mPin.m_x, mPin.m_y);
+    graphics->StrokeLine(mX, mY, mX + SpartyPinFirstOffset, mY);
+    graphics->StrokeLine(mX + SpartyPinFirstOffset, mY, mX + SpartyPinFirstOffset, mY - SpartyPinSecondOffset);
+    graphics->StrokeLine(mX + SpartyPinFirstOffset, mY - SpartyPinSecondOffset, mPin.m_x + SpartyPinThirdOffset, mY - SpartyPinSecondOffset);
+    graphics->StrokeLine(mPin.m_x + SpartyPinThirdOffset, mY - SpartyPinSecondOffset, mPin.m_x + SpartyPinThirdOffset, mPin.m_y);
+    graphics->StrokeLine(mPin.m_x + SpartyPinThirdOffset, mPin.m_y, mPin.m_x, mPin.m_y);
     mInputPin->Draw(graphics);
 
     // Draw the boot layer with kicking offsets and rotation
