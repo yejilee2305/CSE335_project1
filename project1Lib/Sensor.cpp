@@ -10,6 +10,10 @@
 // File paths for the camera and cable images
 const std::wstring SensorCameraImage = L"images/sensor-camera.png";
 const std::wstring SensorCableImage = L"images/sensor-cable.png";
+const std::wstring IzzoImage = L"images/izzo.png";
+const std::wstring SmithImage = L"images/smith.png";
+const std::wstring FootballImage = L"images/football.png";
+const std::wstring BasketballImage = L"images/basketball.png";
 
 /// How much space for each property
 const wxSize PropertySize(100, 40);
@@ -146,16 +150,56 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
 void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wxColour& color, const std::unique_ptr<PinOutput>& pin, double& currentY)
 {
     double cableWidth = 300;
-    double boxX = mCableX+(cableWidth/2)+10;
+    double boxX = mCableX + (cableWidth / 2) + 10;
+    bool hasSpecialImage = false;
+    wxBitmap specialImage;
+
+    // Load specific images for certain output pins
+    if (pin == mIzzoOutput)
+    {
+        specialImage.LoadFile(IzzoImage, wxBITMAP_TYPE_PNG);
+        hasSpecialImage = true;
+    }
+    else if (pin == mSmithOutput)
+    {
+        specialImage.LoadFile(SmithImage, wxBITMAP_TYPE_PNG);
+        hasSpecialImage = true;
+    }
+    else if (pin == mFootballOutput)
+    {
+        specialImage.LoadFile(FootballImage, wxBITMAP_TYPE_PNG);
+        hasSpecialImage = true;
+    }
+    else if (pin == mBasketballOutput)
+    {
+        specialImage.LoadFile(BasketballImage, wxBITMAP_TYPE_PNG);
+        hasSpecialImage = true;
+    }
 
     if (pin)
     {
         graphics->SetBrush(wxBrush(color));
         graphics->SetPen(*wxBLACK_PEN);
         graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+
+        if (hasSpecialImage && specialImage.IsOk())
+        {
+            wxGraphicsBitmap graphicsBitmap = graphics->CreateBitmap(specialImage);
+
+            double horizontalSize = PropertySize.GetWidth() * 0.8;
+            double verticalSize = PropertySize.GetHeight() * 0.8;
+            double horizontalOffset = (PropertySize.GetWidth() - horizontalSize) / 8;
+            double verticalOffset = (PropertySize.GetHeight() - verticalSize) / 8;
+            double imageX = boxX + (PropertySize.GetWidth() / 8);
+            double imageY = currentY + (PropertySize.GetHeight() / 8);
+
+            graphics->DrawBitmap(graphicsBitmap, imageX - horizontalOffset, imageY - verticalOffset, horizontalSize, verticalSize);
+        }
+
         graphics->SetPen(wxPen(*wxBLACK, LineThickness));
         graphics->StrokeLine(boxX + PropertySize.GetWidth(), currentY + PropertySize.GetHeight() / 2,
                              boxX + PropertySize.GetWidth() + 20, currentY + PropertySize.GetHeight() / 2);
+
         currentY += PropertySize.GetHeight();
         pin->Draw(graphics);
     }
