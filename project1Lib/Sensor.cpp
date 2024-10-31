@@ -193,6 +193,32 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
 
             graphics->DrawBitmap(graphicsBitmap, imageX, imageY, horizontalSize, verticalSize);
         }
+        else if (pin == mCircleOutput || pin == mSquareOutput || pin == mDiamondOutput)
+        {
+            double shapeX = boxX + PropertySize.GetWidth() / 2;
+            double shapeY = currentY + PropertySize.GetHeight() / 2;
+            double shapeSize = PropertySize.GetHeight() * 0.8;
+            graphics->SetBrush(*wxWHITE_BRUSH);
+
+            if (pin == mCircleOutput)
+            {
+                graphics->DrawEllipse(shapeX - shapeSize / 2, shapeY - shapeSize / 2, shapeSize, shapeSize);
+            }
+            else if (pin == mSquareOutput)
+            {
+                graphics->DrawRectangle(shapeX - shapeSize / 2, shapeY - shapeSize / 2, shapeSize, shapeSize);
+            }
+            else if (pin == mDiamondOutput)
+            {
+                wxGraphicsPath path = graphics->CreatePath();
+                path.MoveToPoint(shapeX, shapeY - shapeSize / 2);
+                path.AddLineToPoint(shapeX + shapeSize / 2, shapeY);
+                path.AddLineToPoint(shapeX, shapeY + shapeSize / 2);
+                path.AddLineToPoint(shapeX - shapeSize / 2, shapeY);
+                path.CloseSubpath();
+                graphics->DrawPath(path);
+            }
+        }
 
         graphics->SetPen(wxPen(*wxBLACK, LineThickness));
         graphics->StrokeLine(boxX + PropertySize.GetWidth(), currentY + PropertySize.GetHeight() / 2,
