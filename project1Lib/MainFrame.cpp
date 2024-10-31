@@ -82,33 +82,33 @@ void MainFrame::OnToggleControlPoints(wxCommandEvent& event)
 }
 void MainFrame::OnAddORGate(wxCommandEvent& event)
 {
-    auto orGate = std::make_shared<ORGate>();
+    auto orGate = std::make_shared<ORGate>(mGameView->GetGame());
     orGate->SetPosition(350, 250); // Set initial position
     mGameView->AddGate(orGate); // Add the gate to the view
 }
 
 void MainFrame::OnAddANDGate(wxCommandEvent& event)
 {
-    auto andGate = std::make_shared<ANDGate>();
+    auto andGate = std::make_shared<ANDGate>(mGameView->GetGame());
     andGate->SetPosition(400, 300); // Set initial position
     mGameView->AddGate(andGate); // Add the gate to the view
 }
 void MainFrame::OnAddNOTGate(wxCommandEvent& event)
 {
-    auto notGate = std::make_shared<NOTGate>();
+    auto notGate = std::make_shared<NOTGate>(mGameView->GetGame());
     notGate->SetPosition(320, 240); // Set initial position
     mGameView->AddGate(notGate); // Add the gate to the view
 }
 void MainFrame::OnAddSRFlipFlopGate(wxCommandEvent& event)
 {
-    auto srFlipFlop = std::make_shared<SRFlipFlopGate>();
+    auto srFlipFlop = std::make_shared<SRFlipFlopGate>(mGameView->GetGame());
     srFlipFlop->SetPosition(290, 230); // Set initial position
     mGameView->AddGate(srFlipFlop); // Add the gate to the view
 }
 void MainFrame::OnAddDFlipFlopGate(wxCommandEvent& event)
 {
     // Create an D gate and set its initial position
-    auto dFlipFlop = std::make_shared<DFlipFlopGate>();
+    auto dFlipFlop = std::make_shared<DFlipFlopGate>(mGameView->GetGame());
     dFlipFlop->SetPosition(295, 190);
 
     // Add the D gate to the game

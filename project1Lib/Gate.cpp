@@ -74,7 +74,9 @@ void Gate::InitializePins() {
 //     UpdatePinPositions();
 // }
 
-ORGate::ORGate() : inputA(States::Unknown), inputB(States::Unknown) {
+ORGate::ORGate(Game* game) : Gate(game, L""),
+    inputA(States::Unknown), inputB(States::Unknown)
+{
     mInputPins.emplace_back(PinInput());
     mInputPins.emplace_back(PinInput());
     mOutputPins.emplace_back(PinOutput());
@@ -188,7 +190,8 @@ void ORGate::UpdatePinPositions()
     mOutputPins[0].SetPosition(x + w/2 + 20, y);
 }
 
-ANDGate::ANDGate() : inputA(States::Unknown), inputB(States::Unknown)
+ANDGate::ANDGate(Game* game) : Gate(game, L""),
+    inputA(States::Unknown), inputB(States::Unknown)
 {
     mInputPins.emplace_back(PinInput());
     mInputPins.emplace_back(PinInput());
@@ -274,7 +277,8 @@ void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 }
 
 
-NOTGate::NOTGate() : inputA(States::Unknown)
+NOTGate::NOTGate(Game* game) : Gate(game, L""),
+    inputA(States::Unknown)
 {
     mInputPins.emplace_back(PinInput());
     mOutputPins.emplace_back(PinOutput());
@@ -357,7 +361,8 @@ void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 
 
-SRFlipFlopGate::SRFlipFlopGate() : inputS(States::Unknown), inputR(States::Unknown)
+SRFlipFlopGate::SRFlipFlopGate(Game* game) : Gate(game, L""),
+    inputS(States::Unknown), inputR(States::Unknown)
 {
     mInputPins.emplace_back(PinInput());  // S input
     mInputPins.emplace_back(PinInput());  // R input
@@ -469,7 +474,8 @@ void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 
 
-DFlipFlopGate::DFlipFlopGate() : inputD(States::Unknown), clock(States::Unknown)
+DFlipFlopGate::DFlipFlopGate(Game* game) : Gate(game, L""),
+    inputD(States::Unknown), clock(States::Unknown)
 {
     mInputPins.emplace_back(PinInput());  // D input
     mInputPins.emplace_back(PinInput());  // Clock input
@@ -579,3 +585,30 @@ void DFlipFlopGate::UpdatePinPositions()
     mOutputPins[1].SetPosition(x + w/2 + 20, y + h/4);  // Q' output
 }
 
+void ORGate::Accept(ItemVisitor* visitor)
+{
+    visitor->VisitORGate(this);
+}
+
+void ANDGate::Accept(ItemVisitor* visitor)
+{
+    visitor->VisitANDGate(this);
+}
+
+// Implement Accept for NOTGate
+void NOTGate::Accept(ItemVisitor* visitor)
+{
+    visitor->VisitNOTGate(this);
+}
+
+// Implement Accept for SRFlipFlopGate
+void SRFlipFlopGate::Accept(ItemVisitor* visitor)
+{
+    visitor->VisitSRFlipFlopGate(this);
+}
+
+// Implement Accept for DFlipFlopGate
+void DFlipFlopGate::Accept(ItemVisitor* visitor)
+{
+    visitor->VisitDFlipFlopGate(this);
+}

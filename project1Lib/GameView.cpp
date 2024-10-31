@@ -351,7 +351,7 @@ void GameView::AddGate(std::shared_ptr<Gate> gate)
 void GameView::OnAddORGate(wxCommandEvent& event)
 {
     // Create an OR gate and set its initial position
-    auto orGate = std::make_shared<ORGate>();
+    auto orGate = std::make_shared<ORGate>(&mGame);
     orGate->SetPosition(100, 100);
 
     // Add the OR gate to the game
@@ -368,7 +368,7 @@ void GameView::OnAddORGate(wxCommandEvent& event)
 auto GameView::OnAddANDGate(wxCommandEvent& event) -> void
 {
     // Create an AND gate and set its initial position
-    auto andGate = std::make_shared<ANDGate>();
+    auto andGate = std::make_shared<ANDGate>(&mGame);
     andGate->SetPosition(300, 100);
 
     // Add the AND gate to the game
@@ -382,7 +382,7 @@ auto GameView::OnAddANDGate(wxCommandEvent& event) -> void
 auto GameView::OnAddNOTGate(wxCommandEvent& event) -> void
 {
     // Create an NOT gate and set its initial position
-    auto notGate = std::make_shared<NOTGate>();
+    auto notGate = std::make_shared<NOTGate>(&mGame);
     notGate->SetPosition(400, 100);
 
     // Add the NOT gate to the game
@@ -396,7 +396,7 @@ auto GameView::OnAddNOTGate(wxCommandEvent& event) -> void
 auto GameView::OnAddSRFLipFlopGate(wxCommandEvent& event) -> void
 {
     // Create an SR gate and set its initial position
-    auto srFlipFlop = std::make_shared<SRFlipFlopGate>();
+    auto srFlipFlop = std::make_shared<SRFlipFlopGate>(&mGame);
     srFlipFlop->SetPosition(400, 100);
 
     // Add the SR gate to the game
@@ -410,7 +410,7 @@ auto GameView::OnAddSRFLipFlopGate(wxCommandEvent& event) -> void
 auto GameView::OnAddDFLipFlopGate(wxCommandEvent& event) -> void
 {
     // Create an D gate and set its initial position
-    auto dFlipFlop = std::make_shared<DFlipFlopGate>();
+    auto dFlipFlop = std::make_shared<DFlipFlopGate>(&mGame);
     dFlipFlop->SetPosition(400, 100);
 
     // Add the D gate to the game

@@ -15,41 +15,50 @@
 #include <wx/brush.h>
 #include "ids.h"
 
-class PinInput;  // Forward declaration
+class Game;
+class PinInput; // Forward declaration
 class PinOutput; // Forward declaration
 enum class States { One, Zero, Unknown };
+
 const wxSize OrGateSize(75, 50);
 // Size of the AND gate in pixels
 const wxSize AndGateSize(75, 50); // Width: 75 pixels, Height: 50 pixels
 
 // Size of the NOT gate in pixels
-const wxSize NotGateSize(50, 50);  // Width: 50 pixels, Height: 50 pixels
+const wxSize NotGateSize(50, 50); // Width: 50 pixels, Height: 50 pixels
 
 // Size of the SR Flip Flop in pixels
 const wxSize SRFlipFlopSize(50, 75); // Width: 50 pixels, Height: 75 pixels
 
 // Size of the D Flip Flop in pixels
 const wxSize DFlipFlopSize(50, 75); // Width: 50 pixels, Height: 75 pixels
-class Gate {
+
+class Gate : public Item
+{
 private:
-    double mX = 0;  ///< X coordinate of the gate
-    double mY = 0;  ///< Y coordinate of the gate
+    double mX = 0; ///< X coordinate of the gate
+    double mY = 0; ///< Y coordinate of the gate
     wxGraphicsPath mPath;
-    std::vector<std::shared_ptr<Gate>> gates;  // Collection of logic gates
+    std::vector<std::shared_ptr<Gate>> gates; // Collection of logic gates
     std::shared_ptr<Gate> mGrabbedGate;
+
 protected:
     std::vector<PinInput> mInputPins;
     std::vector<PinOutput> mOutputPins;
 
 public:
-    virtual void Draw(std::shared_ptr<wxGraphicsContext> graphics) = 0;  // Pure virtual function to draw the gate
-    virtual States ComputeOutput() = 0;  // Pure virtual function to compute the output
+    Gate(Game* game, const std::wstring& filename) : Item(game, filename)
+    {
+    }
+
+    virtual void Draw(std::shared_ptr<wxGraphicsContext> graphics) = 0; // Pure virtual function to draw the gate
+    virtual States ComputeOutput() = 0; // Pure virtual function to compute the output
     virtual ~Gate() = default;
     // Getter functions for the position of the gate
     double GetX() const { return mX; }
     double GetY() const { return mY; }
 
-    virtual double GetWidth() const = 0;  // Pure virtual function to get width
+    virtual double GetWidth() const = 0; // Pure virtual function to get width
     virtual double GetHeight() const = 0; // Pure virtual function to get height
     void OnMouseClick(double x, double y);
     virtual bool HitTest(double x, double y) const;
@@ -58,6 +67,8 @@ public:
     std::vector<PinOutput>& GetOutputPins() { return mOutputPins; }
     virtual void UpdatePinPositions() = 0;
     void InitializePins();
+
+    virtual void Accept(ItemVisitor* visitor) = 0;
 };
 
 class ORGate : public Gate
@@ -67,7 +78,7 @@ private:
     States inputB;
 
 public:
-    ORGate();
+    ORGate(Game* game);
     void SetInputA(States state);
     void SetInputB(States state);
     void SetPosition(double x, double y);
@@ -80,7 +91,7 @@ public:
     PinInput* GetInputPin(int index);
     PinOutput* GetOutputPin();
     void ConnectInput(int inputIndex, PinOutput* outputPin);
-
+    void Accept(ItemVisitor* visitor) override;
 };
 
 class ANDGate : public Gate
@@ -90,23 +101,25 @@ private:
     States inputB;
 
 public:
-    ANDGate();
+    ANDGate(Game* game);
     void SetInputA(States state);
     void SetInputB(States state);
     States ComputeOutput() override;
     void SetPosition(double x, double y);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
+    void Accept(ItemVisitor* visitor);
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
     void UpdatePinPositions() override;
-
 };
-class NOTGate : public Gate {
+
+class NOTGate : public Gate
+{
 private:
     States inputA;
 
 public:
-    NOTGate();
+    NOTGate(Game* game);
     void SetInputA(States state);
     void SetInputB(States state);
     States ComputeOutput() override;
@@ -115,10 +128,11 @@ public:
     double GetWidth() const override { return NotGateSize.GetWidth(); }
     double GetHeight() const override { return NotGateSize.GetHeight(); }
     void UpdatePinPositions() override;
-
+    void Accept(ItemVisitor* visitor) override;
 };
 
-class SRFlipFlopGate : public Gate {
+class SRFlipFlopGate : public Gate
+{
 private:
     States inputS;
     States inputR;
@@ -126,7 +140,7 @@ private:
     States outputQPrime;
 
 public:
-    SRFlipFlopGate();
+    SRFlipFlopGate(Game* game);
     void SetInputS(States state);
     void SetInputR(States state);
     States ComputeOutput() override;
@@ -135,11 +149,12 @@ public:
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
     void UpdatePinPositions() override;
-
+    void Accept(ItemVisitor* visitor) override;
 };
 
 // D Flip-Flop Gate
-class DFlipFlopGate : public Gate {
+class DFlipFlopGate : public Gate
+{
 private:
     States inputD;
     States clock;
@@ -147,7 +162,7 @@ private:
     States outputQPrime;
 
 public:
-    DFlipFlopGate();
+    DFlipFlopGate(Game* game);
     void SetInputD(States state);
     void SetClock(States state);
     States ComputeOutput() override;
@@ -156,6 +171,7 @@ public:
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     double GetHeight() const override { return AndGateSize.GetHeight(); }
     void UpdatePinPositions() override;
+    void Accept(ItemVisitor* visitor) override;
 };
 
 #endif //GATE_H

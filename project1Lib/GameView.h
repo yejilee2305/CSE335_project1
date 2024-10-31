@@ -60,6 +60,7 @@ public:
     void AddGate(std::shared_ptr<Gate> gate);
     void ToggleControlPoints();
     void DisplayLevelMessage(int level);
+    Game* GetGame() { return &mGame; }
 };
 
 

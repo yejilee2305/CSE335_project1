@@ -1,12 +1,15 @@
-
 /**
  * @file ItemVisitor.h
  * @author zhi lin
  *
  *
  */
-#include "Gate.h"
 #include "Pch.h"
+
+
+#ifndef ITEMVISITOR_H
+#define ITEMVISITOR_H
+
 
 class Product;
 class Conveyor;
@@ -21,10 +24,6 @@ class NOTGate;
 class SRFlipFlopGate;
 class DFlipFlopGate;
 
-#ifndef ITEMVISITOR_H
-#define ITEMVISITOR_H
-
-
 class ItemVisitor
 {
 protected:
@@ -33,7 +32,7 @@ protected:
     }
 
 public:
-    ~ItemVisitor()
+    virtual ~ItemVisitor()
     {
     }
 
@@ -60,30 +59,29 @@ public:
     virtual void VisitSparty(Sparty* sparty)
     {
     }
+
     virtual void VisitGate(Gate* gate)
     {
-
     }
+
     virtual void VisitORGate(ORGate* orgate)
     {
-
     }
+
     virtual void VisitANDGate(ANDGate* andgate)
     {
-
     }
+
     virtual void VisitNOTGate(NOTGate* notgate)
     {
-
     }
+
     virtual void VisitSRFlipFlopGate(SRFlipFlopGate* srflip)
     {
-
     }
+
     virtual void VisitDFlipFlopGate(DFlipFlopGate* dflip)
     {
-
     }
 };
-
 #endif //ITEMVISITOR_H
