@@ -18,6 +18,9 @@ const std::wstring BasketballImage = L"images/basketball.png";
 /// How much space for each property
 const wxSize PropertySize(100, 40);
 
+/// Size of a shape as a property in virtual pixels
+const double PropertyShapeSize = 32;
+
 /// for drawing the line towards the output pin
 const int LineThickness = 3;
 
@@ -29,6 +32,9 @@ const wxColour MSUGreen(24, 69, 59);
 
 /// Color to use for "blue"
 const wxColor UofMBlue(0, 39, 76);
+
+/// Color to use for all other types
+const wxColour PanelBackgroundColor(128, 128, 128);
 
 Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs)
     : Item(game, L""), mCameraX(cameraX), mCameraY(cameraY), mCableX(cableX), mCableY(cableY)
@@ -80,13 +86,13 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     DrawOutputPin(graphics, MSUGreen, mGreenOutput, currentY);
     DrawOutputPin(graphics, UofMBlue, mBlueOutput, currentY);
     DrawOutputPin(graphics, *wxWHITE, mWhiteOutput, currentY);
-    DrawOutputPin(graphics,*wxLIGHT_GREY, mSquareOutput, currentY);
-    DrawOutputPin(graphics, *wxLIGHT_GREY, mCircleOutput, currentY);
-    DrawOutputPin(graphics,*wxLIGHT_GREY, mDiamondOutput, currentY);
-    DrawOutputPin(graphics, *wxLIGHT_GREY, mIzzoOutput, currentY);
-    DrawOutputPin(graphics,*wxLIGHT_GREY, mSmithOutput, currentY);
-    DrawOutputPin(graphics, *wxLIGHT_GREY, mFootballOutput, currentY);
-    DrawOutputPin(graphics, *wxLIGHT_GREY, mBasketballOutput, currentY);
+    DrawOutputPin(graphics,PanelBackgroundColor, mSquareOutput, currentY);
+    DrawOutputPin(graphics, PanelBackgroundColor, mCircleOutput, currentY);
+    DrawOutputPin(graphics,PanelBackgroundColor, mDiamondOutput, currentY);
+    DrawOutputPin(graphics, PanelBackgroundColor, mIzzoOutput, currentY);
+    DrawOutputPin(graphics, PanelBackgroundColor, mSmithOutput, currentY);
+    DrawOutputPin(graphics, PanelBackgroundColor, mFootballOutput, currentY);
+    DrawOutputPin(graphics, PanelBackgroundColor, mBasketballOutput, currentY);
 
 }
 
@@ -186,12 +192,10 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
         {
             wxGraphicsBitmap graphicsBitmap = graphics->CreateBitmap(specialImage);
 
-            double horizontalSize = PropertySize.GetWidth() * 0.4;
-            double verticalSize = PropertySize.GetHeight() * 0.8;
-            double imageX = boxX + (PropertySize.GetWidth() / 3.4);
+            double imageX = boxX + (PropertySize.GetWidth() / 3);
             double imageY = currentY + (PropertySize.GetHeight() / 8);
 
-            graphics->DrawBitmap(graphicsBitmap, imageX, imageY, horizontalSize, verticalSize);
+            graphics->DrawBitmap(graphicsBitmap, imageX, imageY, PropertyShapeSize, PropertyShapeSize);
         }
         else if (pin == mCircleOutput || pin == mSquareOutput || pin == mDiamondOutput)
         {
@@ -202,11 +206,11 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
 
             if (pin == mCircleOutput)
             {
-                graphics->DrawEllipse(shapeX - shapeSize / 2, shapeY - shapeSize / 2, shapeSize, shapeSize);
+                graphics->DrawEllipse(shapeX - shapeSize / 2, shapeY - shapeSize / 2, PropertyShapeSize, PropertyShapeSize);
             }
             else if (pin == mSquareOutput)
             {
-                graphics->DrawRectangle(shapeX - shapeSize / 2, shapeY - shapeSize / 2, shapeSize, shapeSize);
+                graphics->DrawRectangle(shapeX - shapeSize / 2, shapeY - shapeSize / 2, PropertyShapeSize, PropertyShapeSize);
             }
             else if (pin == mDiamondOutput)
             {
