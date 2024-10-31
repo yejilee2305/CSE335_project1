@@ -21,6 +21,7 @@ class ANDGate;
 class NOTGate;
 class SRFlipFlopGate;
 class DFlipFlopGate;
+class Wire;
 
 class ItemVisitor
 {
@@ -80,6 +81,10 @@ public:
 
     virtual void VisitDFlipFlopGate(DFlipFlopGate* dflip)
     {
+    }
+    virtual void VisitWire(Wire* wire)
+    {
+
     }
 };
 #endif //ITEMVISITOR_H
