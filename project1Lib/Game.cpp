@@ -22,6 +22,8 @@
 #include "BeamVisitor.h"
 #include "ProductVisitor.h"
 
+const int BigNumberBorder = 2000;
+
 /**
  * Constructor
  */
@@ -47,7 +49,8 @@ void Game::StartLevel(int levelNumber)
     Load(levelFile);
 }
 
-void Game::AddWire(PinOutput* outputPin, PinInput* inputPin) {
+void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
+{
     // Set the parent gate for the output pin
     outputPin->SetParentGate(outputPin->GetParentGate());
 
@@ -62,13 +65,18 @@ void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
         wire->Draw(graphics.get(), mShowControlPoints);
     }
 }
-void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack) {
+
+void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack)
+{
     visited.insert(gate);
 
-    for (auto& inputPin : gate->GetInputPins()) {
-        if (inputPin.HasConnection()) {
+    for (auto& inputPin : gate->GetInputPins())
+    {
+        if (inputPin.HasConnection())
+        {
             auto connectedGate = inputPin.GetConnectedGate();
-            if (connectedGate && visited.find(connectedGate) == visited.end()) {
+            if (connectedGate && visited.find(connectedGate) == visited.end())
+            {
                 topologicalSortUtil(connectedGate, visited, Stack);
             }
         }
@@ -76,28 +84,34 @@ void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::st
 
     Stack.push(gate);
 }
-void Game::ComputeGateOutputs() {
+
+void Game::ComputeGateOutputs()
+{
     std::unordered_set<Gate*> visited;
     std::stack<Gate*> Stack;
 
-    for (auto& gate : mGates) {
-        if (visited.find(gate.get()) == visited.end()) {
+    for (auto& gate : mGates)
+    {
+        if (visited.find(gate.get()) == visited.end())
+        {
             topologicalSortUtil(gate.get(), visited, Stack);
         }
     }
 
     // Now process the gates in reverse order
-    while (!Stack.empty()) {
+    while (!Stack.empty())
+    {
         Gate* gate = Stack.top();
         Stack.pop();
         gate->ComputeOutput(); // Compute the output of the gate
     }
 }
+
 /**
  * Update the game state.
  */
-void Game::Update(double elapsed) {
-
+void Game::Update(double elapsed)
+{
     // DO NOT REMOVE THIS
     for (auto& item : mItems)
     {
@@ -105,14 +119,17 @@ void Game::Update(double elapsed) {
     }
 
     BeamVisitor beamVisitor;
-    for (const auto& item : mItems){
+    for (const auto& item : mItems)
+    {
         item->Accept(&beamVisitor);
     }
 
     bool anyBeamBroken = false;
     const auto& beams = beamVisitor.GetBeams();
-    for (auto beam : beams) {
-        if (beam->IsBroken()) {
+    for (auto beam : beams)
+    {
+        if (beam->IsBroken())
+        {
             anyBeamBroken = true;
             break;
         }
@@ -124,35 +141,43 @@ void Game::Update(double elapsed) {
     }
 
     ProductVisitor productVisitor;
-    for (const auto& item : mItems) {
+    for (const auto& item : mItems)
+    {
         item->Accept(&productVisitor);
     }
     const auto& products = productVisitor.GetProducts();
 
     bool allProductsPassed = true;
-    for (auto product : products) {
-        if (!product->HasPassedBeam()) {
+    for (auto product : products)
+    {
+        if (!product->HasPassedBeam())
+        {
             allProductsPassed = false;
             break;
         }
     }
 
-    if (allProductsPassed && !anyBeamBroken) {
-        if (!mAllProductsPassed) {
+    if (allProductsPassed && !anyBeamBroken)
+    {
+        if (!mAllProductsPassed)
+        {
             // start the 3-second timer
             mAllProductsPassed = true;
             mPassTimer = 0.0;
         }
-        else {
+        else
+        {
             mPassTimer += elapsed;
-            if (mPassTimer >= 3.0) {
+            if (mPassTimer >= 3.0)
+            {
                 StartNextLevel();
                 mAllProductsPassed = false;
                 mPassTimer = 0.0;
             }
         }
     }
-    else {
+    else
+    {
         // if not all products have passed or any beam is broken, reset the timer
         mAllProductsPassed = false;
         mPassTimer = 0.0;
@@ -211,30 +236,47 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
     // Set the initial graphics state and apply translation and scaling
     graphics->PushState();
-    graphics->Translate(mXOffset, mYOffset);  // Centering offset
-    graphics->Scale(mScale, mScale);          // Apply scaling for consistent sizing
+    graphics->Translate(mXOffset, mYOffset); // Centering offset
+    graphics->Scale(mScale, mScale); // Apply scaling for consistent sizing
 
     // Draw the background color for the entire virtual game area
-    wxBrush background(wxColour(230, 255, 230));  // Light green background
+    wxBrush background(wxColour(230, 255, 230)); // Light green background
     graphics->SetBrush(background);
-    graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight);  // Fill the virtual area
+    graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight); // Fill the virtual area
+
 
 
     /// WE ARE ONLY ALLOW TO HAVE ONE LIST  https://cse335.egr.msu.edu/project1-fs24/description.php read Rules and Requirements
     // Draw each item in the game (e.g., products, obstacles) with the applied scaling
-    for (const auto& item : mItems) {
+    for (const auto& item : mItems)
+    {
         item->Draw(graphics);
     }
 
     // Draw all gates
-    for (const auto& gate : mGates) {
+    for (const auto& gate : mGates)
+    {
         gate->Draw(graphics);
     }
     // Draw wires with optional control points for visualization (e.g., debugging or editor mode)
-    for (const auto& wire : mWires) {
+    for (const auto& wire : mWires)
+    {
         wire->Draw(graphics.get(), mShowControlPoints);
     }
 
+    // for drawing the black box outside of the view
+    graphics->SetBrush(wxBrush(*wxBLACK));
+    graphics->SetPen(wxPen(*wxBLACK));
+
+    graphics->DrawRectangle(-BigNumberBorder, 0, BigNumberBorder - 1,
+                            BigNumberBorder);
+
+    graphics->DrawRectangle(pixelWidth + 1, 0, BigNumberBorder, BigNumberBorder);
+
+    graphics->DrawRectangle(0, -BigNumberBorder, BigNumberBorder,
+                            BigNumberBorder - 1);
+
+    graphics->DrawRectangle(0, pixelHeight + 1, BigNumberBorder, BigNumberBorder);
 
 
     // Restore the original graphics state to avoid affecting subsequent draws
@@ -316,5 +358,4 @@ void Game::StartNextLevel()
     std::wstring nextLevelFile = L"levels/level" + std::to_wstring(mCurrentLevel) + L".xml";
 
     Load(nextLevelFile);
-
 }
