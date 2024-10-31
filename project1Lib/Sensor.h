@@ -16,54 +16,56 @@
 class Sensor : public Item
 {
 public:
- // Constructor to initialize the sensor with camera and cable positions
- Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs);
+    // Constructor to initialize the sensor with camera and cable positions
+    Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs);
     void Accept(ItemVisitor* visitor) override { visitor->VisitSensor(this); }
 
- // Default constructor and copy operations are disabled
- Sensor() = delete;
- Sensor(const Sensor&) = delete;
- Sensor& operator=(const Sensor&) = delete;
+    // Default constructor and copy operations are disabled
+    Sensor() = delete;
+    Sensor(const Sensor&) = delete;
+    Sensor& operator=(const Sensor&) = delete;
 
- // Destructor
- virtual ~Sensor();
+    // Destructor
+    virtual ~Sensor();
 
- // Draw method to render the camera and cable
- void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
+    // Draw method to render the camera and cable
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
     void DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wxColour& color, const std::unique_ptr<PinOutput>& pin, double& currentY);
 
- // Set individual positions for camera and cable
- void SetCameraPosition(double x, double y);
- void SetCablePosition(double x, double y);
+    // Set individual positions for camera and cable
+    void SetCameraPosition(double x, double y);
+    void SetCablePosition(double x, double y);
 
     void GetOutputPins(wxString sensorOutputs);
 
- // Add an output pin based on product properties
- void AddOutputPin(Product::Properties property);
+    void CreateAndSetOutputPin(std::unique_ptr<PinOutput>& pin);
 
- // Check if a product is within range of the sensor
- bool IsProductInRange(const Product* product);
+    // Add an output pin based on product properties
+    void AddOutputPin(Product::Properties property);
 
- // Getters for X and Y positions
- double GetX() const { return mX; }
- double GetY() const { return mY; }
+    // Check if a product is within range of the sensor
+    bool IsProductInRange(const Product* product);
+
+    // Getters for X and Y positions
+    double GetX() const { return mX; }
+    double GetY() const { return mY; }
 
 private:
- // X and Y positions of the sensor base
- double mX = 0;
- double mY = 0;
+    // X and Y positions of the sensor base
+    double mX = 0;
+    double mY = 0;
 
- // Separate X and Y positions for the camera and cable
- double mCameraX, mCameraY;
- double mCableX, mCableY;
+    // Separate X and Y positions for the camera and cable
+    double mCameraX, mCameraY;
+    double mCableX, mCableY;
 
- // Bitmaps for camera and cable
- wxGraphicsBitmap mCameraBitmap;
- wxGraphicsBitmap mCableBitmap;
+    // Bitmaps for camera and cable
+    wxGraphicsBitmap mCameraBitmap;
+    wxGraphicsBitmap mCableBitmap;
 
- // String to store the active pins
- wxString mOutputPins;
+    // String to store the active pins
+    wxString mOutputPins;
 
     int mSensorCount = 0;
 

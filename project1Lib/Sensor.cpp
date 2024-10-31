@@ -69,7 +69,6 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     // Draw the cable bitmap at its designated position
     graphics->DrawBitmap(mCableBitmap, mCableX - 140, mCableY -60, cableWidth, cableHeight);
 
-    double boxX = mCableX+(cableWidth/2)+10;
     double boxY = mCableY+(cableHeight/2);
     double currentY = boxY;
 
@@ -165,83 +164,31 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
 
 void Sensor::AddOutputPin(Product::Properties property)
 {
+    switch (property)
+    {
+        case Product::Properties::Red:    CreateAndSetOutputPin(mRedOutput);    break;
+        case Product::Properties::Green:  CreateAndSetOutputPin(mGreenOutput);  break;
+        case Product::Properties::Blue:   CreateAndSetOutputPin(mBlueOutput);   break;
+        case Product::Properties::White:  CreateAndSetOutputPin(mWhiteOutput);  break;
+        case Product::Properties::Square: CreateAndSetOutputPin(mSquareOutput); break;
+        case Product::Properties::Circle: CreateAndSetOutputPin(mCircleOutput); break;
+        case Product::Properties::Diamond: CreateAndSetOutputPin(mDiamondOutput); break;
+        case Product::Properties::Izzo:   CreateAndSetOutputPin(mIzzoOutput);   break;
+        case Product::Properties::Smith:  CreateAndSetOutputPin(mSmithOutput);  break;
+        case Product::Properties::Football: CreateAndSetOutputPin(mFootballOutput); break;
+        case Product::Properties::Basketball:   CreateAndSetOutputPin(mBasketballOutput);   break;
+    }
+}
+
+void Sensor::CreateAndSetOutputPin(std::unique_ptr<PinOutput>& pin)
+{
     double cableWidth = 300;
     double cableHeight = 164;
-
-    std::unique_ptr<PinOutput> outputPin = nullptr;
-
-    double pinX = mCableX+(cableWidth/2)+130;
-    double pinY = mCableY+(cableHeight/2)+20+(mSensorCount * 40);
-
-    // Determine which pin to create based on the property
-    switch (property) {
-        case Product::Properties::Red:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mRedOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Green:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mGreenOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Blue:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mBlueOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::White:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mWhiteOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Square:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mSquareOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Circle:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mCircleOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Diamond:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mDiamondOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Izzo:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mIzzoOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Smith:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mSmithOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Basketball:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mBasketballOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-        case Product::Properties::Football:
-            outputPin = std::make_unique<PinOutput>();
-            outputPin->SetLocation(pinX, pinY);
-            mFootballOutput = std::move(outputPin);
-            mSensorCount++;
-            break;
-    }
+    double pinX = mCableX + (cableWidth / 2) + 130;
+    double pinY = mCableY + (cableHeight / 2) + 20 + (mSensorCount * 40);
+    pin = std::make_unique<PinOutput>();
+    pin->SetLocation(pinX, pinY);
+    mSensorCount++;
 }
 
 bool Sensor::IsProductInRange(const Product* product)
