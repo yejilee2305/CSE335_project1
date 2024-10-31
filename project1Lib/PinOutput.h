@@ -14,6 +14,9 @@
 #include "Pins.h"
 #include <vector>
 #include "Gate.h"
+#include <wx/colour.h>
+#include "States.h"
+
 class Gate;
 class PinInput;  // Forward declaration
 
@@ -31,7 +34,6 @@ private:
  std::vector<PinInput*> mConnections;
  bool mDragging = false;
  Gate* mParentGate; // Pointer to the parent gate
-
 
 public:
  /// Constructor
@@ -57,7 +59,16 @@ public:
  void SetLocation(double x, double y) override;
  void SetParentGate(Gate* gate) { mParentGate = gate; }
  Gate* GetParentGate() const { return mParentGate; }
- // const std::vector<PinInput*>& GetConnections() const { return mConnections; }
+ States GetCurrentState() const { return mCurrentState; }
+ void SetCurrentState(States state) { mCurrentState = state; }
+ static const wxColour& GetConnectionColorZero() { return ConnectionColorZero; }
+ static const wxColour& GetConnectionColorOne() { return ConnectionColorOne; }
+ static const wxColour& GetConnectionColorUnknown() { return ConnectionColorUnknown; }
+ void UpdateState();
+ static const wxColour ConnectionColorZero; // Black
+ static const wxColour ConnectionColorOne;  // Red
+ static const wxColour ConnectionColorUnknown;
+ States mCurrentState = States::Unknown;
 };
 
 #endif // PINOUTPUT_H

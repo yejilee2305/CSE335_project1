@@ -6,6 +6,7 @@
 // Wire.cpp
 #include "pch.h"
 #include "Wire.h"
+#include "PinOutput.h"
 
 /// Diameter to draw the pin in pixels
 const int PinSize = 10;
@@ -57,7 +58,16 @@ void Wire::Draw(wxGraphicsContext* gc, bool showControlPoints) {
     // control points
     wxPoint2DDouble p2(p1.m_x + offset, p1.m_y);
     wxPoint2DDouble p3(p4.m_x - offset, p4.m_y);
+    wxColour colorToUse;
+    States state = mOutputPin->GetCurrentState(); // You need to implement this method
 
+    if (state == States::One) {
+        colorToUse = PinOutput::ConnectionColorOne; // Red
+    } else if (state == States::Zero) {
+        colorToUse = PinOutput::ConnectionColorZero; // Black
+    } else {
+        colorToUse = PinOutput::ConnectionColorUnknown; // Grey
+    }
     // draw the Bézier curve
     wxGraphicsPath path = gc->CreatePath();
     path.MoveToPoint(p1);

@@ -12,6 +12,7 @@
 #include "Pins.h"
 #include "PinOutput.h"
 #include "Gate.h"
+#include "States.h"
 
 class Pin;  // Forward declaration
 class PinOutput; // Forward declaration
@@ -23,6 +24,8 @@ private:
     /// The pin this input is connected to
     PinOutput* mConnectedPin = nullptr;
     PinOutput* mConnection = nullptr;
+    std::vector<PinOutput*> mConnectedPins; // Connected output pins
+    States mCurrentState = States::Unknown;
 
 public:
     /// Constructor
@@ -41,6 +44,10 @@ public:
     Gate* GetConnectedGate() const;
     void SetConnection(PinOutput* outputPin);
     bool HasConnection() const { return mConnectedPin != nullptr; }
+    States GetCurrentState() const { return mCurrentState; }
+
+    // Declaration of SetCurrentState
+    void SetCurrentState(States state) { mCurrentState = state; }
 };
 
 #endif // PININPUT_H

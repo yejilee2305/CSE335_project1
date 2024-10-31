@@ -7,9 +7,27 @@
 #include "pch.h"
 #include "PinOutput.h"
 #include "PinInput.h"
+#include "States.h"
+
+const wxColour PinOutput::ConnectionColorZero = *wxBLACK; // Black
+const wxColour PinOutput::ConnectionColorOne = *wxRED;   // Red
+const wxColour PinOutput::ConnectionColorUnknown = wxColour(128, 128, 128); // Grey
 
 void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
+    wxColour colorToUse;
+    if (mConnectedPins.empty()) {
+        colorToUse = ConnectionColorUnknown; // No connection
+    } else {
+        // Use the current state to determine the color
+        if (mCurrentState == States::One) {
+            colorToUse = ConnectionColorOne; // Red
+        } else if (mCurrentState == States::Zero) {
+            colorToUse = ConnectionColorZero; // Black
+        } else {
+            colorToUse = ConnectionColorUnknown; // Grey
+        }
+    }
     graphics->SetPen(*wxBLACK_PEN);
     graphics->SetBrush(*wxBLACK_BRUSH);
 
@@ -24,6 +42,25 @@ void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     {
         DrawConnection(graphics, inputPin);
     }
+}
+
+void PinOutput::UpdateState()
+{
+    // Check the states of the connected input pins
+    States newState = States::Unknown;
+    for (auto inputPin : mConnectedPins)
+    {
+        States inputState = inputPin->GetCurrentState();
+        if (inputState == States::One) {
+            newState = States::One; // If any input is 1, output is 1
+            break;
+        } else if (inputState == States::Zero) {
+            newState = States::Zero; // If all inputs are 0, output is 0
+        }
+    }
+
+    // Update the current state of the output pin
+    mCurrentState = newState;
 }
 
 void PinOutput::OnDrag(double x, double y)

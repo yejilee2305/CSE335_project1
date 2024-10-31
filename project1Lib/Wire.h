@@ -13,6 +13,7 @@
 #include "PinInput.h"
 #include "PinOutput.h"
 
+class PinOutput;
 class Wire {
 private:
     PinOutput* mOutputPin;
