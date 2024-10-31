@@ -39,7 +39,7 @@ TEST_F(BeamTest, ProductIntersection)
 
     intersectingProduct->SetLocation(150, 437);
 
-    ASSERT_TRUE(beam->IsIntersecting(intersectingProduct));
+    ASSERT_TRUE(beam->IsIntersecting(intersectingProduct.get()));
 }
 
 TEST_F(BeamTest, ProductNotIntersecting)
@@ -56,7 +56,7 @@ TEST_F(BeamTest, ProductNotIntersecting)
 
     nonIntersectingProduct->SetLocation(400, 437); // x position beyond beam
 
-    ASSERT_FALSE(beam->IsIntersecting(nonIntersectingProduct));
+    ASSERT_FALSE(beam->IsIntersecting(nonIntersectingProduct.get()));
 }
 
 TEST_F(BeamTest, ProductAboveBeam)
@@ -72,7 +72,7 @@ TEST_F(BeamTest, ProductAboveBeam)
 
     product->SetLocation(150, 337); // y position 100 pixels above beam
 
-    ASSERT_FALSE(beam->IsIntersecting(product));
+    ASSERT_FALSE(beam->IsIntersecting(product.get()));
 }
 
 TEST_F(BeamTest, ProductBelowBeam)
@@ -88,7 +88,7 @@ TEST_F(BeamTest, ProductBelowBeam)
 
     product->SetLocation(150, 537); // y position 100 pixels below beam
 
-    ASSERT_FALSE(beam->IsIntersecting(product));
+    ASSERT_FALSE(beam->IsIntersecting(product.get()));
 }
 
 TEST_F(BeamTest, BeamBreaking)
@@ -104,7 +104,7 @@ TEST_F(BeamTest, BeamBreaking)
 
     product->SetLocation(150, 437);
 
-    mGame.AddProduct(product);
+    mGame.AddItem(product);
 
     beam->Update(0.016); // 60 fps
 
