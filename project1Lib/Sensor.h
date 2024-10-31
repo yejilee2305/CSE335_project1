@@ -31,6 +31,8 @@ public:
  // Draw method to render the camera and cable
  void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
+    void DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wxColour& color, const std::unique_ptr<PinOutput>& pin, double& currentY);
+
  // Set individual positions for camera and cable
  void SetCameraPosition(double x, double y);
  void SetCablePosition(double x, double y);

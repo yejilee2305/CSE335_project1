@@ -73,126 +73,18 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     double boxY = mCableY+(cableHeight/2);
     double currentY = boxY;
 
-    if (mRedOutput)
-    {
-        graphics->SetBrush(OhioStateRed);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mRedOutput->Draw(graphics);
-    }
-    if (mGreenOutput)
-    {
-        graphics->SetBrush(MSUGreen);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mGreenOutput->Draw(graphics);
-    }
-    if (mBlueOutput)
-    {
-        graphics->SetBrush(UofMBlue);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mBlueOutput->Draw(graphics);
-    }
-    if (mWhiteOutput)
-    {
-        graphics->SetBrush(*wxWHITE_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mWhiteOutput->Draw(graphics);
-    }
-    if (mSquareOutput)
-    {
-        graphics->SetBrush(*wxGREY_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mSquareOutput->Draw(graphics);
-    }
-    if (mCircleOutput)
-    {
-        graphics->SetBrush(*wxGREY_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mCircleOutput->Draw(graphics);
-    }
-    if (mDiamondOutput)
-    {
-        graphics->SetBrush(*wxGREY_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mDiamondOutput->Draw(graphics);
-    }
-    if (mIzzoOutput)
-    {
-        graphics->SetBrush(*wxGREY_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mIzzoOutput->Draw(graphics);
-    }
-    if (mSmithOutput)
-    {
-        graphics->SetBrush(*wxGREY_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mSmithOutput->Draw(graphics);
-    }
-    if (mBasketballOutput)
-    {
-        graphics->SetBrush(*wxGREY_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        currentY += PropertySize.GetHeight();
-        mBasketballOutput->Draw(graphics);
-    }
-    if (mFootballOutput)
-    {
-        graphics->SetBrush(*wxGREY_BRUSH);
-        graphics->SetPen(*wxBLACK_PEN);
-        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
-        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
-        graphics->StrokeLine(boxX+PropertySize.GetWidth(), currentY+PropertySize.GetHeight()/2,
-            boxX+PropertySize.GetWidth()+20, currentY+PropertySize.GetHeight()/2 );
-        mFootballOutput->Draw(graphics);
-    }
+    DrawOutputPin(graphics, OhioStateRed, mRedOutput, currentY);
+    DrawOutputPin(graphics, MSUGreen, mGreenOutput, currentY);
+    DrawOutputPin(graphics, UofMBlue, mBlueOutput, currentY);
+    DrawOutputPin(graphics, *wxWHITE, mWhiteOutput, currentY);
+    DrawOutputPin(graphics,*wxLIGHT_GREY, mSquareOutput, currentY);
+    DrawOutputPin(graphics, *wxLIGHT_GREY, mCircleOutput, currentY);
+    DrawOutputPin(graphics,*wxLIGHT_GREY, mDiamondOutput, currentY);
+    DrawOutputPin(graphics, *wxLIGHT_GREY, mIzzoOutput, currentY);
+    DrawOutputPin(graphics,*wxLIGHT_GREY, mSmithOutput, currentY);
+    DrawOutputPin(graphics, *wxLIGHT_GREY, mFootballOutput, currentY);
+    DrawOutputPin(graphics, *wxLIGHT_GREY, mBasketballOutput, currentY);
+
 }
 
 void Sensor::GetOutputPins(wxString sensorOutputs)
@@ -250,6 +142,24 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
 
         // Remove the processed word and the leading space
         sensorOutputs = sensorOutputs.AfterFirst(' ');
+    }
+}
+
+void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wxColour& color, const std::unique_ptr<PinOutput>& pin, double& currentY)
+{
+    double cableWidth = 300;
+    double boxX = mCableX+(cableWidth/2)+10;
+
+    if (pin)
+    {
+        graphics->SetBrush(wxBrush(color));
+        graphics->SetPen(*wxBLACK_PEN);
+        graphics->DrawRectangle(boxX, currentY, PropertySize.GetWidth(), PropertySize.GetHeight());
+        graphics->SetPen(wxPen(*wxBLACK, LineThickness));
+        graphics->StrokeLine(boxX + PropertySize.GetWidth(), currentY + PropertySize.GetHeight() / 2,
+                             boxX + PropertySize.GetWidth() + 20, currentY + PropertySize.GetHeight() / 2);
+        currentY += PropertySize.GetHeight();
+        pin->Draw(graphics);
     }
 }
 
