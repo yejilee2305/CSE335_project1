@@ -186,14 +186,12 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
         {
             wxGraphicsBitmap graphicsBitmap = graphics->CreateBitmap(specialImage);
 
-            double horizontalSize = PropertySize.GetWidth() * 0.8;
+            double horizontalSize = PropertySize.GetWidth() * 0.4;
             double verticalSize = PropertySize.GetHeight() * 0.8;
-            double horizontalOffset = (PropertySize.GetWidth() - horizontalSize) / 8;
-            double verticalOffset = (PropertySize.GetHeight() - verticalSize) / 8;
-            double imageX = boxX + (PropertySize.GetWidth() / 8);
+            double imageX = boxX + (PropertySize.GetWidth() / 3.4);
             double imageY = currentY + (PropertySize.GetHeight() / 8);
 
-            graphics->DrawBitmap(graphicsBitmap, imageX - horizontalOffset, imageY - verticalOffset, horizontalSize, verticalSize);
+            graphics->DrawBitmap(graphicsBitmap, imageX, imageY, horizontalSize, verticalSize);
         }
 
         graphics->SetPen(wxPen(*wxBLACK, LineThickness));
