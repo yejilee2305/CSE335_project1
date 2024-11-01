@@ -230,7 +230,6 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
     graphics->DrawRectangle(0, 0, pixelWidth, pixelHeight); // Fill the virtual area
 
 
-
     /// WE ARE ONLY ALLOW TO HAVE ONE LIST  https://cse335.egr.msu.edu/project1-fs24/description.php read Rules and Requirements
     // Draw each item in the game (e.g., products, obstacles) with the applied scaling
     for (const auto& item : mItems)
@@ -335,9 +334,14 @@ void Game::StartNextLevel()
 {
     mCurrentLevel += 1;
 
-    if (mCurrentLevel > 9)
+    if (mCurrentLevel >= 9)
     {
-        // max level
+        // closes the program
+        wxWindow* mainWindow = wxTheApp->GetTopWindow();
+        if (mainWindow)
+        {
+            mainWindow->Close(true);
+        }
         return;
     }
 
