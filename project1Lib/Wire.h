@@ -4,7 +4,7 @@
  *
  *
  */
- 
+
 // Wire.h
 #ifndef WIRE_H
 #define WIRE_H
@@ -14,7 +14,10 @@
 #include "PinOutput.h"
 
 class PinOutput;
-class Wire {
+class PinInput;
+
+class Wire
+{
 private:
     PinOutput* mOutputPin;
     PinInput* mInputPin;
@@ -22,10 +25,15 @@ private:
     wxPoint2DDouble mControlPoint2;
 
     static constexpr double BezierMaxOffset = 200;
+
 public:
     Wire(PinOutput* outputPin, PinInput* inputPin);
     void Draw(wxGraphicsContext* gc, bool showControlPoints);
     void UpdateControlPoints(double x, double y);
+
+    PinOutput* GetOutputPin() const { return mOutputPin; }
+
+    PinInput* GetInputPin() const { return mInputPin; }
 };
 
 #endif // WIRE_H

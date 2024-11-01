@@ -12,9 +12,9 @@
 #include <memory>
 #include "Gate.h"
 #include "Conveyor.h"
-#include "Wire.h"
 #include "Beam.h"
 #include "Team.h"
+#include "ItemVisitor.h"
 
 class Game
 {
@@ -44,10 +44,8 @@ public:
     size_t GetItemSize() const { return mItems.size(); }
 
     void AddWire(PinOutput* outputPin, PinInput* inputPin);
-    void DrawWires(std::shared_ptr<wxGraphicsContext> graphics);
     void SetShowControlPoints(bool show) { mShowControlPoints = show; }
     bool GetShowControlPoints() const { return mShowControlPoints; }
-    const std::vector<std::shared_ptr<Wire>>& GetWires() const { return mWires; }
 
     double GetScale() const { return mScale; }
     double GetXOffset() const { return mXOffset; }
@@ -80,7 +78,6 @@ private:
 
 
     std::vector<std::shared_ptr<Item>> mItems;
-    std::vector<std::shared_ptr<Wire>> mWires;
 
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 

@@ -62,18 +62,18 @@ void Wire::Draw(wxGraphicsContext* gc, bool showControlPoints) {
     States state = mOutputPin->GetCurrentState(); // You need to implement this method
 
     if (state == States::One) {
-        colorToUse = PinOutput::ConnectionColorOne; // Red
+        colorToUse = ConnectionColorOne; // Red
     } else if (state == States::Zero) {
-        colorToUse = PinOutput::ConnectionColorZero; // Black
+        colorToUse = ConnectionColorZero; // Black
     } else {
-        colorToUse = PinOutput::ConnectionColorUnknown; // Grey
+        colorToUse = ConnectionColorUnknown; // Grey
     }
     // draw the Bézier curve
     wxGraphicsPath path = gc->CreatePath();
     path.MoveToPoint(p1);
     path.AddCurveToPoint(p2.m_x, p2.m_y, p3.m_x, p3.m_y, p4.m_x, p4.m_y);
 
-    gc->SetPen(wxPen(ConnectionColorZero, LineWidth));
+    gc->SetPen(wxPen(colorToUse, LineWidth));
     gc->StrokePath(path);
 
     if (showControlPoints)

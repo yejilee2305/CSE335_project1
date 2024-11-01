@@ -10,21 +10,29 @@
 #include "States.h"
 
 const wxColour PinOutput::ConnectionColorZero = *wxBLACK; // Black
-const wxColour PinOutput::ConnectionColorOne = *wxRED;   // Red
+const wxColour PinOutput::ConnectionColorOne = *wxRED; // Red
 const wxColour PinOutput::ConnectionColorUnknown = wxColour(128, 128, 128); // Grey
 
 void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     wxColour colorToUse;
-    if (mConnectedPins.empty()) {
+    if (mConnectedPins.empty())
+    {
         colorToUse = ConnectionColorUnknown; // No connection
-    } else {
+    }
+    else
+    {
         // Use the current state to determine the color
-        if (mCurrentState == States::One) {
+        if (mCurrentState == States::One)
+        {
             colorToUse = ConnectionColorOne; // Red
-        } else if (mCurrentState == States::Zero) {
+        }
+        else if (mCurrentState == States::Zero)
+        {
             colorToUse = ConnectionColorZero; // Black
-        } else {
+        }
+        else
+        {
             colorToUse = ConnectionColorUnknown; // Grey
         }
     }
@@ -32,7 +40,7 @@ void PinOutput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->SetBrush(*wxBLACK_BRUSH);
 
     // Draw the pin circle
-    graphics->DrawEllipse(mX - PinSize, mY - PinSize/2, PinSize, PinSize);
+    graphics->DrawEllipse(mX - PinSize, mY - PinSize / 2, PinSize, PinSize);
 
     // Draw the line to the left
     graphics->StrokeLine(mX, mY, mX, mY);
@@ -51,10 +59,13 @@ void PinOutput::UpdateState()
     for (auto inputPin : mConnectedPins)
     {
         States inputState = inputPin->GetCurrentState();
-        if (inputState == States::One) {
+        if (inputState == States::One)
+        {
             newState = States::One; // If any input is 1, output is 1
             break;
-        } else if (inputState == States::Zero) {
+        }
+        else if (inputState == States::Zero)
+        {
             newState = States::Zero; // If all inputs are 0, output is 0
         }
     }
@@ -70,7 +81,7 @@ void PinOutput::OnDrag(double x, double y)
         // Check for connections to input pins after dragging
         for (auto inputPin : mConnectedPins)
         {
-            if (inputPin->HitTest(mX, mY)) // Assuming HitTest checks if the pin is in range
+            if (inputPin->HitTest(x, y)) // Assuming HitTest checks if the pin is in range
             {
                 ConnectTo(inputPin); // Connect if the input pin is hit
             }
@@ -82,11 +93,15 @@ void PinOutput::OnDrag(double x, double y)
 
 void PinOutput::ConnectTo(PinInput* pin)
 {
-    mConnectedPins.push_back(pin);
-    pin->ConnectTo(this);
+    if (pin && std::find(mConnectedPins.begin(), mConnectedPins.end(), pin) == mConnectedPins.end())
+    {
+        mConnectedPins.push_back(pin);
+        pin->ConnectTo(this);
+    }
 }
 
-bool PinOutput::HitTest(double x, double y) const {
+bool PinOutput::HitTest(double x, double y) const
+{
     // Calculate the distance from the click point to the center of the pin
     double distance = std::sqrt(std::pow(x - mX, 2) + std::pow(y - mY, 2));
     return distance <= (PinSize / 2.0);
@@ -105,14 +120,15 @@ void PinOutput::DisconnectFrom(PinInput* pin)
 void PinOutput::SetLocation(double x, double y)
 {
     // Assuming you have a member variable `mDragging` to indicate the dragging state
-    mDragging = true;  // Set dragging to true
-    mX = x;            // Update the X position
-    mY = y;            // Update the Y position
+    mDragging = true; // Set dragging to true
+    mX = x; // Update the X position
+    mY = y; // Update the Y position
     // Reset any connections or states if necessary
     // For example, if you have a member variable for current connections, you might want to clear it
 }
 
-void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin) {
+void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin)
+{
     double startX = GetX();
     double startY = GetY();
     double endX = inputPin->GetX();

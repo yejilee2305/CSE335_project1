@@ -22,6 +22,7 @@
 #include "BeamVisitor.h"
 #include "GateVisitor.h"
 #include "ProductVisitor.h"
+#include "WireVisitor.h"
 
 const int BigNumberBorder = 2000;
 
@@ -52,20 +53,10 @@ void Game::StartLevel(int levelNumber)
 
 void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
 {
-    // Set the parent gate for the output pin
-    outputPin->SetParentGate(outputPin->GetParentGate());
-
-    mWires.push_back(std::make_shared<Wire>(outputPin, inputPin));
-    inputPin->SetConnection(outputPin); // Connect the input pin to the output pin
+    inputPin->SetConnection(outputPin);
+    outputPin->ConnectTo(inputPin);
 }
 
-void Game::DrawWires(std::shared_ptr<wxGraphicsContext> graphics)
-{
-    for (const auto& wire : mWires)
-    {
-        wire->Draw(graphics.get(), mShowControlPoints);
-    }
-}
 
 void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack)
 {
@@ -239,12 +230,9 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
         item->Draw(graphics);
     }
 
+    WireDrawingVisitor wireVisitor(graphics.get(), mShowControlPoints);
+    Accept(&wireVisitor);
 
-    // Draw wires with optional control points for visualization (e.g., debugging or editor mode)
-    for (const auto& wire : mWires)
-    {
-        wire->Draw(graphics.get(), mShowControlPoints);
-    }
 
     // for drawing the black box outside of the view
     graphics->SetBrush(wxBrush(*wxBLACK));
@@ -325,7 +313,6 @@ std::shared_ptr<Item> Game::HitTestGate(double x, double y)
 void Game::Clear()
 {
     mItems.clear();
-    mWires.clear();
 
     mAllProductsPassed = false;
     mPassTimer = 0.0;

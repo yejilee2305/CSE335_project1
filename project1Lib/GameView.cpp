@@ -185,11 +185,6 @@ void GameView::OnPaint(wxPaintEvent& event)
     }
 
     // Draw dragging wire if one exists
-    if (mSelectedOutputPin != nullptr && mSelectedInputPin != nullptr)
-    {
-        mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, mSelectedInputPin);
-        mDraggingWire->Draw(gc.get(), mGame.GetShowControlPoints());
-    }
 }
 
 
@@ -245,12 +240,6 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     game->Accept(&outputPinVisitor);
     mSelectedOutputPin = outputPinVisitor.GetSelectedOutputPin();
 
-    if (mSelectedOutputPin != nullptr)
-    {
-        mDraggingWire = std::make_shared<Wire>(mSelectedOutputPin, nullptr);
-        Refresh();
-        return;
-    }
 
     GateGrabVisitor grabVisitor(gameX, gameY);
     game->Accept(&grabVisitor);
@@ -319,14 +308,6 @@ void GameView::OnMouseMove(wxMouseEvent& event)
     {
         mGrabbedGate->SetPosition(gameX, gameY);
         Refresh();
-    }
-    else if (mSelectedOutputPin != nullptr && event.Dragging())
-    {
-        if (mDraggingWire)
-        {
-            mDraggingWire->UpdateControlPoints(gameX, gameY);
-            Refresh();
-        }
     }
 }
 
