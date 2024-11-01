@@ -19,6 +19,9 @@
 class Game
 {
 public:
+    /// Enumeration class for different game states
+    enum class GameState {Beginning, Playing, Ending};
+
     Game();
 
     void Load(const wxString& filename);
@@ -59,6 +62,12 @@ public:
     void SetSparty(std::shared_ptr<Sparty> spartyInstance) { sparty = spartyInstance; }
     void Accept(ItemVisitor* visitor);
 
+    /**
+    * @return mState
+    */
+    GameState GetState() const {return mState;}
+
+
 
 private:
     double mVirtualWidth;
@@ -89,6 +98,10 @@ private:
     std::shared_ptr<Sparty> sparty;
 
     Team mTeam;
+
+    /// Ready state
+    GameState mState = GameState::Beginning;
+
 };
 
 #endif // GAME_H
