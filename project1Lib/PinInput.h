@@ -14,39 +14,91 @@
 #include "Gate.h"
 #include "States.h"
 
-class Pin;  // Forward declaration
-class PinOutput; // Forward declaration
-class Gate;      // Forward declaration
+class Pin;
+class PinOutput;
+class Gate;
 
+
+/**
+ * @class PinInput
+ * @brief Represents an input pin that can connect to output pins and receive signals.
+ */
 class PinInput : public Pins
 {
 private:
-    /// The pin this input is connected to
+    ///< Pointer to the connected output pin, if any
     PinOutput* mConnectedPin = nullptr;
+    ///< Pointer to an output pin for direct connection
     PinOutput* mConnection = nullptr;
+    ///< List of connected output pins
     std::vector<PinOutput*> mConnectedPins; // Connected output pins
+    ///< The current state of the input pin
     States mCurrentState = States::Unknown;
 
 public:
-    /// Constructor
+    /**
+     * @brief Default constructor for PinInput.
+     */
     PinInput() = default;
-    /// Destructor
+    /**
+     * @brief Default constructor for PinInput.
+     */
     virtual ~PinInput() = default;
-    /// Draw the input pin
+     /**
+     * @brief Draws the input pin on the graphics context.
+     *
+     * @param graphics A shared pointer to the graphics context for rendering.
+     */
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
-    /// Get the connected pin
+    /**
+     * @brief Gets the pin to which this input is currently connected.
+     *
+     * @return A pointer to the connected PinOutput, or nullptr if no connection exists.
+     */
     PinOutput* GetConnectedPin() const { return mConnectedPin; }
+    /**
+     * @brief Connects this input pin to a specified output pin.
+     *
+     * @param pin The PinOutput object to connect to this input.
+     */
     void ConnectTo(PinOutput* pin);
-    // void SetConnection(PinOutput* connection) { mConnectedPin = connection;}
+ ///static const int
     static const int DefaultLineLength = 20;
+ /**
+     * @brief set location
+     *
+     * @param x
+     * @param y
+     */
     void SetLocation(double x, double y) override;
+ /**
+ * @brief drag functions
+ *
+ * @param x
+ * @param y
+ */
     void OnDrag(double x, double y) override{}
+ /**
+     * @brief get connected gate
+     */
     Gate* GetConnectedGate() const;
+ /**
+     * @brief pin output
+     */
     void SetConnection(PinOutput* outputPin);
+ /**
+     * has connection
+     */
     bool HasConnection() const { return mConnectedPin != nullptr; }
+ /**
+     * get current state
+     */
     States GetCurrentState() const { return mCurrentState; }
 
-    // Declaration of SetCurrentState
+ /**
+  * @brief Default constructor for PinInput.
+  * @param state
+  */
     void SetCurrentState(States state) { mCurrentState = state; }
 };
 

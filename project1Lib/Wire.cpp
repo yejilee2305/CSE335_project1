@@ -29,10 +29,15 @@ static const int LineWidth = 3;
 /// Default length of line from the pin
 static const int DefaultLineLength = 20;
 
+/**
+ * Constructor for wire
+ */
 Wire::Wire(PinOutput* outputPin, PinInput* inputPin) : mOutputPin(outputPin), mInputPin(inputPin) {
     UpdateControlPoints(outputPin->GetX(), outputPin->GetY());
 }
-
+/**
+ * update control points function
+ */
 void Wire::UpdateControlPoints(double x, double y)
 {
     double startX = mOutputPin->GetX();
@@ -46,7 +51,9 @@ void Wire::UpdateControlPoints(double x, double y)
     mControlPoint2 = wxPoint2DDouble(endX - offset, endY);
 }
 
-
+/**
+ * Draw functionality
+ */
 void Wire::Draw(wxGraphicsContext* gc, bool showControlPoints) {
     // start and end points
     // wxPoint2DDouble p1(mOutputPin->GetX(), mOutputPin->GetY());

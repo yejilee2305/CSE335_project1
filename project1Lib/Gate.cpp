@@ -14,6 +14,10 @@
 #include "PinInput.h"
 
 // Define constant sizes for gates (kept in Gate.h)
+/**
+ * Tests if a point is within the gate's bounding box.
+ *
+ */
 bool Gate::HitTest(double x, double y) const
 {
     double left = GetX() - GetWidth() / 2;
@@ -24,11 +28,19 @@ bool Gate::HitTest(double x, double y) const
     return (x >= left && x <= right && y >= top && y <= bottom);
 }
 // Setter functions to update the gate position
+/**
+ * Sets the position of the gate and updates pin positions accordingly.
+ *
+ */
 void Gate::SetPosition(double x, double y) {
     mX = x;
     mY = y;
     UpdatePinPositions();
 }
+/**
+ * Handles mouse click events by determining if a gate is clicked.
+ *
+ */
 void Gate::OnMouseClick(double x, double y) {
     for (const auto& gate : gates) {
         if (gate->HitTest(x, y)) {
@@ -38,6 +50,9 @@ void Gate::OnMouseClick(double x, double y) {
         }
     }
 }
+/**
+ * Updates the positions of the input and output pins based on the gate's location and size.
+ */
 void Gate::UpdatePinPositions() {
     double x = GetX();
     double y = GetY();
@@ -56,24 +71,16 @@ void Gate::UpdatePinPositions() {
         mOutputPins[i].SetPosition(x + w / 2, y + yOffset);
     }
 }
+/**
+ * Initializes the positions of pins on the gate.
+ */
 void Gate::InitializePins() {
     UpdatePinPositions();
 }
-
-// void Gate::InitializePins() {
-//     // This is a base implementation. Override in derived classes if needed.
-//     mInputPins.clear();
-//     mOutputPins.clear();
-//
-//     // Add default pins (adjust as needed for each gate type)
-//     mInputPins.emplace_back(PinInput());
-//     mInputPins.emplace_back(PinInput());
-//     mOutputPins.emplace_back(PinOutput());
-//
-//     // Position the pins (you'll need to implement SetPosition in PinInput and PinOutput)
-//     UpdatePinPositions();
-// }
-
+/**
+ * Constructor for the OR gate.
+ *
+ */
 ORGate::ORGate(Game* game) : Gate(game, L""),
     inputA(States::Unknown), inputB(States::Unknown)
 {
@@ -82,18 +89,30 @@ ORGate::ORGate(Game* game) : Gate(game, L""),
     mOutputPins.emplace_back(PinOutput());
     UpdatePinPositions();
 }
-
+/**
+ * Sets the state of input pin A.
+ *
+ */
 void ORGate::SetInputA(States state) {
     inputA = state;
 }
-
+/**
+ * Sets the state of input pin B.
+ *
+ */
 void ORGate::SetInputB(States state) {
     inputB = state;
 }
+/**
+ * Sets the position of the OR gate and updates pin positions accordingly.
+ */
 void ORGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
 }
+/**
+ * Gets a pointer to the specified input pin.
+ */
 PinInput* ORGate::GetInputPin(int index) {
     if (index >= 0 && index < mInputPins.size()) {
         return &mInputPins[index];
@@ -101,26 +120,36 @@ PinInput* ORGate::GetInputPin(int index) {
     return nullptr;
 }
 
+/**
+ * Gets a pointer to the output pin.
+ */
 PinOutput* ORGate::GetOutputPin() {
     if (!mOutputPins.empty()) {
         return &mOutputPins[0];
     }
     return nullptr;
 }
-
+/**
+ * Connects an input pin of this gate to an output pin of another gate.
+ */
 void ORGate::ConnectInput(int inputIndex, PinOutput* outputPin) {
     if (inputIndex >= 0 && inputIndex < mInputPins.size()) {
         mInputPins[inputIndex].SetConnection(outputPin);
         outputPin->AddConnection(&mInputPins[inputIndex]);
     }
 }
+/**
+ * Computes the output of the OR gate based on the states of its inputs.
+ */
 States ORGate::ComputeOutput() {
     if (inputA == States::Unknown || inputB == States::Unknown) {
         return States::Unknown;
     }
     return (inputA == States::One || inputB == States::One) ? States::One : States::Zero;
 }
-
+/**
+ * Draws orgate
+ */
 void ORGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
@@ -154,17 +183,7 @@ void ORGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
     // Draw input and output lines
     graphics->SetPen(*wxBLACK_PEN);
-
-    // Calculate the x-coordinate for the input line endpoints on the curve
     double curveOffset = w * 0.2; // Adjust this value to match the curve of your gate
-
-    // // Input lines
-    // graphics->StrokeLine(x - w/2 + curveOffset, y - h/4, x - w/2 - 20, y - h/4);
-    // graphics->StrokeLine(x - w/2 + curveOffset, y + h/4, x - w/2 - 20, y + h/4);
-    //
-    // // Output line
-    // graphics->StrokeLine(x + w/2, y, x + w/2 + 20, y);
-
     // Draw pins
     graphics->StrokeLine(x + w/2, y, x + w/2 + 20, y);
     for (auto& pin : mInputPins) {
@@ -174,6 +193,9 @@ void ORGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
         pin.Draw(graphics);
     }
 }
+/**
+ *Upating the ORgate pins position
+ */
 void ORGate::UpdatePinPositions()
 {
     double x = GetX();
@@ -189,7 +211,9 @@ void ORGate::UpdatePinPositions()
     // Position output pin
     mOutputPins[0].SetPosition(x + w/2 + 20, y);
 }
-
+/**
+ * Constructor for the AND gate.
+ */
 ANDGate::ANDGate(Game* game) : Gate(game, L""),
     inputA(States::Unknown), inputB(States::Unknown)
 {
@@ -198,25 +222,37 @@ ANDGate::ANDGate(Game* game) : Gate(game, L""),
     mOutputPins.emplace_back(PinOutput());
     InitializePins();
 }
-
+/**
+ * Sets the state of input pin A.
+ */
 void ANDGate::SetInputA(States state) {
     inputA = state;
 }
-
+/**
+ * Sets the state of input pin B.
+ */
 void ANDGate::SetInputB(States state) {
     inputB = state;
 }
-
+/**
+ * Computes the output of the AND gate based on the states of its inputs.
+ */
 States ANDGate::ComputeOutput() {
     if (inputA == States::Unknown || inputB == States::Unknown) {
         return States::Unknown;
     }
     return (inputA == States::One && inputB == States::One) ? States::One : States::Zero;
 }
+/**
+ * Set positon of AND gate
+ */
 void ANDGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
 }
+/**
+ * updating pin positions
+ */
 void ANDGate::UpdatePinPositions()
 {
     double x = GetX();
@@ -231,7 +267,9 @@ void ANDGate::UpdatePinPositions()
     // Position output pin at the right end of the output line
     mOutputPins[0].SetPosition(x + w/2 + 20, y);
 }
-
+/**
+ * drawing of the AND gate
+ */
 void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
@@ -276,7 +314,9 @@ void ANDGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     }
 }
 
-
+/**
+ * Constructor for the NOT gate.
+ */
 NOTGate::NOTGate(Game* game) : Gate(game, L""),
     inputA(States::Unknown)
 {
@@ -285,23 +325,32 @@ NOTGate::NOTGate(Game* game) : Gate(game, L""),
     InitializePins();
     UpdatePinPositions();
 }
-
+/**
+ * Set input of A
+ */
 void NOTGate::SetInputA(States state) {
     inputA = state;
 }
 
-
+/**
+ * Compute output for NOT gate
+ */
 States NOTGate::ComputeOutput() {
     if (inputA == States::Unknown) {
         return States::Unknown;
     }
     return (inputA == States::One) ? States::Zero : States::One;
 }
+/**
+ * Set positon of NOT gate
+ */
 void NOTGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
 }
-
+/**
+ * updating pin positions
+ */
 void NOTGate::UpdatePinPositions()
 {
     double x = GetX();
@@ -311,7 +360,9 @@ void NOTGate::UpdatePinPositions()
     mInputPins[0].SetPosition(x - w/2 - 20, y);  // Input pin
     mOutputPins[0].SetPosition(x + w/2 + h/4 + 20, y);  // Output pin after
 }
-
+/**
+ * Drawing NOT gate
+ */
 void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
@@ -337,11 +388,6 @@ void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     graphics->SetBrush(*wxWHITE_BRUSH);
     graphics->DrawPath(path);
 
-    // graphics->StrokeLine(x - w/2, y, x - w/2 - 20, y);
-
-    // Draw output line (after the inversion circle)
-    // graphics->StrokeLine(x + w/2 + h/4, y, x + w/2 + h/4 + 20, y);
-
     // Draw the inversion circle at the point of the triangle
     graphics->DrawEllipse(x + w / 2 - h / 4, y - h / 4, h / 2, h / 2);
 
@@ -360,7 +406,9 @@ void NOTGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 }
 
 
-
+/**
+ * Constructor for the SR gate.
+ */
 SRFlipFlopGate::SRFlipFlopGate(Game* game) : Gate(game, L""),
     inputS(States::Unknown), inputR(States::Unknown)
 {
@@ -371,16 +419,23 @@ SRFlipFlopGate::SRFlipFlopGate(Game* game) : Gate(game, L""),
     InitializePins();
     UpdatePinPositions();
 }
-
+/**
+ * Set input S
+ */
 void SRFlipFlopGate::SetInputS(States state)
 {
     inputS = state;
 }
+/**
+ * Set input R
+ */
 void SRFlipFlopGate::SetInputR(States state)
 {
     inputR = state;
 }
-
+/**
+ * compute output
+ */
 States SRFlipFlopGate::ComputeOutput() {
     if (inputS == States::One && inputR == States::One) {
         outputQ = States::Unknown;
@@ -394,10 +449,16 @@ States SRFlipFlopGate::ComputeOutput() {
     }
     return outputQ;
 }
+/**
+ * Set position
+ */
 void SRFlipFlopGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
 }
+/**
+ * Update pin positions
+ */
 void SRFlipFlopGate::UpdatePinPositions()
 {
     double x = GetX();
@@ -410,6 +471,9 @@ void SRFlipFlopGate::UpdatePinPositions()
     mOutputPins[0].SetPosition(x + w/2 + 20, y - h/4);  // Q output
     mOutputPins[1].SetPosition(x + w/2 + 20, y + h/4);  // Q' output
 }
+/**
+ * Draw SR gate
+ */
 void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
@@ -472,8 +536,9 @@ void SRFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
 
 }
 
-
-
+/**
+ * D flip flop constructor
+ */
 DFlipFlopGate::DFlipFlopGate(Game* game) : Gate(game, L""),
     inputD(States::Unknown), clock(States::Unknown)
 {
@@ -484,15 +549,21 @@ DFlipFlopGate::DFlipFlopGate(Game* game) : Gate(game, L""),
     InitializePins();
     UpdatePinPositions();
 }
-
+/**
+ * Set input D
+ */
 void DFlipFlopGate::SetInputD(States state) {
     inputD = state;
 }
-
+/**
+ * Set input clock
+ */
 void DFlipFlopGate::SetClock(States state) {
     clock = state;
 }
-
+/**
+ * computing output to D flip flop
+ */
 States DFlipFlopGate::ComputeOutput() {
     if (clock == States::One) {
         outputQ = inputD;
@@ -500,11 +571,16 @@ States DFlipFlopGate::ComputeOutput() {
     }
     return outputQ;
 }
+/**
+ * Set positon
+ */
 void DFlipFlopGate::SetPosition(double x, double y) {
     Gate::SetPosition(x, y);
     UpdatePinPositions();
 }
-
+/**
+ * draw D flip flop gate
+ */
 void DFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
     auto path = graphics->CreatePath();
 
@@ -572,6 +648,9 @@ void DFlipFlopGate::Draw(std::shared_ptr<wxGraphicsContext> graphics) {
         pin.Draw(graphics);
     }
 }
+/**
+ * Updating pin positions
+ */
 void DFlipFlopGate::UpdatePinPositions()
 {
     double x = GetX();
@@ -584,30 +663,43 @@ void DFlipFlopGate::UpdatePinPositions()
     mOutputPins[0].SetPosition(x + w/2 + 20, y - h/4);  // Q output
     mOutputPins[1].SetPosition(x + w/2 + 20, y + h/4);  // Q' output
 }
-
+/**
+ * Accepting the visitor from Item
+ */
 void ORGate::Accept(ItemVisitor* visitor)
 {
     visitor->VisitORGate(this);
 }
-
+/**
+ * Accept function for Item visitor
+ */
 void ANDGate::Accept(ItemVisitor* visitor)
 {
     visitor->VisitANDGate(this);
 }
 
 // Implement Accept for NOTGate
+/**
+ * Set NOT gate for accept
+ */
 void NOTGate::Accept(ItemVisitor* visitor)
 {
     visitor->VisitNOTGate(this);
 }
 
 // Implement Accept for SRFlipFlopGate
+/**
+ * accept SR flip flop
+ */
 void SRFlipFlopGate::Accept(ItemVisitor* visitor)
 {
     visitor->VisitSRFlipFlopGate(this);
 }
 
 // Implement Accept for DFlipFlopGate
+/**
+ * Set D flip flop
+ */
 void DFlipFlopGate::Accept(ItemVisitor* visitor)
 {
     visitor->VisitDFlipFlopGate(this);

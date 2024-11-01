@@ -7,6 +7,9 @@
 #include "pch.h"
 #include "PinInput.h"
 
+/**
+ * Draw functionality
+ */
 void PinInput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     graphics->SetPen(*wxBLACK_PEN);
@@ -18,20 +21,28 @@ void PinInput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     // Draw the pin circle at the left end of the line
     graphics->DrawEllipse(mX - PinSize/2, mY - PinSize/2, PinSize, PinSize);
 }
-
+/**
+ * connect to functions
+ */
 void PinInput::ConnectTo(PinOutput* pin)
 {
     mConnectedPin = pin;
 }
-
+/**
+ * get connected gate
+ */
 Gate* PinInput::GetConnectedGate() const {
     return mConnectedPin ? mConnectedPin->GetParentGate() : nullptr;
 }
-
+/**
+ * set connection function
+ */
 void PinInput::SetConnection(PinOutput* outputPin) {
     mConnectedPin = outputPin;
 }
-
+/**
+ * Set location
+ */
 void PinInput::SetLocation(double x, double y) {
     mX = x; // Set the x coordinate
     mY = y; // Set the y coordinate
