@@ -174,15 +174,36 @@ void GameView::OnPaint(wxPaintEvent& event)
         wxFont font(NoticeSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
         gc->SetFont(font, LevelNoticeColor);
 
-        // Measure text size
         double textWidth, textHeight;
         gc->GetTextExtent(noticeText, &textWidth, &textHeight, nullptr, nullptr);
 
-        // Calculate positions to center the text
         double xPos = (mGame.GetWidth() - textWidth) / 2;
         double yPos = (mGame.GetHeight() - textHeight) / 2;
 
         gc->DrawText(noticeText, xPos, yPos);
+    }
+    if (mGame.GetState() == Game::GameState::Ending)
+    {
+        if(mEndingMessageTime == 0)
+        {
+            mEndingMessageTime = mStopWatch.Time();
+        }
+        if(mStopWatch.Time() - mEndingMessageTime <= 2000)
+        {
+            wxString noticeText = wxString::Format("Level %d Complete", mCurrentLevel);
+            wxFont font(NoticeSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+            gc->SetFont(font, LevelNoticeColor);
+
+            double textWidth, textHeight;
+            gc->GetTextExtent(noticeText, &textWidth, &textHeight, nullptr, nullptr);
+
+            double xPos = (mGame.GetWidth() - textWidth) / 2;
+            double yPos = (mGame.GetHeight() - textHeight) / 2;
+
+            gc->DrawText(noticeText, xPos, yPos);
+
+        }
+
     }
 
     // Draw dragging wire if one exists

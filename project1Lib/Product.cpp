@@ -195,6 +195,16 @@ void Product::Update(double elapsed)
             break;
         }
     }
+
+    if (mLastProductDelay > 0)
+    {
+        mLastProductDelay -= elapsed;
+        if (mLastProductDelay <= 0)
+        {
+            mLastProductDelay = 0;
+            GetGame()->SetState(Game::GameState::Ending);
+        }
+    }
 }
 
 /**
@@ -278,10 +288,22 @@ void Product::SetLocation(int x, int y)
 
 /**
  * reset the position of the product
- * 
  */
 void Product::ResetPosition()
 {
     mX = mInitialX;
     mY = mInitialY;
 }
+
+/**
+ * Logic for after the product passes the beam
+ */
+void Product::HasPassedBeam()
+{
+    if (mLast)
+    {
+        mLastProductDelay = LastProductDelay;
+    }
+    // Scoring
+}
+

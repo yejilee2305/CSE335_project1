@@ -158,7 +158,7 @@ public:
      * check if the product has passed the beam
      * @return true if the product has passed the beam
      */
-    bool HasPassedBeam() const { return mPassedBeam; }
+    bool GetPassedBeam() const { return mPassedBeam; }
 
     /**
      * set if the product has passed the beam
@@ -166,6 +166,10 @@ public:
      * @param passed true if the product has passed the beam
      */
     void SetPassedBeam(bool passed) { mPassedBeam = passed; }
+
+    void SetLast(bool isLast) { mLast = isLast; }
+
+    void HasPassedBeam();
 
 private:
     int mPlacement = 0; ///< Placement on conveyor
@@ -191,6 +195,8 @@ private:
     static const std::map<std::wstring, Properties> NamesToProperties; ///< Map of names to properties
     static const std::map<Properties, std::wstring> PropertiesToContentImages; ///< Map of properties to content images
     Conveyor* mConveyor = nullptr; ///< The conveyor the product is on
+    bool mLast = false; ///< Is the product the last one?
+    double mLastProductDelay = 0; ///< Delay for the last product
 };
 
 #endif //PRODUCT_H

@@ -16,7 +16,8 @@
 class GameView : public wxWindow
 {
 private:
-    long mMessageStartTime = 0; // Time when the level message was displayed
+    long mMessageStartTime = 0; ///< Time when the level message was displayed
+    long mEndingMessageTime = 0 ; ///< The time displaying closing message
 
     /// The game
     Game mGame;

@@ -128,7 +128,7 @@ void Game::Update(double elapsed)
     bool allProductsPassed = true;
     for (auto product : products)
     {
-        if (!product->HasPassedBeam())
+        if (!product->GetPassedBeam())
         {
             allProductsPassed = false;
             break;

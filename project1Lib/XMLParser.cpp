@@ -189,6 +189,12 @@ void XMLParser::XmlItems(wxXmlNode* node)
 
                     product->SetLocation(productX, productY);
 
+                    if (product == nullptr)
+                    {
+                        product->SetLast(true);
+                        continue;
+                    }
+
                     mGame->AddItem(product);
                 }
             }
