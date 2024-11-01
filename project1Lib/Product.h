@@ -22,6 +22,10 @@ const double ProductDefaultSize = 80.0;
 /// Size to draw content relative to the product size
 const double ContentScale = 0.8;
 
+/**
+ * class for the product
+ * 
+ */
 class Product : public Item
 {
 public:
@@ -40,17 +44,10 @@ public:
      */
     enum class Types { Color, Shape, Content };
 
+    /// maps for product properties
     static const std::map<Product::Properties, Product::Types> PropertiesToTypes;
 
-    /**
-     * Constructor for the product
-     *
-     * @param placement the placement of the product on the conveyor
-     * @param shape shape of the product
-     * @param color color of the product
-     * @param content  content inside the product
-     * @param kick  whether the product should be kicked
-     */
+
     Product(Game* game, int placement, Properties shape, Properties color, Properties content, bool kick);
 
     /**
@@ -87,51 +84,113 @@ public:
 
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
+    /**
+     * get the width of the product
+     * 
+     * @return double the width of the product 
+     */
     double GetWidth() const { return mWidth; }
+
+    /**
+     * get the content of the product
+     * 
+     * @param conveyor the conveyor the product is on
+     */
     void SetConveyor(Conveyor* conveyor) { mConveyor = conveyor; }
+
+    /**
+     * check if the product is on the conveyor
+     * 
+     * @param conveyor the conveyor to check
+     * @return true if the product is on the conveyor
+     */
     bool IsOnConveyor(const Conveyor* conveyor) const { return mConveyor == conveyor; }
+
+    /**
+     * moves the product down
+     * 
+     * @param distance the distance to move the product 
+     */
     void MoveDown(double distance) { mY += distance; }
 
 
     void SetLocation(int x, int y) override;
 
+
+    /**
+     * getter of x location
+     *
+     * @return int
+     */
     int GetX() const { return mX; }
+
+    /**
+     * getter of y location
+     * 
+     * @return int 
+     */
     int GetY() const { return mY; }
 
+    /**
+     * setter of x location
+     * 
+     * @param x x location
+     */
     void SetX(int x) { mX = x; }
+
+    /**
+     * setter of y location
+     * 
+     * @param y y location
+     */
     void SetY(int y) { mY = y; }
 
+    /**
+     * accept a visitor
+     * 
+     * @param visitor 
+     */
     void Accept(ItemVisitor* visitor) override { visitor->VisitProduct(this); }
 
     void ResetPosition();
 
+    /**
+     * check if the product has passed the beam
+     * @return true if the product has passed the beam
+     */
     bool HasPassedBeam() const { return mPassedBeam; }
+
+    /**
+     * set if the product has passed the beam
+     * 
+     * @param passed true if the product has passed the beam
+     */
     void SetPassedBeam(bool passed) { mPassedBeam = passed; }
 
 private:
-    int mPlacement = 0; // Placement on conveyor
-    Properties mShape; // Shape of the product
-    Properties mColor; // Color of the product
-    Properties mContent; // Content inside the product
-    bool mKick; // Should the product be kicked?
-    double mWidth = ProductDefaultSize; // Default width in pixels
-    double mContentScale = 0.8; // Scale of content relative to the product size
-    int mX, mY; // Position on conveyor
-    double mKickSpeed = 0;
-    bool mIsOnConveyor = true;
-    double mConveyorSpeed = 0;
-    std::unique_ptr<wxImage> mContentImage;
-    wxGraphicsBitmap mContentBitmap;
-    bool mPassedBeam = false;
+    int mPlacement = 0; ///< Placement on conveyor
+    Properties mShape; ///< Shape of the product
+    Properties mColor; ///< Color of the product
+    Properties mContent; ///< Content inside the product
+    bool mKick; ///< Should the product be kicked?
+    double mWidth = ProductDefaultSize; ///< Default width in pixels
+    double mContentScale = 0.8; ///< Scale of content relative to the product size
+    int mX; ///< x location
+    int mY; ///< y location
+    double mKickSpeed = 0; ///< Speed of the kick
+    bool mIsOnConveyor = true; ///< Is the product on the conveyor?
+    double mConveyorSpeed = 0; ///< Speed of the conveyor
+    std::unique_ptr<wxImage> mContentImage; ///< Image of the content
+    wxGraphicsBitmap mContentBitmap; ///< Bitmap of the content
+    bool mPassedBeam = false; ///< Has the product passed the beam?
 
-    int mInitialX = 0;
-    int mInitialY = 0;
+    int mInitialX = 0; ///< Initial x location
+    int mInitialY = 0; ///< Initial y location
 
 
-    // Maps for product properties
-    static const std::map<std::wstring, Properties> NamesToProperties;
-    static const std::map<Properties, std::wstring> PropertiesToContentImages;
-    Conveyor* mConveyor = nullptr;
+    static const std::map<std::wstring, Properties> NamesToProperties; ///< Map of names to properties
+    static const std::map<Properties, std::wstring> PropertiesToContentImages; ///< Map of properties to content images
+    Conveyor* mConveyor = nullptr; ///< The conveyor the product is on
 };
 
 #endif //PRODUCT_H

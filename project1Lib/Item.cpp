@@ -8,8 +8,10 @@
 #include <wx/graphics.h>
 
 /**
- * @param game the game this item is memeber of
- * @param filename the name of the file for this item
+ * constructor
+ * 
+ * @param game the game this item is in 
+ * @param filename the image file for the item
  */
 Item::Item(Game* game, const std::wstring& filename) : mGame(game)
 {
@@ -30,11 +32,11 @@ Item::Item(Game* game, const std::wstring& filename) : mGame(game)
 }
 
 /**
- * implementation from Aquarium steps
- * test to see if we hit this orbject with a mouse
- * @param x X position to test
- * @param y Y position to test
- * @return true if hit
+ * handles a click on item
+ * 
+ * @param x X location clicked on
+ * @param y Y location clicked on
+ * @return true if the item was clicked on
  */
 bool Item::HitTest(double x, double y)
 {
@@ -72,7 +74,7 @@ void Item::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     if (mItemBitmap.IsNull())
     {
-            mItemBitmap = graphics->CreateBitmapFromImage(*mItemImage);
+        mItemBitmap = graphics->CreateBitmapFromImage(*mItemImage);
     }
 
     graphics->DrawBitmap(mItemBitmap,
@@ -90,8 +92,8 @@ Item::~Item()
 }
 
 /**
- * Load the attributes for an item node.
- * @param node The Xml node we are loading the item from
+ * load the attributes for an item node.
+ * @param node the xml node we are loading the item from
  */
 void Item::XmlLoad(wxXmlNode* node)
 {

@@ -8,66 +8,86 @@
 
 #include <wx/wx.h>
 #include <string>
-#include "Item.h"  // Inherit from Item
+#include "Item.h"
 #include "Product.h"
 
-class Conveyor : public Item {
+/// Height of the conveyor
+const int ConveyorHeight = 800;
+
+/**
+ * represents a conveyor belt in the game.
+ * 
+ * the conveyor belt moves products from one end to the other.
+ */
+class Conveyor : public Item
+{
 private:
+    int mX; ///< X position of the conveyor
+    int mY; ///< Y position of the conveyor
+    int mHeight; ///< Height of the conveyor
+    int mWidth = 800; ///< Width of the conveyor
 
- int mX;
- int mY;
- int mHeight;
- int mWidth = 800;
+    /// Speed of the conveyor
+    double mSpeed;
 
- // Speed of the conveyor
- double mSpeed;
+    /// Panel location based on conveyor position
+    wxPoint mPanelLocation;
 
- // Panel location based on conveyor position
- wxPoint mPanelLocation;
+    /// If the conveyor is running
+    bool mIsRunning;
 
- // If the conveyor is running
- bool mIsRunning;
+    /// Define button rectangles for the start and stop buttons
+    static const wxRect StartButtonRect;
 
- // Define button rectangles for the start and stop buttons
- static const wxRect StartButtonRect;
- static const wxRect StopButtonRect;
+    /// Define button rectangles for the start and stop buttons
+    static const wxRect StopButtonRect;
 
- double mBeltOffset = 0;
+    /// offset of the belt
+    double mBeltOffset = 0;
 
 public:
- // Constructor
- Conveyor(Game* game, int x, int y, double speed, int height, const wxPoint& panelLocation);
- void Accept(ItemVisitor* visitor) override { visitor->VisitConveyor(this); }
+    Conveyor(Game* game, int x, int y, double speed, int height, const wxPoint& panelLocation);
 
- void AddProduct(std::shared_ptr<Product> product);
 
- void Update(double elapsed);
- void MoveProducts(double elapsed);
+    /**
+     * accepts a visitor
+     *
+     * @param visitor
+     */
+    void Accept(ItemVisitor* visitor) override { visitor->VisitConveyor(this); }
 
- // Starts the conveyor and resets the products' positions
- void Start();
+    /**
+     * adds a product to the conveyor
+     *
+     * @param product the product to add
+     */
+    void AddProduct(std::shared_ptr<Product> product);
 
- // Stops the conveyor
- void Stop();
+    void Update(double elapsed);
 
- // Resets product positions based on their initial locations
- void ResetProducts();
+    void MoveProducts(double elapsed);
 
- // Draws the conveyor and its panel
- void Draw(std::shared_ptr<wxGraphicsContext> graphics);
+    // Starts the conveyor and resets the products' positions
+    void Start();
 
- // Checks if the Start button or Stop button is clicked
- bool CheckStartButtonClick(int mouseX, int mouseY) const;
- bool CheckStopButtonClick(int mouseX, int mouseY) const;
+    // Stops the conveyor
+    void Stop();
 
- // Getters for conveyor position
- int GetX() const;
- int GetY() const;
- double GetSpeed() const;
- bool IsRunning() const;
+    // Resets product positions based on their initial locations
+    void ResetProducts();
 
+    // Draws the conveyor and its panel
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics);
+
+    // Checks if the Start button or Stop button is clicked
+    bool CheckStartButtonClick(int mouseX, int mouseY) const;
+    bool CheckStopButtonClick(int mouseX, int mouseY) const;
+
+    // Getters for conveyor position
+    int GetX() const;
+    int GetY() const;
+    double GetSpeed() const;
+    bool IsRunning() const;
 };
 
 #endif // CONVEYOR_H
-
-

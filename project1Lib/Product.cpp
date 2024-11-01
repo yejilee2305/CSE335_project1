@@ -2,7 +2,6 @@
  * @file Product.cpp
  * @author Yeji Lee
  *
- * implement constructor and getter method
  */
 
 #include "pch.h"
@@ -13,13 +12,19 @@
 #include "Game.h"
 
 
-/// Color to use for "red"
+/**
+ *  @return Ohio State Red
+ */
 const wxColour OhioStateRed(187, 0, 0);
 
-/// Color to use for "green"
+/**
+ *  @return MSU Green
+ */
 const wxColour MSUGreen(24, 69, 59);
 
-/// Color to use for "blue"
+/**
+ * @return U of M Blue
+ */
 const wxColor UofMBlue(0, 39, 76);
 
 /// Delay after last product has left beam or
@@ -65,6 +70,16 @@ const std::map<Product::Properties, std::wstring> Product::PropertiesToContentIm
 };
 
 
+/**
+ * contructor
+ * 
+ * @param game the game this item is in
+ * @param placement the placement of the product on the conveyor
+ * @param shape the shape of the product
+ * @param color the color of the product
+ * @param content the content inside the product
+ * @param kick whether the product should be kicked
+ */
 Product::Product(Game* game, int placement, Properties shape, Properties color, Properties content, bool kick)
     : Item(game, L""), mPlacement(placement), mShape(shape), mColor(color), mContent(content), mKick(kick), mX(0), mY(0)
 {
@@ -72,6 +87,11 @@ Product::Product(Game* game, int placement, Properties shape, Properties color, 
 }
 
 
+/**
+ * draw the product
+ * 
+ * @param graphics the graphics context to draw on
+ */
 void Product::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     if (!graphics)
@@ -146,7 +166,11 @@ void Product::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     }
 }
 
-
+/**
+ * update the product
+ * 
+ * @param elapsed the time since the last update
+ */
 void Product::Update(double elapsed)
 {
     if (mKick)
@@ -158,24 +182,39 @@ void Product::Update(double elapsed)
         MoveDown(mConveyor->GetSpeed() * elapsed);
 
     BeamVisitor beamVisitor;
-    for (const auto& item : GetGame()->GetItems()) {
+    for (const auto& item : GetGame()->GetItems())
+    {
         item->Accept(&beamVisitor);
     }
 
-    for (auto beam : beamVisitor.GetBeams()) {
-        if (beam->IsIntersecting(this)) {
+    for (auto beam : beamVisitor.GetBeams())
+    {
+        if (beam->IsIntersecting(this))
+        {
             SetPassedBeam(true);
             break;
         }
     }
 }
 
+/**
+ * set the product to be kicked
+ * 
+ * @param kicked whether the product should be kicked
+ * @param kickSpeed the speed at which the product should be kicked
+ */
 void Product::SetKicked(bool kicked, double kickSpeed)
 {
     mKick = kicked;
     mKickSpeed = kickSpeed;
 }
 
+/**
+ * set the product to be on the conveyor
+ * 
+ * @param onConveyor whether the product is on the conveyor
+ * @param conveyorSpeed the speed of the conveyor
+ */
 void Product::SetOnConveyor(bool onConveyor, double conveyorSpeed)
 {
     mIsOnConveyor = onConveyor;
@@ -183,28 +222,52 @@ void Product::SetOnConveyor(bool onConveyor, double conveyorSpeed)
 }
 
 
-// Getters
+/**
+ * get the placement of the product
+ * 
+ * @return int the placement of the product
+ */
 int Product::GetPlacement() const
 {
     return mPlacement;
 }
 
+/**
+ * get the shape of the product
+ * 
+ * @return Product::Properties the shape of the product
+ */
 Product::Properties Product::GetShape() const
 {
     return mShape;
 }
 
+/**
+ * get the color of the product
+ * 
+ * @return Product::Properties the color of the product
+ */
 Product::Properties Product::GetColor() const
 {
     return mColor;
 }
 
+/**
+ * check if the product should be kicked
+ * 
+ * @return bool whether the product should be kicked
+ */
 bool Product::ShouldKick() const
 {
     return mKick;
 }
 
-
+/**
+ * set the location of the product
+ * 
+ * @param x the x location
+ * @param y the y location
+ */
 void Product::SetLocation(int x, int y)
 {
     mInitialX = x;
@@ -213,6 +276,10 @@ void Product::SetLocation(int x, int y)
     mY = y;
 }
 
+/**
+ * reset the position of the product
+ * 
+ */
 void Product::ResetPosition()
 {
     mX = mInitialX;

@@ -14,10 +14,25 @@
 
 class Game;
 
+
+/**
+ * the base class for all items in the game
+ */
 class Item
 {
 protected:
+    /**
+     * constructor
+     *
+     * @param game the game this item is in
+     * @param filename the image file for the item
+     */
     Item(Game* game, const std::wstring& filename);
+
+    /**
+     * getter for the game
+     * @return the game
+     */
     Game* GetGame() const { return mGame; }
 
 private:
@@ -53,15 +68,21 @@ public:
      */
     ~Item();
 
+
+    /**
+     * accepts a visitor
+     *
+     * @param visitor the visitor to accept
+     */
     virtual void Accept(ItemVisitor* visitor) = 0;
 
     /**
-     *  getter for x of item
+     * getter for x of item
      * @return x location
      */
     int GetX() const { return mX; }
     /**
-     *  getter for y of item
+     * getter for y of item
      * @return y location
      */
     int GetY() const { return mY; }
@@ -77,26 +98,18 @@ public:
         mY = y;
     }
 
-    /**
-     * draw this item
-     * @param graphics graphic object to draw on
-     */
+
     virtual void Draw(std::shared_ptr<wxGraphicsContext> graphics);
 
     /**
-     * update the class in time
-     * @param elpased elapsed time in ms
+     * update the item
+     *
+     * @param elapsed elapsed time
      */
     virtual void Update(double elapsed)
     {
     }
 
-    /**
-     * handles a click on item
-     * @param x X location clicked on
-     * @param y Y location clicked on
-     * @return true if clicked on item
-     */
     virtual bool HitTest(double x, double y);
 
     /**
