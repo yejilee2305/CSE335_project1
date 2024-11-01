@@ -192,6 +192,7 @@ void Product::Update(double elapsed)
         if (beam->IsIntersecting(this))
         {
             SetPassedBeam(true);
+            HasPassedBeam();
             break;
         }
     }
