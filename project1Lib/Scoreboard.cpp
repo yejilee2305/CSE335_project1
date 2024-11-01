@@ -13,34 +13,55 @@
 const wxSize ScoreboardSize(380, 100);
 const int SpacingScoresToInstructions = 40;
 const int SpacingInstructionLines = 17;
-
+/**
+ * @brief Constructor for Scoreboard.
+ *
+ * @param game Pointer to the Game instance associated with the scoreboard.
+ * @param x X-coordinate for the scoreboard's position.
+ * @param y Y-coordinate for the scoreboard's position.
+ * @param goodScore The increment for the good score.
+ * @param badScore The decrement for the bad score.
+ * @param instructions Instruction text to be displayed on the scoreboard.
+ */
 Scoreboard::Scoreboard(Game* game, int x, int y, int goodScore, int badScore, wxString instructions)
     : Item(game, L""), mX(x), mY(y), mGame(game), mGoodScoreIncrement(goodScore), mBadScoreDecrement(badScore),
       mLevelScore(0), mGameScore(0)
 {
     SetInstructions(instructions);
 }
-
+/**
+ * @brief Resets the level score to zero.
+ */
 void Scoreboard::ResetLevelScore()
 {
     mLevelScore = 0;
 }
-
+/**
+ * @brief Adds the good score increment to the level score.
+ */
 void Scoreboard::AddGoodScore()
 {
     mLevelScore += mGoodScoreIncrement;
 }
-
+/**
+ * @brief Subtracts the bad score decrement from the level score.
+ */
 void Scoreboard::AddBadScore()
 {
     mLevelScore -= mBadScoreDecrement;
 }
-
+/**
+ * @brief Updates the game score by adding the level score to it.
+ */
 void Scoreboard::UpdateGameScore()
 {
     mGameScore += mLevelScore;
 }
-
+/**
+ * @brief Draws the scoreboard on the graphics context.
+ *
+ * @param graphics Shared pointer to the wxGraphicsContext where the scoreboard will be drawn.
+ */
 void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     // Draw the scoreboard box
@@ -64,7 +85,15 @@ void Scoreboard::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->SetFont(instructionFont);
     DrawWrappedText(graphics, wxString(mInstructions), mX + 10, mY + SpacingScoresToInstructions, 360);
 }
-
+/**
+ * @brief Draws wrapped text within a specified width on the graphics context.
+ *
+ * @param graphics Shared pointer to the wxGraphicsContext used for drawing text.
+ * @param text The text to wrap and draw.
+ * @param x The starting X-coordinate.
+ * @param y The starting Y-coordinate.
+ * @param maxWidth The maximum width for the text line before wrapping.
+ */
 void Scoreboard::DrawWrappedText(std::shared_ptr<wxGraphicsContext> graphics, const wxString& text,
                                  int x, int y, int maxWidth)
 {
@@ -79,27 +108,47 @@ void Scoreboard::DrawWrappedText(std::shared_ptr<wxGraphicsContext> graphics, co
         y += height;
     }
 }
-
+/**
+ * @brief Sets the instructions text to be displayed on the scoreboard.
+ *
+ * @param instructions The instruction text to display.
+ */
 void Scoreboard::SetInstructions(const wxString& instructions)
 {
     mInstructions = instructions;
 }
-
+/**
+ * @brief Gets the current level score.
+ *
+ * @return int The level score.
+ */
 int Scoreboard::GetLevelScore() const
 {
     return mLevelScore;
 }
-
+/**
+ * @brief Gets the current game score.
+ *
+ * @return int The game score.
+ */
 int Scoreboard::GetGameScore() const
 {
     return mGameScore;
 }
-
+/**
+ * @brief Gets the X-coordinate of the scoreboard.
+ *
+ * @return int The X-coordinate.
+ */
 int Scoreboard::GetX() const
 {
     return mX;
 }
-
+/**
+ * @brief Gets the Y-coordinate of the scoreboard.
+ *
+ * @return int The Y-coordinate.
+ */
 int Scoreboard::GetY() const
 {
     return mY;
