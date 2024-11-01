@@ -129,24 +129,37 @@ void PinOutput::SetLocation(double x, double y)
 
 void PinOutput::DrawConnection(std::shared_ptr<wxGraphicsContext> graphics, PinInput* inputPin)
 {
-    double startX = GetX();
-    double startY = GetY();
-    double endX = inputPin->GetX();
-    double endY = inputPin->GetY();
+    // start and end poinrts
+    wxPoint2DDouble p1(GetX(), GetY());
+    wxPoint2DDouble p4(inputPin->GetX(), inputPin->GetY());
 
-    double offset = std::min(BezierMaxOffset, std::abs(endX - startX));
+    double distance = std::abs(p4.m_x - p1.m_x);
+    double offset = std::min(BezierMaxOffset, distance);
 
-    wxPoint2DDouble p1(startX, startY);
-    wxPoint2DDouble p2(startX + offset, startY);
-    wxPoint2DDouble p3(endX - offset, endY);
-    wxPoint2DDouble p4(endX, endY);
+    // control points
+    wxPoint2DDouble p2(p1.m_x + offset, p1.m_y);
+    wxPoint2DDouble p3(p4.m_x - offset, p4.m_y);
 
-    graphics->SetPen(wxPen(*wxBLACK, LineWidth));
-    graphics->StrokeLine(p1.m_x, p1.m_y, p2.m_x, p2.m_y);
-    graphics->StrokeLine(p3.m_x, p3.m_y, p4.m_x, p4.m_y);
+    wxColour colorToUse;
+    States state = GetCurrentState();
 
+    if (state == States::One)
+    {
+        colorToUse = ConnectionColorOne; // Red
+    }
+    else if (state == States::Zero)
+    {
+        colorToUse = ConnectionColorZero; // Black
+    }
+    else
+    {
+        colorToUse = ConnectionColorUnknown; // Grey
+    }
+
+    // draws the curve
     wxGraphicsPath path = graphics->CreatePath();
-    path.MoveToPoint(p2);
-    path.AddCurveToPoint(p2.m_x + offset / 2, p2.m_y, p3.m_x - offset / 2, p3.m_y, p3.m_x, p3.m_y);
+    path.MoveToPoint(p1);
+    path.AddCurveToPoint(p2.m_x, p2.m_y, p3.m_x, p3.m_y, p4.m_x, p4.m_y);
+    graphics->SetPen(wxPen(colorToUse, LineWidth));
     graphics->StrokePath(path);
 }
