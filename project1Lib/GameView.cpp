@@ -234,9 +234,9 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
 
+    ConveyorVisitor conveyorVisitor;
     for (const auto& item : game->GetItems())
     {
-        ConveyorVisitor conveyorVisitor;
         item->Accept(&conveyorVisitor);
         if (conveyorVisitor.IsConveyor())
         {
