@@ -4,7 +4,7 @@
  *
  *
  */
- 
+
 #ifndef TEAM_H
 #define TEAM_H
 
@@ -12,17 +12,16 @@
 #include <vector>
 #include <wx/wx.h>
 
-class Team {
+class Team
+{
 private:
- std::vector <std::string> mNoises;
+    std::vector<std::string> mNoises;
 
 public:
- Team();
+    Team();
 
- void TriggerNoise();
-
+    std::string TriggerNoise();
 };
-
 
 
 #endif //TEAM_H

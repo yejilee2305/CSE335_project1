@@ -14,6 +14,7 @@
 #include "Conveyor.h"
 #include "Wire.h"
 #include "Beam.h"
+#include "Team.h"
 
 class Game
 {
@@ -36,6 +37,7 @@ public:
 
     void SetVirtualWidth(int width) { mVirtualWidth = width; }
     void SetVirtualHeight(int height) { mVirtualHeight = height; }
+    Team& GetTeam() { return mTeam; }
 
     std::shared_ptr<Item> HitTestGate(double x, double y);
 
@@ -86,7 +88,10 @@ private:
 
     void StartNextLevel();
 
+
     std::shared_ptr<Sparty> sparty;
+
+    Team mTeam;
 };
 
 #endif // GAME_H

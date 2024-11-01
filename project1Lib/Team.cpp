@@ -8,13 +8,19 @@
 
 Team::Team()
 {
- mNoises = {"Pow!", "Bam!", "Wham!", "Boom!", "Zap!"};
+    mNoises = {"Pow!", "Bam!", "Wham!", "Boom!", "Zap!"};
 }
 
-void Team::TriggerNoise()
+std::string Team::TriggerNoise()
 {
- int randomIndex = rand() % mNoises.size();
- std::string noise = mNoises[randomIndex];
+    if (mNoises.empty())
+    {
+        return "";
+    }
 
- wxLogMessage(wxString::FromAscii(noise.c_str()));
+    int randomIndex = rand() % mNoises.size();
+    std::string noise = mNoises[randomIndex];
+
+
+    return noise;
 }

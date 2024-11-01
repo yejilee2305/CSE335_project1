@@ -97,11 +97,12 @@ void Game::ComputeGateOutputs()
  */
 void Game::Update(double elapsed)
 {
-    // DO NOT REMOVE THIS
+    //---- DO NOT REMOVE THIS
     for (auto& item : mItems)
     {
         item->Update(elapsed);
     }
+    //---- DO NOT REMOVE THIS
 
     BeamVisitor beamVisitor;
     for (const auto& item : mItems)
@@ -120,6 +121,7 @@ void Game::Update(double elapsed)
         }
     }
 
+    // CANT HAVE THIS, NEED TO USE VISITOR 💥💥💥
     if (anyBeamBroken && sparty)
     {
         sparty->Kick();
