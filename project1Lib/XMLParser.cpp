@@ -112,6 +112,8 @@ void XMLParser::XmlItems(wxXmlNode* node)
 
             int lastPlacement = 0;
 
+            shared_ptr<Product> lastProduct = nullptr;
+
             auto productNode = node->GetChildren();
             for (; productNode; productNode = productNode->GetNext())
             {
@@ -189,14 +191,13 @@ void XMLParser::XmlItems(wxXmlNode* node)
 
                     product->SetLocation(productX, productY);
 
-                    if (product == nullptr)
-                    {
-                        product->SetLast(true);
-                        continue;
-                    }
-
                     mGame->AddItem(product);
+                    lastProduct = product;
                 }
+            }
+            if (lastProduct)
+            {
+                lastProduct->SetLast(true);
             }
         }
         else if (name == L"scoreboard")
