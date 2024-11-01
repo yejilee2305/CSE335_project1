@@ -159,13 +159,14 @@ void GameView::OnPaint(wxPaintEvent& event)
     mGame.OnDraw(gc, rect.GetWidth(), rect.GetHeight());
 
     // Display level message if needed
-    if (mDisplayLevelMessage)
+    if (mDisplayLevelMessage && mGame.GetState() == Game::GameState::Beginning)
     {
         long elapsedTime = mStopWatch.Time() - mMessageStartTime;
 
         if (elapsedTime > 2000)
         {
             mDisplayLevelMessage = false;
+            mGame.SetState(Game::GameState::Playing);
             Refresh();
             return;
         }

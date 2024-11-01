@@ -67,7 +67,11 @@ public:
     */
     GameState GetState() const {return mState;}
 
-
+    /**
+    * Set the game state.
+    * @param state New state to set
+    */
+    void SetState(GameState state) { mState = state; }
 
 private:
     double mVirtualWidth;
