@@ -12,7 +12,6 @@
 
 #include "Pins.h"
 #include <vector>
-#include "Gate.h"
 #include <wx/colour.h>
 #include "States.h"
 

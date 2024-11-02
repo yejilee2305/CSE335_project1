@@ -125,42 +125,6 @@ void Game::Update(double elapsed)
         item->Accept(&productVisitor);
     }
     const auto& products = productVisitor.GetProducts();
-
-    bool allProductsPassed = true;
-    for (auto product : products)
-    {
-        if (!product->GetPassedBeam())
-        {
-            allProductsPassed = false;
-            break;
-        }
-    }
-
-    if (allProductsPassed && !anyBeamBroken)
-    {
-        if (!mAllProductsPassed)
-        {
-            // start the 3-second timer
-            mAllProductsPassed = true;
-            mPassTimer = 0.0;
-        }
-        else
-        {
-            mPassTimer += elapsed;
-            if (mPassTimer >= 3.0)
-            {
-                StartNextLevel();
-                mAllProductsPassed = false;
-                mPassTimer = 0.0;
-            }
-        }
-    }
-    else
-    {
-        // if not all products have passed or any beam is broken, reset the timer
-        mAllProductsPassed = false;
-        mPassTimer = 0.0;
-    }
 }
 
 /**
@@ -314,29 +278,14 @@ std::shared_ptr<Item> Game::HitTestGate(double x, double y)
 void Game::Clear()
 {
     mItems.clear();
-
-    mAllProductsPassed = false;
-    mPassTimer = 0.0;
 }
 
 
 void Game::StartNextLevel()
 {
     mCurrentLevel += 1;
-
-    if (mCurrentLevel >= 9)
-    {
-        // closes the program
-        wxWindow* mainWindow = wxTheApp->GetTopWindow();
-        if (mainWindow)
-        {
-            mainWindow->Close(true);
-        }
-        return;
-    }
-
     std::wstring nextLevelFile = L"levels/level" + std::to_wstring(mCurrentLevel) + L".xml";
-
+    Clear();
     Load(nextLevelFile);
 }
 

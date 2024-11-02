@@ -35,8 +35,10 @@ private:
     /// The timer that allows for animation
     wxTimer mTimer;
 
+    /// The stopwatch that assists in animation
     wxStopWatch mStopWatch;
 
+    /// The current time
     long mTime = 0;
 
 public:
@@ -60,6 +62,10 @@ public:
     void AddGate(std::shared_ptr<Gate> gate);
     void ToggleControlPoints();
     void DisplayLevelMessage(int level);
+    /**
+     * Getter for Game
+     * @return The Game
+     */
     Game* GetGame() { return &mGame; }
 };
 

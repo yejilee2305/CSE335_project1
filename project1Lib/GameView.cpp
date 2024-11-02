@@ -201,13 +201,21 @@ void GameView::OnPaint(wxPaintEvent& event)
             double yPos = (mGame.GetHeight() - textHeight) / 2;
 
             gc->DrawText(noticeText, xPos, yPos);
+
+        }
+        else if (mStopWatch.Time() - mEndingMessageTime > 2000) // After displaying the ending message
+        {
+            mGame.SetState(Game::GameState::Beginning);
+            mGame.StartNextLevel();
+            DisplayLevelMessage(mGame.GetCurrentLevel());
+            Refresh();
         }
     }
-
-    // Draw dragging wire if one exists
 }
 
-
+/**
+ * Allows ability to show or hide control points
+ */
 void GameView::ToggleControlPoints()
 {
     mGame.SetShowControlPoints(!mGame.GetShowControlPoints());
@@ -245,7 +253,7 @@ void GameView::OnLeftDown(wxMouseEvent& event)
                 Refresh();
                 return;
             }
-            else if (conveyor->CheckStopButtonClick(gameX, gameY))
+            if (conveyor->CheckStopButtonClick(gameX, gameY))
             {
                 conveyor->Stop();
                 Refresh();
@@ -304,7 +312,7 @@ void GameView::OnLeftUp(wxMouseEvent& event)
     mSelectedOutputPin = nullptr;
     mDraggingWire = nullptr;
     mGrabbedGate = nullptr;
-    Refresh();;
+    Refresh();
 }
 
 
@@ -345,23 +353,6 @@ void GameView::AddGate(std::shared_ptr<Gate> gate)
 
     // Request a repaint to show the new gate
     Refresh();
-}
-
-/**
- * Handles the addition of an OR gate.
- * @param event The event triggered by the menu selection
- */
-void GameView::OnAddORGate(wxCommandEvent& event)
-{
-    // Create an OR gate and set its initial position
-    auto orGate = std::make_shared<ORGate>(&mGame);
-    orGate->SetPosition(100, 100);
-
-    // Add the OR gate to the game
-    mGame.AddGate(orGate);
-
-    // Print to console for debugging
-    std::cout << "yay" << std::endl;
 }
 
 /**
@@ -420,6 +411,10 @@ auto GameView::OnAddDFLipFlopGate(wxCommandEvent& event) -> void
     mGame.AddGate(dFlipFlop);
 }
 
+/**
+ * Displays the beginning message for each level start
+ * @param level The current level to display in message
+ */
 void GameView::DisplayLevelMessage(int level)
 {
     mCurrentLevel = level;
@@ -427,6 +422,9 @@ void GameView::DisplayLevelMessage(int level)
     mMessageStartTime = mStopWatch.Time();
 }
 
+/**
+ * Creates a timer for animation
+ */
 void GameView::OnTimer(wxTimerEvent&)
 {
     auto newTime = mStopWatch.Time();
