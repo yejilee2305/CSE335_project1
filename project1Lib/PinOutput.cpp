@@ -93,7 +93,7 @@ void PinOutput::OnDrag(double x, double y)
         {
             if (inputPin->HitTest(x, y)) // Assuming HitTest checks if the pin is in range
             {
-                ConnectTo(inputPin); // Connect if the input pin is hit
+                ConnectToInput(inputPin); // Connect if the input pin is hit
             }
         }
     }
@@ -103,12 +103,16 @@ void PinOutput::OnDrag(double x, double y)
 /**
  * Connection
  */
-void PinOutput::ConnectTo(PinInput* pin)
+void PinOutput::ConnectToInput(PinInput* pin)
 {
+    // checks pin is not nullptr and checks if pin is already in mConnectedPins
+    // ensure pin is valid and not connected already
     if (pin && std::find(mConnectedPins.begin(), mConnectedPins.end(), pin) == mConnectedPins.end())
     {
+        // add pin to mConnectedPins vector, PinOutput is now conected to pin
         mConnectedPins.push_back(pin);
-        pin->ConnectTo(this);
+        // add line to mConectedPins
+        pin->ConnectToOutput(this);
     }
 }
 /**
@@ -129,7 +133,7 @@ void PinOutput::DisconnectFrom(PinInput* pin)
     if (it != mConnectedPins.end())
     {
         mConnectedPins.erase(it);
-        pin->ConnectTo(nullptr);
+        pin->ConnectToOutput(nullptr);
     }
 }
 /**

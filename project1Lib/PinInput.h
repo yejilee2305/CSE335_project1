@@ -61,7 +61,7 @@ public:
      *
      * @param pin The PinOutput object to connect to this input.
      */
-    void ConnectTo(PinOutput* pin);
+    void ConnectToOutput(PinOutput* pin);
  ///static const int
     static const int DefaultLineLength = 20;
  /**
@@ -100,6 +100,8 @@ public:
   * @param state
   */
     void SetCurrentState(States state) { mCurrentState = state; }
+
+ const std::vector<PinOutput*>& GetConnectedPins() const {return mConnectedPins;}
 };
 
 #endif // PININPUT_H

@@ -63,7 +63,7 @@ public:
      * Connects this output pin to an input pin.
      * @param pin Pointer to the input pin to connect.
      */
-    void ConnectTo(PinInput* pin);
+    void ConnectToInput(PinInput* pin);
     /**
      * Disconnects this output pin from an input pin.
      * @param pin Pointer to the input pin to disconnect from.

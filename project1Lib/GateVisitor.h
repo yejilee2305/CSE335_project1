@@ -105,6 +105,7 @@ private:
     double mX;
     double mY;
     PinOutput* mSelectedOutputPin;
+    PinInput* mSelectedInputPin;
 
 public:
     GateOutputPinHitTestVisitor(double x, double y)
@@ -177,6 +178,14 @@ public:
         if (beam->GetOutputPin()->HitTest(mX, mY))
         {
             mSelectedOutputPin = beam->GetOutputPin();
+        }
+    }
+
+    void VisitSparty(Sparty* sparty) override
+    {
+        if (sparty->GetInputPin()->HitTest(mX, mY))
+        {
+            mSelectedInputPin = sparty->GetInputPin();
         }
     }
 

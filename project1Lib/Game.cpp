@@ -53,8 +53,9 @@ void Game::StartLevel(int levelNumber)
 
 void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
 {
-    inputPin->SetConnection(outputPin);
-    outputPin->ConnectTo(inputPin);
+    //inputPin->SetConnection(outputPin);
+    inputPin->ConnectToOutput(outputPin);
+    outputPin->ConnectToInput(inputPin);
 }
 
 

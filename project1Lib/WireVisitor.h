@@ -28,15 +28,15 @@ public:
     {
     }
 
-    void VisitWire(Wire* wire) override
-    {
-        PinOutput* outputPin = wire->GetOutputPin();
-        PinInput* inputPin = wire->GetInputPin();
-        if (outputPin && inputPin)
-        {
-            mGame->AddWire(outputPin, inputPin);
-        }
-    }
+    // void VisitWire(Wire* wire) override
+    // {
+    //     PinOutput* outputPin = wire->GetOutputPin();
+    //     PinInput* inputPin = wire->GetInputPin();
+    //     if (outputPin && inputPin)
+    //     {
+    //         mGame->AddWire(outputPin, inputPin);
+    //     }
+    // }
 };
 
 
@@ -65,31 +65,45 @@ public:
     {
     }
 
-    void VisitGate(Gate* gate) override
-    {
-        for (auto& outputPin : gate->GetOutputPins())
-        {
-            for (auto inputPin : outputPin.GetConnectedPins())
-            {
-                Wire wire(&outputPin, inputPin);
-                wire.Draw(mGraphics, mShowControlPoints);
-            }
-        }
-    }
-
-    void VisitBeam(Beam* beam) override
-    {
-        PinOutput* outputPin = beam->GetOutputPin();
-        for (auto inputPin : outputPin->GetConnectedPins())
-        {
-            if (inputPin)
-            {
-                Wire wire(outputPin, inputPin);
-                wire.Draw(mGraphics, mShowControlPoints);
-            }
-        }
-    }
-
+    // void VisitGate(Gate* gate) override
+    // {
+    //     for (auto& outputPin : gate->GetOutputPins())
+    //     {
+    //         for (auto inputPin : outputPin.GetConnectedPins())
+    //         {
+    //             Wire wire(&outputPin, inputPin);
+    //             wire.Draw(mGraphics, mShowControlPoints);
+    //         }
+    //     }
+    // }
+    //
+    // // void VisitBeam(Beam* beam) override
+    // // {
+    // //
+    // //     PinOutput* outputPin = beam->GetOutputPin();
+    // //     for (auto inputPin : outputPin->GetConnectedPins())
+    // //     {
+    // //         if (inputPin)
+    // //         {
+    // //             //Wire wire(outputPin, inputPin);
+    // //             //wire.Draw(mGraphics, mShowControlPoints);
+    // //         }
+    // //     }
+    // // }
+    //
+    // void VisitSparty(Sparty* sparty) override
+    // {
+    //     PinInput* inputPin = sparty->GetInputPin();
+    //     for (auto outputPin : inputPin->GetConnectedPins())
+    //     {
+    //         if (outputPin)
+    //         {
+    //             Wire wire(outputPin, inputPin);
+    //             //wire.Draw(mGraphics, mShowControlPoints);
+    //         }
+    //     }
+    // }
+    //
 
 };
 #endif //WIREVISITOR_H

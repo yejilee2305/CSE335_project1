@@ -323,6 +323,7 @@ void GameView::OnMouseMove(wxMouseEvent& event)
     auto xOffset = game->GetXOffset();
     auto yOffset = game->GetYOffset();
 
+
     double gameX = (x - xOffset) / scale;
     double gameY = (y - yOffset) / scale;
 
