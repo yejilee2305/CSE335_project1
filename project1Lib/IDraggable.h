@@ -22,7 +22,7 @@ public:
      */
     virtual void SetLocation(double x, double y) = 0;
     /**
-     * Deconstructor
+     * Virtual Deconstructor
      */
     virtual ~IDraggable() = default;
     /**
