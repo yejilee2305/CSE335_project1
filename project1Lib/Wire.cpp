@@ -30,13 +30,24 @@ static const int LineWidth = 3;
 static const int DefaultLineLength = 20;
 
 /**
- * Constructor for wire
+ * @brief Constructs a Wire between the specified output and input pins.
+ *
+ * @param outputPin The PinOutput object that serves as the wire’s starting point.
+ * @param inputPin The PinInput object that serves as the wire’s endpoint.
+ *
+ * @details This constructor also initializes the control points of the wire based on the output pin's position.
  */
 Wire::Wire(PinOutput* outputPin, PinInput* inputPin) : mOutputPin(outputPin), mInputPin(inputPin) {
     UpdateControlPoints(outputPin->GetX(), outputPin->GetY());
 }
 /**
- * update control points function
+ * @brief Updates the control points for the Bezier curve that represents the wire.
+ *
+ * @param x The X coordinate for the new endpoint of the wire.
+ * @param y The Y coordinate for the new endpoint of the wire.
+ *
+ * @details This function calculates the offset based on the distance between the start and end points
+ * and updates the control points accordingly.
  */
 void Wire::UpdateControlPoints(double x, double y)
 {
@@ -52,7 +63,13 @@ void Wire::UpdateControlPoints(double x, double y)
 }
 
 /**
- * Draw functionality
+ * @brief Draws the wire between output and input pins on a wxGraphicsContext.
+ *
+ * @param gc A pointer to the wxGraphicsContext object used for drawing the wire.
+ * @param showControlPoints If true, control points of the Bezier curve are displayed for debugging purposes.
+ *
+ * @details This function creates a Bezier curve between the output and input pins. The wire color is determined by
+ * the state of the output pin and can vary between a high (red), low (black), or unknown (gray) state.
  */
 void Wire::Draw(wxGraphicsContext* gc, bool showControlPoints) {
     // start and end points

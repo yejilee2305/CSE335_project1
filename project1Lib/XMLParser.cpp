@@ -16,17 +16,23 @@
 
 using namespace std;
 
+
 /**
- * Constructor
- * @param game The game to load levels into
+ * @brief Constructor for XMLParser.
+ *
+ * @param game Pointer to the Game object that the XML data will be loaded into.
  */
 XMLParser::XMLParser(Game* game) : mGame(game)
 {
 }
 
 /**
- * Loads in all the values from the XML file into the member variables in Game.
- * @param filename The filename of the XML file to be loaded.
+ * @brief Loads data from an XML file and initializes game items.
+ *
+ * @details Parses the specified XML file to extract game settings, including virtual dimensions and items like sensors, conveyors, products, scoreboards, and beams.
+ * Each item is added to the game as it is parsed.
+ *
+ * @param filename The file path of the XML file to be parsed.
  */
 void XMLParser::Load(const wxString& filename)
 {
@@ -62,8 +68,12 @@ void XMLParser::Load(const wxString& filename)
 }
 
 /**
- * Handle a node of type item.
- * @param node Xml node
+ * @brief Processes each XML node to create game items based on node attributes.
+ *
+ * @details This function handles the creation and configuration of various game items based on the node type. Supported items include sensors, conveyors,
+ * products, scoreboards, beams, and Sparty. Each item is configured with its specific properties and added to the game.
+ *
+ * @param node Pointer to the XML node containing item data.
  */
 void XMLParser::XmlItems(wxXmlNode* node)
 {
