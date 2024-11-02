@@ -77,5 +77,19 @@ public:
         }
     }
 
+    void VisitBeam(Beam* beam) override
+    {
+        PinOutput* outputPin = beam->GetOutputPin();
+        for (auto& inputPin : outputPin->GetConnectedPins())
+        {
+            if (inputPin)
+            {
+                Wire wire(outputPin, inputPin);
+                wire.Draw(mGraphics, mShowControlPoints);
+            }
+        }
+    }
+
+
 };
 #endif //WIREVISITOR_H

@@ -87,20 +87,31 @@ void Beam::Update(double elapsed)
     mBroken = false;
 
     ProductVisitor productVisitor;
-    for (const auto& item : GetGame()->GetItems()) {
+    for (const auto& item : GetGame()->GetItems())
+    {
         item->Accept(&productVisitor);
     }
 
-    for (auto product : productVisitor.GetProducts()) {
-        if (IsIntersecting(product)) {
+    for (auto product : productVisitor.GetProducts())
+    {
+        if (IsIntersecting(product))
+        {
             mBroken = true;
             product->SetPassedBeam(true);
             break;
         }
     }
 
-    if (wasBroken != mBroken) {
-        // set the output pin
+    if (wasBroken != mBroken)
+    {
+        if (mBroken)
+        {
+            mOutputPin->SetCurrentState(States::Zero); // beam is broken, output is 0
+        }
+        else
+        {
+            mOutputPin->SetCurrentState(States::One); // beam is intact, output is 1
+        }
     }
 }
 

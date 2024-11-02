@@ -6,6 +6,7 @@
 // PinInput.cpp
 #include "pch.h"
 #include "PinInput.h"
+#include "PinOutput.h"
 
 /**
  * Draw functionality

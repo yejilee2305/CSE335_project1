@@ -184,11 +184,11 @@ void GameView::OnPaint(wxPaintEvent& event)
     }
     if (mGame.GetState() == Game::GameState::Ending)
     {
-        if(mEndingMessageTime == 0)
+        if (mEndingMessageTime == 0)
         {
             mEndingMessageTime = mStopWatch.Time();
         }
-        if(mStopWatch.Time() - mEndingMessageTime <= 2000)
+        if (mStopWatch.Time() - mEndingMessageTime <= 2000)
         {
             wxString noticeText = wxString::Format("Level %d Complete", mCurrentLevel);
             wxFont font(NoticeSize, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
@@ -201,6 +201,7 @@ void GameView::OnPaint(wxPaintEvent& event)
             double yPos = (mGame.GetHeight() - textHeight) / 2;
 
             gc->DrawText(noticeText, xPos, yPos);
+
         }
         else if (mStopWatch.Time() - mEndingMessageTime > 2000) // After displaying the ending message
         {
@@ -239,9 +240,9 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     double gameX = (mouseX - xOffset) / scale;
     double gameY = (mouseY - yOffset) / scale;
 
+    ConveyorVisitor conveyorVisitor;
     for (const auto& item : game->GetItems())
     {
-        ConveyorVisitor conveyorVisitor;
         item->Accept(&conveyorVisitor);
         if (conveyorVisitor.IsConveyor())
         {
@@ -273,7 +274,9 @@ void GameView::OnLeftDown(wxMouseEvent& event)
     Gate* grabbedGate = grabVisitor.GetGrabbedGate();
     if (grabbedGate)
     {
-        mGrabbedGate = std::shared_ptr<Gate>(grabbedGate, [](Gate*){}); // no one owns the pointer
+        mGrabbedGate = std::shared_ptr<Gate>(grabbedGate, [](Gate*)
+        {
+        }); // no one owns the pointer
         return;
     }
 }

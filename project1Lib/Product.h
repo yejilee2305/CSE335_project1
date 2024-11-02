@@ -45,8 +45,10 @@ public:
     enum class Types { Color, Shape, Content };
 
     /// maps for product properties
-    static const std::map<Product::Properties, Product::Types> PropertiesToTypes;
+    static const std::map<Properties, Types> PropertiesToTypes;
 
+    static const std::map<std::wstring, Properties> NamesToProperties; ///< Map of names to properties
+    static const std::map<Properties, std::wstring> PropertiesToContentImages; ///< Map of properties to content images
 
     Product(Game* game, int placement, Properties shape, Properties color, Properties content, bool kick);
 
@@ -192,8 +194,6 @@ private:
     int mInitialY = 0; ///< Initial y location
 
 
-    static const std::map<std::wstring, Properties> NamesToProperties; ///< Map of names to properties
-    static const std::map<Properties, std::wstring> PropertiesToContentImages; ///< Map of properties to content images
     Conveyor* mConveyor = nullptr; ///< The conveyor the product is on
     bool mLast = false; ///< Is the product the last one?
     double mLastProductDelay = 0; ///< Delay for the last product

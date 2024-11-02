@@ -14,7 +14,6 @@
 #include <wx/wx.h>
 #include <memory>
 #include "Item.h"
-#include "Product.h"
 #include "PinInput.h"
 
 class Sparty : public Item
