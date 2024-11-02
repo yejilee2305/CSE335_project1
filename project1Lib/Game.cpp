@@ -65,7 +65,7 @@ void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
  * @param visited  the visited set
  * @param Stack  the stack
  */
-void Game::TopologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack)
+void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack)
 {
     visited.insert(gate);
 
