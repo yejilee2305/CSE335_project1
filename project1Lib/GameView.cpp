@@ -201,9 +201,14 @@ void GameView::OnPaint(wxPaintEvent& event)
             double yPos = (mGame.GetHeight() - textHeight) / 2;
 
             gc->DrawText(noticeText, xPos, yPos);
-
         }
-
+        else if (mStopWatch.Time() - mEndingMessageTime > 2000) // After displaying the ending message
+        {
+            mGame.SetState(Game::GameState::Beginning);
+            mGame.StartNextLevel();
+            DisplayLevelMessage(mGame.GetCurrentLevel());
+            Refresh();
+        }
     }
 
     // Draw dragging wire if one exists

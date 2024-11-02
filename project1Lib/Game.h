@@ -73,6 +73,8 @@ public:
     */
     void SetState(GameState state) { mState = state; }
 
+    void StartNextLevel();
+
 private:
     double mVirtualWidth;
     double mVirtualHeight;
@@ -80,12 +82,8 @@ private:
     double mXOffset;
     double mYOffset;
     std::wstring mImagesDirectory;
-    bool mLastProductPassed = false;
-    double mLastProductTimer = 0;
-    double mLastProductDelay = 1.0;
 
-    bool mAllProductsPassed = false;
-    double mPassTimer = 0.0;
+    double mPassTimer = 0;
 
     int mCurrentLevel = 0;
 
@@ -95,9 +93,6 @@ private:
     std::shared_ptr<Item> mGrabbedItem = nullptr;
 
     bool mShowControlPoints = false;
-
-    void StartNextLevel();
-
 
     std::shared_ptr<Sparty> sparty;
 
