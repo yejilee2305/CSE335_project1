@@ -12,6 +12,10 @@
 
 class GameView;
 
+/**
+ * class for the main frame
+ * 
+ */
 class MainFrame : public wxFrame
 {
 private:

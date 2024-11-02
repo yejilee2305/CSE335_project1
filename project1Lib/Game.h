@@ -16,6 +16,10 @@
 #include "Team.h"
 #include "ItemVisitor.h"
 
+/**
+ * class for the game
+ * 
+ */
 class Game
 {
 public:

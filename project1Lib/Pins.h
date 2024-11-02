@@ -15,6 +15,10 @@
 
 class Pins;  // Forward declaration
 
+/**
+ * class for the pins
+ * 
+ */
 class Pins : public IDraggable
 {
 protected:

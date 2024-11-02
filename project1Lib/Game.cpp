@@ -23,7 +23,9 @@
 #include "GateVisitor.h"
 #include "ProductVisitor.h"
 #include "WireVisitor.h"
+#include "SpartyVisitor.h"
 
+/// border for the game to make it black
 const int BigNumberBorder = 2000;
 
 /**
@@ -58,7 +60,13 @@ void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
     outputPin->ConnectToInput(inputPin);
 }
 
-
+/**
+ * used for topological sort of the gates
+ * 
+ * @param gate  the gate
+ * @param visited  the visited set
+ * @param Stack  the stack
+ */
 void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack)
 {
     visited.insert(gate);
@@ -113,10 +121,19 @@ void Game::Update(double elapsed)
         }
     }
 
-    // CANT HAVE THIS, NEED TO USE VISITOR 💥💥💥
-    if (anyBeamBroken && sparty)
+    if (anyBeamBroken)
     {
-        sparty->Kick();
+        SpartyVisitor spartyVisitor;
+        for (const auto& item : mItems)
+        {
+            item->Accept(&spartyVisitor);
+        }
+
+        const auto& spartys = spartyVisitor.GetSpartys();
+        for (auto sparty : spartys)
+        {
+            sparty->Kick();
+        }
     }
 
     ProductVisitor productVisitor;

@@ -21,16 +21,30 @@ class PinInput;
 class PinOutput;
 
 
-///orGate size
-const wxSize OrGateSize(75, 50);
-//andGate size
-const wxSize AndGateSize(75, 50);
-///notGate size
-const wxSize NotGateSize(50, 50);
-///Srgate size
+/**
+ * @return the size of the OR gate
+ */
+const wxSize OrGateSize(75, 50); 
+
+/**
+ * @return the size of the AND gate
+ */
+const wxSize AndGateSize(75, 50); 
+
+/**
+ * @return the size of the NOT gate
+ */
+const wxSize NotGateSize(50, 50); 
+
+/**
+ * @return the size of the SR flip flop gate
+ */
 const wxSize SRFlipFlopSize(50, 75);
-///d flip flop gate size
-const wxSize DFlipFlopSize(50, 75);
+
+/**
+ * @return the size of the D flip flop gate
+ */
+const wxSize DFlipFlopSize(50, 75); 
 
 
 /**
@@ -85,9 +99,18 @@ public:
      * default destructor
      */
     virtual ~Gate() = default;
-    /// Getter functions for the position of the gate
+    
+    /**
+     * getter for x
+     * 
+     * @return double 
+     */
     double GetX() const { return mX; }
-    /// Getter functions for the position of the gate
+    /**
+     * getter for y
+     * 
+     * @return double 
+     */
     double GetY() const { return mY; }
     /**
      *
@@ -119,12 +142,22 @@ public:
      * @param y Y coordinate of the mouse click
      */
     void SetPosition(double x, double y);
-    /// Returns a reference to the input pins
-    std::vector<PinInput>& GetInputPins() { return mInputPins; }
-    /// Returns a reference to the output pins
-    std::vector<PinOutput>& GetOutputPins() { return mOutputPins; }
+
     /**
-    *
+     * get the input pins
+     * 
+     * @return std::vector<PinInput>& 
+     */
+    std::vector<PinInput>& GetInputPins() { return mInputPins; }
+
+    /**
+     * get the output pins
+     * 
+     * @return std::vector<PinOutput>& 
+     */
+    std::vector<PinOutput>& GetOutputPins() { return mOutputPins; }
+
+    /**
     *
     * Updating pin positions of gate
     */
@@ -145,6 +178,9 @@ public:
 /**
  * @class ORGate
  * @brief Class representing an OR gate.
+ */
+/**
+ * class representing an OR gate
  */
 class ORGate : public Gate
 {
@@ -192,13 +228,16 @@ public:
      */
     void UpdatePinPositions() override;
     /**
-     *
-     * Get width for OR
+     * get width for OR
+     * 
+     * @return double the width 
      */
     double GetWidth() const override { return OrGateSize.GetWidth(); }
+
     /**
-     *
-     * Get height for OR
+     * get height for OR
+     * 
+     * @return double the height 
      */
     double GetHeight() const override { return OrGateSize.GetHeight(); }
     ///< Gets a specific input pin
@@ -207,7 +246,8 @@ public:
     PinOutput* GetOutputPin();
      /**
       *Connect input for pins
-      * @param inputIndex, outputPin
+      * @param inputIndex
+      * @param outputPin 
       */
     void ConnectInput(int inputIndex, PinOutput* outputPin);
      /**
@@ -218,13 +258,14 @@ public:
     void Accept(ItemVisitor* visitor) override;
 };
 
+/**
+ * class representing an AND gate
+ */
 class ANDGate : public Gate
 {
 private:
- ///< State of input A
-    States inputA;
- ///< State of input B
-    States inputB;
+    States inputA; ///< State of input A
+    States inputB; ///< State of input B
 
 public:
      /**
@@ -265,16 +306,16 @@ public:
     */
     void Accept(ItemVisitor* visitor);
     /**
-    * getwidth
-    *
-    *
-    */
+     * get width
+     * 
+     * @return double 
+     */
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     /**
-    * get height
-    *
-    *
-    */
+     * get height
+     * 
+     * @return double 
+     */
     double GetHeight() const override { return AndGateSize.GetHeight(); }
     /**
     * update pin positions
@@ -283,6 +324,10 @@ public:
     void UpdatePinPositions() override;
 };
 
+/**
+ * class representing a NOT gate
+ * 
+ */
 class NOTGate : public Gate
 {
 private:
@@ -343,7 +388,10 @@ public:
    */
     void Accept(ItemVisitor* visitor) override;
 };
-
+/**
+ * class representing a SR flip flop gate
+ * 
+ */
 class SRFlipFlopGate : public Gate
 {
 private:
@@ -410,7 +458,9 @@ public:
     void Accept(ItemVisitor* visitor) override;
 };
 
-// D Flip-Flop Gate
+/**
+ * class representing a D flip flop gate
+ */
 class DFlipFlopGate : public Gate
 {
 private:
@@ -420,8 +470,7 @@ private:
     States clock;
  ///< State of input Q
     States outputQ;
- ///< State of input Q'
-    States outputQPrime;
+    States outputQPrime; ///< State of input Q'
 
 public:
     /**

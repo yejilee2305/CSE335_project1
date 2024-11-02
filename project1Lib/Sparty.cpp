@@ -72,7 +72,6 @@ void Sparty::Kick()
 {
     mIsKicking = true;
     mKickProgress = 0.0; // Reset kick progress if applicable
-    std::cout << "Sparty is kicking!" << std::endl;
 
     mCurrentNoise = GetGame()->GetTeam().TriggerNoise();
     mNoiseTimer = 0.0;

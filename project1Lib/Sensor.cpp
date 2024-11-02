@@ -7,15 +7,17 @@
 #include "Sensor.h"
 #include "Game.h"
 
-// File paths for the camera and cable images
-const std::wstring SensorCameraImage = L"images/sensor-camera.png";
-const std::wstring SensorCableImage = L"images/sensor-cable.png";
-const std::wstring IzzoImage = L"images/izzo.png";
-const std::wstring SmithImage = L"images/smith.png";
-const std::wstring FootballImage = L"images/football.png";
-const std::wstring BasketballImage = L"images/basketball.png";
+const std::wstring SensorCameraImage = L"images/sensor-camera.png"; ///< Image for the camera
+const std::wstring SensorCableImage = L"images/sensor-cable.png"; ///< Image for the cable
+const std::wstring IzzoImage = L"images/izzo.png"; ///< Image for the Izzo
+const std::wstring SmithImage = L"images/smith.png";  ///< Image for the Smith
+const std::wstring FootballImage = L"images/football.png"; ///< Image for the football
+const std::wstring BasketballImage = L"images/basketball.png"; ///< Image for the basketball
 
-/// How much space for each property
+/**
+ * @return the size of the property
+ * 
+ */
 const wxSize PropertySize(100, 40);
 
 /// Size of a shape as a property in virtual pixels
@@ -24,16 +26,24 @@ const double PropertyShapeSize = 32;
 /// for drawing the line towards the output pin
 const int LineThickness = 3;
 
-/// Color to use for "red"
+/**
+ * @return the color of the Ohio State Red
+ */
 const wxColour OhioStateRed(187, 0, 0);
 
-/// Color to use for "green"
+/**
+ * @return the color of the MSU Green
+ */
 const wxColour MSUGreen(24, 69, 59);
 
-/// Color to use for "blue"
+/**
+ * @return the color of the UofM Blue
+ */
 const wxColor UofMBlue(0, 39, 76);
 
-/// Color to use for all other types
+/**
+ * @return the color of the Panel Background
+ */
 const wxColour PanelBackgroundColor(128, 128, 128);
 /**
  * @brief Constructs a Sensor object with specified positions and output pins.
