@@ -23,9 +23,15 @@
 class AddWireVisitor : public ItemVisitor
 {
 private:
+    /**
+     * pointer to the game instance
+     */
     Game* mGame; ///< game object
 
 public:
+    /**
+     * default constructor
+     */
     AddWireVisitor() = default;
 
 /**
@@ -61,9 +67,15 @@ public:
 class ClearWireVisitor : public ItemVisitor
 {
 private:
+    /**
+     * pointer to the game instance
+     */
     Game* mGame; ///< game object
 
 public:
+    /**
+     * default constructor
+     */
     ClearWireVisitor() = default;
 
 /**
@@ -83,15 +95,30 @@ public:
 class WireDrawingVisitor : public ItemVisitor
 {
 private:
+    /**
+     * graphics context for drawing
+     */
     wxGraphicsContext* mGraphics;
+    /**
+     * flag to indicate if control points show
+     */
     bool mShowControlPoints;
 
 public:
+    /**
+     * constructor for wiredrawingvisior
+     * @param graphics graphics pointer to the exgraphicscontext for drawing
+     * @param showControlPoints boolean flag to indicate whether to show
+     */
     WireDrawingVisitor(wxGraphicsContext* graphics, bool showControlPoints)
         : mGraphics(graphics), mShowControlPoints(showControlPoints)
     {
     }
 
+    /**
+     * visits a gate and draws the wires connecting its output pins
+     * @param gate pointer to the gate being visited
+     */
     void VisitGate(Gate* gate) override
     {
         for (auto& outputPin : gate->GetOutputPins())
@@ -103,20 +130,6 @@ public:
             }
         }
     }
-
-    void VisitBeam(Beam* beam) override
-    {
-        PinOutput* outputPin = beam->GetOutputPin();
-        for (auto inputPin : outputPin->GetConnectedPins())
-        {
-            if (inputPin)
-            {
-                Wire wire(outputPin, inputPin);
-                wire.Draw(mGraphics, mShowControlPoints);
-            }
-        }
-    }
-
 
 };
 #endif //WIREVISITOR_H
