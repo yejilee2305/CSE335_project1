@@ -107,6 +107,10 @@ public:
     }
 };
 
+/**
+ * visitor for output pin hit test
+ * 
+ */
 class GateOutputPinHitTestVisitor : public ItemVisitor
 {
 private:

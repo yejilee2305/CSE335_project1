@@ -10,9 +10,12 @@
 #include <wx/pen.h>
 #include <wx/brush.h>
 
-const wxSize ScoreboardSize(380, 100);
-const int SpacingScoresToInstructions = 40;
-const int SpacingInstructionLines = 17;
+/**
+ * @return the size of the scoreboard
+ */
+const wxSize ScoreboardSize(380, 100); ///< Size of the scoreboard box
+const int SpacingScoresToInstructions = 40; ///< space between scores and instructions
+const int SpacingInstructionLines = 17; ///< space between instruction lines
 /**
  * @brief Constructor for Scoreboard.
  *

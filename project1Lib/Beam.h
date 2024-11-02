@@ -27,12 +27,17 @@ private:
     wxGraphicsBitmap mGreenBitmap; ///< green bitmap
     std::unique_ptr<wxImage> mRedImage; ///< red image
     std::unique_ptr<wxImage> mGreenImage; ///< green image
-    std::unique_ptr<PinOutput> mOutputPin; // Use a smart pointer
+    std::unique_ptr<PinOutput> mOutputPin; ///< Use a smart pointer
 
 public:
     /// default constructor (disabled)
     Beam() = delete;
 
+/**
+ * visitor for the beam 
+ * 
+ * @param visitor 
+ */
     void Accept(ItemVisitor* visitor) override { visitor->VisitBeam(this); }
 
     /// copy consturctor (disabled)
@@ -45,11 +50,32 @@ public:
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
     void Update(double elpased) override;
 
+
+/**
+ * check if the beam is broken
+ * @return true if the beam is broken
+ */
     bool IsBroken() const { return mBroken; }
 
+/**
+ * set the beam to broken
+ * 
+ * @param broken 
+ */
     void SetBroken(bool broken) { mBroken = broken; }
 
+/**
+ * check if the beam is intersecting with a product
+ * 
+ * @param product 
+ * @return true if the beam is intersecting with the product
+ */
     bool IsIntersecting(const Product* product);
+
+    /**
+     * getter for the output pin
+     * @return the output pin
+     */
     PinOutput* GetOutputPin() const { return mOutputPin.get(); }
 
     /**

@@ -8,9 +8,10 @@
 #ifndef STATES_H
 #define STATES_H
 
+
 /**
- * @enum States
- * @brief Enumeration of logical states for components in a circuit.
+ * Enumeration class for different states
+ * 
  */
 enum class States { One, Zero, Unknown };
 

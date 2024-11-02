@@ -25,6 +25,7 @@
 #include "WireVisitor.h"
 #include "SpartyVisitor.h"
 
+/// border for the game to make it black
 const int BigNumberBorder = 2000;
 
 /**
