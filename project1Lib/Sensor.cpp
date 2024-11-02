@@ -279,7 +279,7 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
     }
 }
 /**
- * @brief Adds an output pin at a calculated location on the cable.
+ * @brief Adds a output pin at a calculated location on the cable.
  *
  * @param pin Pointer to the unique output pin.
  */
