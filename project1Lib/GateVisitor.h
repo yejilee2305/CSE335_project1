@@ -183,9 +183,13 @@ public:
 
     void VisitSparty(Sparty* sparty) override
     {
-        if (sparty->GetInputPin()->HitTest(mX, mY))
+        // Check if an output pin is already selected
+        if (mSelectedOutputPin && sparty->GetInputPin()->HitTest(mX, mY))
         {
             mSelectedInputPin = sparty->GetInputPin();
+
+            // Connect the selected output pin to Sparty's input pin
+            mSelectedOutputPin->ConnectToInput(mSelectedInputPin);
         }
     }
 
