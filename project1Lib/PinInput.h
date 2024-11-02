@@ -10,8 +10,6 @@
 #define PININPUT_H
 
 #include "Pins.h"
-#include "PinOutput.h"
-#include "Gate.h"
 #include "States.h"
 
 class Pin;

@@ -304,7 +304,7 @@ void GameView::OnLeftUp(wxMouseEvent& event)
     mSelectedOutputPin = nullptr;
     mDraggingWire = nullptr;
     mGrabbedGate = nullptr;
-    Refresh();;
+    Refresh();
 }
 
 

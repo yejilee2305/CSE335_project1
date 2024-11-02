@@ -80,7 +80,7 @@ public:
     void VisitBeam(Beam* beam) override
     {
         PinOutput* outputPin = beam->GetOutputPin();
-        for (auto inputPin : outputPin->GetConnectedPins())
+        for (auto& inputPin : outputPin->GetConnectedPins())
         {
             if (inputPin)
             {
