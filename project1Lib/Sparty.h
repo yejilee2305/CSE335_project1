@@ -47,6 +47,8 @@ public:
 
     double mKickProgress = 0.0;
 
+    PinInput* GetInputPin() const {return mInputPin.get();}
+
 private:
     int mX, mY; // Position (center of Sparty)
     int mHeight, mWidth; // Height and calculated width of Sparty

@@ -13,7 +13,7 @@
 
 /**
  * visitor for computing output
- * 
+ *
  */
 class GateComputeOutputVisitor : public ItemVisitor
 {
@@ -46,7 +46,7 @@ public:
 
 /**
  * visitor for hit test
- * 
+ *
  */
 class GateHitTestVisitor : public ItemVisitor
 {
@@ -107,13 +107,10 @@ public:
     }
 };
 
-/**
- * visitor for output pin hit test
- * 
- */
 class GateOutputPinHitTestVisitor : public ItemVisitor
 {
 private:
+    PinInput* mSelectedInputPin;
     double mX; ///< x location
     double mY; ///< y location
     PinOutput* mSelectedOutputPin; ///< selected output pin
@@ -192,6 +189,14 @@ public:
         }
     }
 
+    void VisitSparty(Sparty* sparty) override
+    {
+        if (sparty->GetInputPin()->HitTest(mX, mY))
+        {
+            mSelectedInputPin = sparty->GetInputPin();
+        }
+    }
+
 
     PinOutput* GetSelectedOutputPin() const
     {
@@ -201,7 +206,7 @@ public:
 
 /**
  * visitor for gate grab
- * 
+ *
  */
 class GateGrabVisitor : public ItemVisitor
 {
@@ -264,7 +269,7 @@ public:
 
 /**
  * visitor for gate input pin hit test
- * 
+ *
  */
 class GateInputPinHitTestVisitor : public ItemVisitor
 {

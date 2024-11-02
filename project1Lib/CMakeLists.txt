@@ -48,6 +48,7 @@ set(SOURCE_FILES
 		GateVisitor.h
 		WireVisitor.h
 		States.h
+		SpartyVisitor.h
 		#		Pins.cpp
 #		Pins.h
 )

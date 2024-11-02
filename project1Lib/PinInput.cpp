@@ -25,10 +25,15 @@ void PinInput::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 /**
  * connect to functions
  */
-void PinInput::ConnectTo(PinOutput* pin)
+void PinInput::ConnectToOutput(PinOutput* pin)
 {
-    mConnectedPin = pin;
+    if (pin && std::find(mConnectedPins.begin(), mConnectedPins.end(), pin) == mConnectedPins.end())
+    {
+        mConnectedPins.push_back(pin);
+        mConnectedPin = pin; // Ensure mConnectedPin is set here
+    }
 }
+
 /**
  * get connected gate
  */
@@ -41,6 +46,7 @@ Gate* PinInput::GetConnectedGate() const {
 void PinInput::SetConnection(PinOutput* outputPin) {
     mConnectedPin = outputPin;
 }
+
 /**
  * Set location
  */
