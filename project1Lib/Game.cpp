@@ -284,9 +284,7 @@ void Game::StartNextLevel()
 {
     mCurrentLevel += 1;
     std::wstring nextLevelFile = L"levels/level" + std::to_wstring(mCurrentLevel) + L".xml";
-
     Clear();
-
     Load(nextLevelFile);
 }
 
