@@ -15,8 +15,21 @@
  */
 class IDraggable {
 public:
+    /**
+     * Virtual function to set location
+     * @param x The X coordinate
+     * @param y The Y coordinate
+     */
     virtual void SetLocation(double x, double y) = 0;
+    /**
+     * Virtual Deconstructor
+     */
     virtual ~IDraggable() = default;
+    /**
+     * Virtual function to drag the wire
+     * @param x The X coordinate
+     * @param y The Y coordinate
+     */
     virtual void OnDrag(double x, double y) = 0;
 };
 
