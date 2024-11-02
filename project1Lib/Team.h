@@ -12,6 +12,9 @@
 #include <vector>
 #include <wx/wx.h>
 
+/**
+ * class for the team feature
+ */
 class Team
 {
 private:

@@ -16,6 +16,10 @@
 #include "Item.h"
 #include "PinInput.h"
 
+/**
+ * 
+ * class for the sparty
+ */
 class Sparty : public Item
 {
 public:

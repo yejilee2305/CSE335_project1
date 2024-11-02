@@ -9,6 +9,10 @@
 #define SPARTYAPP_H
 
 
+/**
+ * class for the SpartyApp
+ * 
+ */
 class SpartyApp : public wxApp
 {
 private:

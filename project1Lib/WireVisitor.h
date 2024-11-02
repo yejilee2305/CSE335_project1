@@ -16,6 +16,10 @@
 
 
 
+/**
+ * visitor for adding wires
+ * 
+ */
 class AddWireVisitor : public ItemVisitor
 {
 private:
@@ -40,6 +44,10 @@ public:
 };
 
 
+/**
+ * clear wire visitor
+ * 
+ */
 class ClearWireVisitor : public ItemVisitor
 {
 private:
@@ -53,6 +61,10 @@ public:
     }
 };
 
+/**
+ * drawing visitor
+ * 
+ */
 class WireDrawingVisitor : public ItemVisitor
 {
 private:

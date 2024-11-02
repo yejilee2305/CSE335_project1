@@ -13,6 +13,10 @@
 #include <vector>
 #include "Product.h"
 
+/**
+ * class for the sensor
+ * 
+ */
 class Sensor : public Item
 {
 public:

@@ -146,6 +146,9 @@ public:
  * @class ORGate
  * @brief Class representing an OR gate.
  */
+/**
+ * class representing an OR gate
+ */
 class ORGate : public Gate
 {
 private:
@@ -207,7 +210,8 @@ public:
     PinOutput* GetOutputPin();
      /**
       *Connect input for pins
-      * @param inputIndex, outputPin
+      * @param inputIndex
+      * @param outputPin 
       */
     void ConnectInput(int inputIndex, PinOutput* outputPin);
      /**
@@ -218,6 +222,9 @@ public:
     void Accept(ItemVisitor* visitor) override;
 };
 
+/**
+ * class representing an AND gate
+ */
 class ANDGate : public Gate
 {
 private:
@@ -283,6 +290,10 @@ public:
     void UpdatePinPositions() override;
 };
 
+/**
+ * class representing a NOT gate
+ * 
+ */
 class NOTGate : public Gate
 {
 private:
@@ -343,7 +354,10 @@ public:
    */
     void Accept(ItemVisitor* visitor) override;
 };
-
+/**
+ * class representing a SR flip flop gate
+ * 
+ */
 class SRFlipFlopGate : public Gate
 {
 private:
@@ -410,7 +424,9 @@ public:
     void Accept(ItemVisitor* visitor) override;
 };
 
-// D Flip-Flop Gate
+/**
+ * class representing a D flip flop gate
+ */
 class DFlipFlopGate : public Gate
 {
 private:

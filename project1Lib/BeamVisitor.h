@@ -9,6 +9,10 @@
 #define BEAMVISITOR_H
 #include "ItemVisitor.h"
 
+/**
+ * visitor for the beam class
+ * 
+ */
 class BeamVisitor : public ItemVisitor
 {
 private:

@@ -11,6 +11,10 @@
 #include "Product.h"
 #include "PinOutput.h"
 
+/**
+ * class for the beam
+ * 
+ */
 class Beam : public Item
 {
 private:
@@ -19,8 +23,8 @@ private:
     int mSenderOffset; ///< x sender offset
     bool mBroken = false; ///< state of beam
 
-    wxGraphicsBitmap mRedBitmap;
-    wxGraphicsBitmap mGreenBitmap;
+    wxGraphicsBitmap mRedBitmap; ///< red bitmap
+    wxGraphicsBitmap mGreenBitmap; ///< green bitmap
     std::unique_ptr<wxImage> mRedImage; ///< red image
     std::unique_ptr<wxImage> mGreenImage; ///< green image
     std::unique_ptr<PinOutput> mOutputPin; // Use a smart pointer
