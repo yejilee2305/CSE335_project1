@@ -36,7 +36,7 @@ public:
 /**
  * visitor for the beam 
  * 
- * @param visitor 
+ * @param visitor
  */
     void Accept(ItemVisitor* visitor) override { visitor->VisitBeam(this); }
 

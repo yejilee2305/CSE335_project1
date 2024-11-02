@@ -17,36 +17,74 @@
 #include "PinInput.h"
 
 /**
- * 
- * class for the sparty
+ * class sparty
+ * represents a character who performs a kicking action to move products off a conveyor
+ *
+ * the sparty class manages its graphical representation, input pin, and kicking mechanics
+ * updates based on game conditions and triggers animations and sound when performing a kick
  */
 class Sparty : public Item
 {
 public:
-    // Constructor
+    /**
+     * constructs a new sparty object with specified properties
+     * @param game pointer to the game insatnce
+     * @param x coordinate of sparty position
+     * @param y coordinate of sparty position
+     * @param height height of sparty
+     * @param pin pin location of the input pin as a wxpoint2ddouble
+     * @param kickDuration duration of the kick action in seconds
+     * @param kickSpeed kickspeed speed of the kick action in pixels per seconds
+     */
     Sparty(Game* game, int x, int y, int height, wxPoint2DDouble pin, double kickDuration, double kickSpeed);
 
+    /**
+     * accept visitor allowing operation specific to sparty
+     * @param visitor pointer to the itemvisitor instance
+     */
     void Accept(ItemVisitor* visitor) override { visitor->VisitSparty(this); }
 
-    // Draw function to render Sparty with layers
+    /**
+     * draw sparty with its layered graphical representation
+     * @param graphics shared pointer to the graphics context used for drawing
+     */
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
+    /**
+     * triggers the kicking logic without graphicscontext
+     */
     void Kick(); // for logic only
+
+    /**
+     * updates sparty state including kicking progress and sound duration
+     * @param elapsed time elapsed since the last update in seconds
+     */
     void Update(double elapsed);
-    // Method to trigger the kick action
+
+    /**
+     * triggers the kick action rendering kicking motion
+     * @param graphics graphics context for rendering the kick
+     */
     void Kick(wxGraphicsContext* graphics);
 
-    // Check if a product is in the correct position to be kicked
-    //bool CheckProductLocation(Product* product);
-
-    // Set and check kicking state
+    /**
+     * sets sparty kicking state
+     * @param kicking boolean value indicating if sparty is kicking
+     */
     void SetKicking(bool kicking) { mIsKicking = kicking; }
+
+    /**
+     * checks if sparty is currently in the kicking state
+     * @return true if sparty is kicking
+     */
     bool IsKicking() const { return mIsKicking; }
 
-    // Progress of the kick (0 to 1)
 
     double mKickProgress = 0.0;
-
+    /**
+     * retrieves the input pin associated with sparty
+     * @return pointer to the input pin
+     */
     PinInput* GetInputPin() const {return mInputPin.get();}
 
 private:
