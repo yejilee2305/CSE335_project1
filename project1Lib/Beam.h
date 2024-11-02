@@ -18,20 +18,49 @@
 class Beam : public Item
 {
 private:
+ /**
+  * x location
+  */
     int mX; ///< x location
+ /**
+  * y location
+  */
     int mY; ///< y location
+ /**
+  * x sender offset
+  */
     int mSenderOffset; ///< x sender offset
+ /**
+  * state of beam
+  */
     bool mBroken = false; ///< state of beam
 
+ /**
+  * red bitmap
+  */
     wxGraphicsBitmap mRedBitmap; ///< red bitmap
+ /**
+  * green bitmap
+  */
     wxGraphicsBitmap mGreenBitmap; ///< green bitmap
+ /**
+  * red image
+  */
     std::unique_ptr<wxImage> mRedImage; ///< red image
+ /**
+  * green image
+  */
     std::unique_ptr<wxImage> mGreenImage; ///< green image
+ /**
+  * use a smart pointer
+  */
     std::unique_ptr<PinOutput> mOutputPin; ///< Use a smart pointer
 
 public:
-    /// default constructor (disabled)
-    Beam() = delete;
+ /**
+  * default desctructor
+  */
+ Beam() = delete;
 
 /**
  * visitor for the beam 
