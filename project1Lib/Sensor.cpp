@@ -46,7 +46,7 @@ const wxColor UofMBlue(0, 39, 76);
  */
 const wxColour PanelBackgroundColor(128, 128, 128);
 /**
- * @brief Constructs a Sensor object with specified positions and output pins.
+ * Constructs a Sensor object with specified positions and output pins.
  *
  * @param game Pointer to the Game instance.
  * @param cameraX X-coordinate of the camera position.
@@ -70,11 +70,11 @@ Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double
     GetOutputPins(mOutputPins);
 }
 /**
- * @brief Destructor for Sensor.
+ *  Destructor for Sensor.
  */
 Sensor::~Sensor() {}
 /**
- * @brief Sets the position of the camera.
+ *  Sets the position of the camera.
  *
  * @param x The new X-coordinate of the camera.
  * @param y The new Y-coordinate of the camera.
@@ -85,7 +85,7 @@ void Sensor::SetCameraPosition(double x, double y)
     mCameraY = y;
 }
 /**
- * @brief Sets the position of the cable.
+ *  Sets the position of the cable.
  *
  * @param x The new X-coordinate of the cable.
  * @param y The new Y-coordinate of the cable.
@@ -96,7 +96,7 @@ void Sensor::SetCablePosition(double x, double y)
     mCableY = y;
 }
 /**
- * @brief Draws the Sensor, including camera and cable images, and the output pins.
+ *  Draws the Sensor, including camera and cable images, and the output pins.
  *
  * @param graphics Shared pointer to the wxGraphicsContext used for drawing.
  */
@@ -131,7 +131,7 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 
 }
 /**
- * @brief Populates output pins based on sensor outputs string.
+ *  Populates output pins based on sensor outputs string.
  *
  * @param sensorOutputs String of output pin types.
  */
@@ -192,7 +192,7 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
     }
 }
 /**
- * @brief Draws a single output pin on the sensor.
+ *  Draws a single output pin on the sensor.
  *
  * @param graphics Graphics context for rendering.
  * @param color Color of the output pin.
@@ -279,7 +279,7 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
     }
 }
 /**
- * @brief Adds a output pin at a calculated location on the cable.
+ *  Adds a output pin at a calculated location on the cable.
  *
  * @param pin Pointer to the unique output pin.
  */
@@ -294,7 +294,7 @@ void Sensor::AddOutputPin(std::unique_ptr<PinOutput>& pin)
     mSensorCount++;
 }
 /**
- * @brief Checks if a given product is within the sensor's range.
+ *  Checks if a given product is within the sensor's range.
  *
  * @param product Pointer to the product to check.
  * @return True if the product is in range, false otherwise.
