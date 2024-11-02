@@ -9,6 +9,10 @@
 #ifndef IDRAGGABLE_H
 #define IDRAGGABLE_H
 
+/**
+ * class for the draggable interface
+ * 
+ */
 class IDraggable {
 public:
     /**

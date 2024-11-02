@@ -23,7 +23,9 @@
 #include "GateVisitor.h"
 #include "ProductVisitor.h"
 #include "WireVisitor.h"
+#include "SpartyVisitor.h"
 
+/// border for the game to make it black
 const int BigNumberBorder = 2000;
 
 /**
@@ -33,8 +35,11 @@ Game::Game()
 {
 }
 
+
 /**
- * Load the game level from an XML file.
+ * load the game
+ * 
+ * @param filename 
  */
 void Game::Load(const wxString& filename)
 {
@@ -44,6 +49,8 @@ void Game::Load(const wxString& filename)
 
 /**
  * Start a specific level.
+ * 
+ * @param levelNumber the level number
  */
 void Game::StartLevel(int levelNumber)
 {
@@ -58,7 +65,13 @@ void Game::AddWire(PinOutput* outputPin, PinInput* inputPin)
     outputPin->ConnectToInput(inputPin);
 }
 
-
+/**
+ * used for topological sort of the gates
+ * 
+ * @param gate  the gate
+ * @param visited  the visited set
+ * @param Stack  the stack
+ */
 void topologicalSortUtil(Gate* gate, std::unordered_set<Gate*>& visited, std::stack<Gate*>& Stack)
 {
     visited.insert(gate);
@@ -85,7 +98,9 @@ void Game::ComputeGateOutputs()
 }
 
 /**
- * Update the game state.
+ * update the game
+ * 
+ * @param elapsed time
  */
 void Game::Update(double elapsed)
 {
@@ -113,10 +128,19 @@ void Game::Update(double elapsed)
         }
     }
 
-    // CANT HAVE THIS, NEED TO USE VISITOR 💥💥💥
-    if (anyBeamBroken && sparty)
+    if (anyBeamBroken)
     {
-        sparty->Kick();
+        SpartyVisitor spartyVisitor;
+        for (const auto& item : mItems)
+        {
+            item->Accept(&spartyVisitor);
+        }
+
+        const auto& spartys = spartyVisitor.GetSpartys();
+        for (auto sparty : spartys)
+        {
+            sparty->Kick();
+        }
     }
 
     ProductVisitor productVisitor;
@@ -129,6 +153,8 @@ void Game::Update(double elapsed)
 
 /**
  * Handle mouse clicks.
+ * 
+ * @param event the mouse event 
  */
 void Game::HandleMouseClick(wxMouseEvent& event)
 {
@@ -137,7 +163,11 @@ void Game::HandleMouseClick(wxMouseEvent& event)
 }
 
 /**
- * Handle mouse movements.
+ * Handle mouse move events.
+ * 
+ * @param x x axis 
+ * @param y y axis 
+ * @param event the mouse event 
  */
 void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
 {
@@ -158,7 +188,11 @@ void Game::HandleMouseMove(int x, int y, wxMouseEvent& event)
 }
 
 /**
- * Draw all game components.
+ * Draw the game.
+ * 
+ * @param graphics 
+ * @param width 
+ * @param height 
  */
 void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int height)
 {
@@ -221,6 +255,8 @@ void Game::OnDraw(std::shared_ptr<wxGraphicsContext> graphics, int width, int he
 
 /**
  * Add an item to the game.
+ * 
+ * @param item
  */
 void Game::AddItem(std::shared_ptr<Item> item)
 {
@@ -228,7 +264,9 @@ void Game::AddItem(std::shared_ptr<Item> item)
 }
 
 /**
- * Add a gate to the game.
+ * add a gate to the game
+ * 
+ * @param gate 
  */
 void Game::AddGate(std::shared_ptr<Gate> gate)
 {
@@ -237,6 +275,10 @@ void Game::AddGate(std::shared_ptr<Gate> gate)
 
 /**
  * Test if a click is on an item.
+ * 
+ * @param x 
+ * @param y 
+ * @return std::shared_ptr<Item> 
  */
 std::shared_ptr<Item> Game::HitTest(int x, int y)
 {
@@ -253,6 +295,10 @@ std::shared_ptr<Item> Game::HitTest(int x, int y)
 
 /**
  * Test if a click is on a gate.
+ * 
+ * @param x x axis 
+ * @param y y axis
+ * @return std::shared_ptr<Item>  the item
  */
 std::shared_ptr<Item> Game::HitTestGate(double x, double y)
 {

@@ -10,6 +10,10 @@
 
 #include "ItemVisitor.h"
 
+/**
+ * visitor for the sparty class
+ * 
+ */
 class SpartyVisitor : public ItemVisitor
 {
 private:

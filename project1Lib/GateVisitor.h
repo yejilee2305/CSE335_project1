@@ -11,6 +11,10 @@
 #include <memory>
 #include "Beam.h"
 
+/**
+ * visitor for computing output
+ *
+ */
 class GateComputeOutputVisitor : public ItemVisitor
 {
 public:
@@ -40,12 +44,16 @@ public:
     }
 };
 
+/**
+ * visitor for hit test
+ *
+ */
 class GateHitTestVisitor : public ItemVisitor
 {
 private:
-    double mX;
-    double mY;
-    Gate* mHitGate;
+    double mX; ///< x location
+    double mY; ///< y location
+    Gate* mHitGate; ///< gate that is hit
 
 public:
     GateHitTestVisitor(double x, double y)
@@ -99,13 +107,17 @@ public:
     }
 };
 
+/**
+ * visitor for output pin hit test
+ * 
+ */
 class GateOutputPinHitTestVisitor : public ItemVisitor
 {
 private:
-    double mX;
-    double mY;
-    PinOutput* mSelectedOutputPin;
     PinInput* mSelectedInputPin;
+    double mX; ///< x location
+    double mY; ///< y location
+    PinOutput* mSelectedOutputPin; ///< selected output pin
 
 public:
     GateOutputPinHitTestVisitor(double x, double y)
@@ -200,12 +212,16 @@ public:
     }
 };
 
+/**
+ * visitor for gate grab
+ *
+ */
 class GateGrabVisitor : public ItemVisitor
 {
 private:
-    double mX;
-    double mY;
-    Gate* mGrabbedGate;
+    double mX; ///< x location
+    double mY; ///< y location
+    Gate* mGrabbedGate; ///< grabbed gate
 
 public:
     GateGrabVisitor(double x, double y)
@@ -259,12 +275,16 @@ public:
     }
 };
 
+/**
+ * visitor for gate input pin hit test
+ *
+ */
 class GateInputPinHitTestVisitor : public ItemVisitor
 {
 private:
-    double mX;
-    double mY;
-    PinInput* mInputPin;
+    double mX; ///< x location
+    double mY; ///< y location
+    PinInput* mInputPin; ///< input pin
 
 public:
     GateInputPinHitTestVisitor(double x, double y)

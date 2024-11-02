@@ -234,8 +234,11 @@ void ANDGate::SetInputA(States state) {
 void ANDGate::SetInputB(States state) {
     inputB = state;
 }
+
 /**
- * Computes the output of the AND gate based on the states of its inputs.
+ * computes the output based on the states of the input pins
+ * 
+ * @return States
  */
 States ANDGate::ComputeOutput() {
     if (inputA == States::Unknown || inputB == States::Unknown) {
@@ -563,6 +566,7 @@ void DFlipFlopGate::SetClock(States state) {
 }
 /**
  * computing output to D flip flop
+ * @return States
  */
 States DFlipFlopGate::ComputeOutput() {
     if (clock == States::One) {

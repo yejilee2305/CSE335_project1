@@ -12,11 +12,26 @@
 #include <memory>
 #include <vector>
 #include "Product.h"
-
+/**
+ * @class Sensor
+ * @brief Represents a sensor component in the game, displaying outputs and interacting with products.
+ *
+ * The Sensor class manages the positions and visual representation of its camera, cable,
+ * and output pins. It allows for checking if specific products are in range and supports
+ * customizable positions for the camera and cable.
+ */
 class Sensor : public Item
 {
 public:
-    // Constructor to initialize the sensor with camera and cable positions
+    /**
+     * @brief Constructs a Sensor object with specified game reference and positions for camera and cable.
+     * @param game Pointer to the Game instance.
+     * @param cameraX X-coordinate of the camera.
+     * @param cameraY Y-coordinate of the camera.
+     * @param cableX X-coordinate of the cable.
+     * @param cableY Y-coordinate of the cable.
+     * @param sensorOutputs String specifying the types of output pins.
+     */
     Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs);
     void Accept(ItemVisitor* visitor) override { visitor->VisitSensor(this); }
 
@@ -65,7 +80,7 @@ private:
     wxString mOutputPins;
 
     int mSensorCount = 0;
-
+    // Pin outputs for sensor
     std::unique_ptr<PinOutput> mRedOutput;
     std::unique_ptr<PinOutput> mGreenOutput;
     std::unique_ptr<PinOutput> mBlueOutput;

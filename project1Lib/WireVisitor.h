@@ -16,18 +16,32 @@
 
 
 
+/**
+ * visitor for adding wires
+ * 
+ */
 class AddWireVisitor : public ItemVisitor
 {
 private:
-    Game* mGame;
+    Game* mGame; ///< game object
 
 public:
     AddWireVisitor() = default;
 
+/**
+ * constructor
+ * 
+ * @param game the game
+ */
     AddWireVisitor(Game* game) : mGame(game)
     {
     }
 
+/**
+ * visit wire
+ * 
+ * @param wire 
+ */
     void VisitWire(Wire* wire) override
     {
         PinOutput* outputPin = wire->GetOutputPin();
@@ -40,19 +54,32 @@ public:
 };
 
 
+/**
+ * clear wire visitor
+ * 
+ */
 class ClearWireVisitor : public ItemVisitor
 {
 private:
-    Game* mGame;
+    Game* mGame; ///< game object
 
 public:
     ClearWireVisitor() = default;
 
+/**
+ * constructor
+ * 
+ * @param wire 
+ */
     void VisitWire(Wire* wire) override
     {
     }
 };
 
+/**
+ * drawing visitor
+ * 
+ */
 class WireDrawingVisitor : public ItemVisitor
 {
 private:

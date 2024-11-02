@@ -12,6 +12,10 @@
 #include "Item.h"
 
 
+/**
+ * class for the scoreboard
+ * 
+ */
 class Scoreboard : public Item
 {
 private:

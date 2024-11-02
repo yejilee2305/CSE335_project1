@@ -7,15 +7,17 @@
 #include "Sensor.h"
 #include "Game.h"
 
-// File paths for the camera and cable images
-const std::wstring SensorCameraImage = L"images/sensor-camera.png";
-const std::wstring SensorCableImage = L"images/sensor-cable.png";
-const std::wstring IzzoImage = L"images/izzo.png";
-const std::wstring SmithImage = L"images/smith.png";
-const std::wstring FootballImage = L"images/football.png";
-const std::wstring BasketballImage = L"images/basketball.png";
+const std::wstring SensorCameraImage = L"images/sensor-camera.png"; ///< Image for the camera
+const std::wstring SensorCableImage = L"images/sensor-cable.png"; ///< Image for the cable
+const std::wstring IzzoImage = L"images/izzo.png"; ///< Image for the Izzo
+const std::wstring SmithImage = L"images/smith.png";  ///< Image for the Smith
+const std::wstring FootballImage = L"images/football.png"; ///< Image for the football
+const std::wstring BasketballImage = L"images/basketball.png"; ///< Image for the basketball
 
-/// How much space for each property
+/**
+ * @return the size of the property
+ * 
+ */
 const wxSize PropertySize(100, 40);
 
 /// Size of a shape as a property in virtual pixels
@@ -24,18 +26,35 @@ const double PropertyShapeSize = 32;
 /// for drawing the line towards the output pin
 const int LineThickness = 3;
 
-/// Color to use for "red"
+/**
+ * @return the color of the Ohio State Red
+ */
 const wxColour OhioStateRed(187, 0, 0);
 
-/// Color to use for "green"
+/**
+ * @return the color of the MSU Green
+ */
 const wxColour MSUGreen(24, 69, 59);
 
-/// Color to use for "blue"
+/**
+ * @return the color of the UofM Blue
+ */
 const wxColor UofMBlue(0, 39, 76);
 
-/// Color to use for all other types
+/**
+ * @return the color of the Panel Background
+ */
 const wxColour PanelBackgroundColor(128, 128, 128);
-
+/**
+ * @brief Constructs a Sensor object with specified positions and output pins.
+ *
+ * @param game Pointer to the Game instance.
+ * @param cameraX X-coordinate of the camera position.
+ * @param cameraY Y-coordinate of the camera position.
+ * @param cableX X-coordinate of the cable position.
+ * @param cableY Y-coordinate of the cable position.
+ * @param sensorOutputs String containing sensor output types.
+ */
 Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double cableY, wxString sensorOutputs)
     : Item(game, L""), mCameraX(cameraX), mCameraY(cameraY), mCableX(cableX), mCableY(cableY)
 {
@@ -50,21 +69,37 @@ Sensor::Sensor(Game* game, double cameraX, double cameraY, double cableX, double
     mOutputPins = sensorOutputs;
     GetOutputPins(mOutputPins);
 }
-
+/**
+ * @brief Destructor for Sensor.
+ */
 Sensor::~Sensor() {}
-
+/**
+ * @brief Sets the position of the camera.
+ *
+ * @param x The new X-coordinate of the camera.
+ * @param y The new Y-coordinate of the camera.
+ */
 void Sensor::SetCameraPosition(double x, double y)
 {
     mCameraX = x;
     mCameraY = y;
 }
-
+/**
+ * @brief Sets the position of the cable.
+ *
+ * @param x The new X-coordinate of the cable.
+ * @param y The new Y-coordinate of the cable.
+ */
 void Sensor::SetCablePosition(double x, double y)
 {
     mCableX = x;
     mCableY = y;
 }
-
+/**
+ * @brief Draws the Sensor, including camera and cable images, and the output pins.
+ *
+ * @param graphics Shared pointer to the wxGraphicsContext used for drawing.
+ */
 void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 {
     // Dimensions for the camera and cable
@@ -95,7 +130,11 @@ void Sensor::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     DrawOutputPin(graphics, PanelBackgroundColor, mBasketballOutput, currentY);
 
 }
-
+/**
+ * @brief Populates output pins based on sensor outputs string.
+ *
+ * @param sensorOutputs String of output pin types.
+ */
 void Sensor::GetOutputPins(wxString sensorOutputs)
 {
     while (!sensorOutputs.IsEmpty())
@@ -152,7 +191,14 @@ void Sensor::GetOutputPins(wxString sensorOutputs)
         sensorOutputs = sensorOutputs.AfterFirst(' ');
     }
 }
-
+/**
+ * @brief Draws a single output pin on the sensor.
+ *
+ * @param graphics Graphics context for rendering.
+ * @param color Color of the output pin.
+ * @param pin Pointer to the PinOutput to draw.
+ * @param currentY Current Y-coordinate for pin placement.
+ */
 void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wxColour& color, const std::unique_ptr<PinOutput>& pin, double& currentY)
 {
     double cableWidth = 300;
@@ -232,7 +278,11 @@ void Sensor::DrawOutputPin(std::shared_ptr<wxGraphicsContext> graphics, const wx
         pin->Draw(graphics);
     }
 }
-
+/**
+ * @brief Adds an output pin at a calculated location on the cable.
+ *
+ * @param pin Pointer to the unique output pin.
+ */
 void Sensor::AddOutputPin(std::unique_ptr<PinOutput>& pin)
 {
     double cableWidth = 300;
@@ -243,7 +293,12 @@ void Sensor::AddOutputPin(std::unique_ptr<PinOutput>& pin)
     pin->SetLocation(pinX, pinY);
     mSensorCount++;
 }
-
+/**
+ * @brief Checks if a given product is within the sensor's range.
+ *
+ * @param product Pointer to the product to check.
+ * @return True if the product is in range, false otherwise.
+ */
 bool Sensor::IsProductInRange(const Product* product)
 {
     // Example logic to determine if the product is in range

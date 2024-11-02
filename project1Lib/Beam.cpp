@@ -20,11 +20,14 @@ const int BeamPinOffset = 80;
 /// for drawing the line towards the output pin
 const int LineThickness = 3;
 
+
 /**
- * constructor
- * @param x x location
- * @param y y location
- * @param senderOffset offset for the beam sender
+ * constructor for the beam
+ * 
+ * @param game 
+ * @param x 
+ * @param y 
+ * @param senderOffset  offset for the sender
  */
 Beam::Beam(Game* game, int x, int y, int senderOffset)
     : Item(game, BeamGreenImage), mX(x + senderOffset), mY(y), mSenderOffset(senderOffset)
@@ -78,8 +81,9 @@ void Beam::Draw(std::shared_ptr<wxGraphicsContext> graphics)
 
 
 /**
- * update the beam state
- * @param elpased time
+ * update the beam
+ * 
+ * @param elapsed 
  */
 void Beam::Update(double elapsed)
 {
