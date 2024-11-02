@@ -46,6 +46,7 @@ public:
     void SetBroken(bool broken) { mBroken = broken; }
 
     bool IsIntersecting(const Product* product);
+    PinOutput* GetOutputPin() const { return mOutputPin.get(); }
 
     /**
      * getter for x location

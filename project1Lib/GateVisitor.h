@@ -9,6 +9,7 @@
 #include "ItemVisitor.h"
 #include "Gate.h"
 #include <memory>
+#include "Beam.h"
 
 class GateComputeOutputVisitor : public ItemVisitor
 {
@@ -170,6 +171,15 @@ public:
             }
         }
     }
+
+    void VisitBeam(Beam* beam) override
+    {
+        if (beam->GetOutputPin()->HitTest(mX, mY))
+        {
+            mSelectedOutputPin = beam->GetOutputPin();
+        }
+    }
+
 
     PinOutput* GetSelectedOutputPin() const
     {
