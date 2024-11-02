@@ -79,7 +79,9 @@ public:
      */
     bool IsKicking() const { return mIsKicking; }
 
-
+    /**
+     * progress of the kick animation
+     */
     double mKickProgress = 0.0;
     /**
      * retrieves the input pin associated with sparty
@@ -88,33 +90,98 @@ public:
     PinInput* GetInputPin() const {return mInputPin.get();}
 
 private:
-    int mX, mY; // Position (center of Sparty)
-    int mHeight, mWidth; // Height and calculated width of Sparty
+ /**
+  * position (coordinate)
+  */
+    int mX;
+    /**
+     * position (coordinate)
+     */
+    int mY;
+    /**
+     * height of sparty
+     */
+    int mHeight;
+    /**
+     * width of sparty
+     */
+    int mWidth;
+    /**
+     * location of input pin
+     */
     wxPoint2DDouble mPin; // Location of input pin
+    /**
+     * duration of kick animation in seconds
+     */
     double mKickDuration; // Duration of kick animation in seconds
+    /**
+     * speed of kick in pixels per seconds
+     */
     double mKickSpeed; // Speed of kick in pixels per second
+    /**
+     * boot rotation state for animation
+     */
     double mRotation = 0; // Boot rotation state for animation
 
     // Bitmaps for layered images
+    /**
+     * bitmaps for layered image
+     * background layer
+     */
     wxGraphicsBitmap mBackBitmap; // Background layer
+    /**
+     * boot layer for kicking
+     */
     wxGraphicsBitmap mBootBitmap; // Boot layer for kicking
+    /**
+     * foreground layer
+     */
     wxGraphicsBitmap mFrontBitmap; // Foreground layer
 
     // Dimensions of the scaled back image
+    /**
+     * dimension of the scaled back image
+     */
     double mBackWidth = 0.0;
+    /**
+     * dimension of the scaled back image
+     */
     double mBackHeight = 0.0;
 
-    // Kicking state
+    /**
+     * kicking state
+     */
     bool mIsKicking = false;
 
     // Constants for Sparty's appearance and kicking motion
+    /**
+     * ratio
+     */
     static constexpr double AspectRatio = 1.2;
+    /**
+     * sparty boot percentage
+     */
     static constexpr double SpartyBootPercentage = 0.80;
+    /**
+     * spartybootmaxrotation
+     */
     static constexpr double SpartyBootMaxRotation = 0.8; // Max rotation for kick
+    /**
+     * input pin
+     */
     std::unique_ptr<PinInput> mInputPin;
 
+    /**
+     * team feature
+     */
     std::string mCurrentNoise;
+    /**
+     * duratoin of team ferature
+     */
     double mNoiseDuration = 1.0;
+    /**
+     * noise timer
+     */
     double mNoiseTimer = 0.0;
 };
 
