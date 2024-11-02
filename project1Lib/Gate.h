@@ -464,12 +464,9 @@ public:
 class DFlipFlopGate : public Gate
 {
 private:
- ///< State of input D
-    States inputD;
- ///< State of input clock
-    States clock;
- ///< State of input Q
-    States outputQ;
+    States inputD; ///< State of input D
+States clock; ///< State of input clock
+States outputQ; ///< State of input Q
     States outputQPrime; ///< State of input Q'
 
 public:
@@ -495,7 +492,7 @@ public:
     States ComputeOutput() override;
      /**
      * Set the position of the SR gate
-     *@param x X coordinate of the mouse click
+     * @param x X coordinate of the mouse click
      * @param y Y coordinate of the mouse click
      */
     void SetPosition(double x, double y);
@@ -507,10 +504,12 @@ public:
     /**
      * get width for the gate
      *
+     * @return double
      */
     double GetWidth() const override { return AndGateSize.GetWidth(); }
     /**
      * get height for the gate
+     * @return double
      *
      */
     double GetHeight() const override { return AndGateSize.GetHeight(); }
