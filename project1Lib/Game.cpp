@@ -23,6 +23,7 @@
 #include "GateVisitor.h"
 #include "ProductVisitor.h"
 #include "WireVisitor.h"
+#include "SpartyVisitor.h"
 
 const int BigNumberBorder = 2000;
 
@@ -119,10 +120,19 @@ void Game::Update(double elapsed)
         }
     }
 
-    // CANT HAVE THIS, NEED TO USE VISITOR 💥💥💥
-    if (anyBeamBroken && sparty)
+    if (anyBeamBroken)
     {
-        sparty->Kick();
+        SpartyVisitor spartyVisitor;
+        for (const auto& item : mItems)
+        {
+            item->Accept(&spartyVisitor);
+        }
+
+        const auto& spartys = spartyVisitor.GetSpartys();
+        for (auto sparty : spartys)
+        {
+            sparty->Kick();
+        }
     }
 
     ProductVisitor productVisitor;
