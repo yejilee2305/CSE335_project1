@@ -566,6 +566,7 @@ void DFlipFlopGate::SetClock(States state) {
 }
 /**
  * computing output to D flip flop
+ * @return States
  */
 States DFlipFlopGate::ComputeOutput() {
     if (clock == States::One) {
