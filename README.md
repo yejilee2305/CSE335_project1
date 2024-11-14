@@ -1,7 +1,18 @@
-It was a very exciting and challenging project, CSE 335 Project 1, on which I worked for three to four weeks with my team members. We put in quite a great amount of effort into this project, meeting twice a week in order to brainstorm, code, and solve issues together. Other than that, we would also have a weekly meeting with our teaching assistant to clarify the complex concepts and any technical challenges that occurred during our process.
+Sparty's Boots Project
+Sparty's Boots is an interactive C++ game that integrates the simulation of logic circuits with entertaining animations. The project will simulate a sorting system using a conveyor belt on which its main character, Sparty, kicks products off, depending on pre-programmed logics through logic gates and sensor inputs.
 
-The project for this course entailed the design and then actually building from scratch a complex, interactive application. Due to time issues, we were unable to complete it, but nevertheless, it was an unusually instructive and enriching process. From this project, I gained practical experience in software development on a team, learned much about collaboration, code structure, and problem solving.
+Features
+Logic Gate Simulation: AND, OR, NOT, and flip-flop driving Sparty to kick, hence imitating a simple logic circuit.
 
-The most important feeling, though, was probably the team feeling or growth. In spite of all the problems, this project provided a real opportunity to apply and expand my technical skills in an applied manner on a real project, larger and more comprehensive than previous assignments. This underlined once more how time management and iterative development are key to meeting deadlines while producing quality work.
+Dynamic Product Sorting: The products will travel along a conveyor belt and will be sorted out based on conditions given by logic gates and sensors.
+Object-Oriented Design: Applies inheritance and polymorphism to implement the various game entities (like conveyor, gates, sensors, and products) in a modular way.
+Event-Driven Interaction: Sparty is kicking items off the conveyor in reaction to sensor inputs and circuit evaluations, prompting immediate action from the player.
+Multi-level support: the game will support several levels, with different conditions for Sparty acting-this should make it progressively harder.
 
-Overall, though we didn't finish, this was a landmark project in my academic career because it was one of the first really serious and teamwork-based programming exercises.
+Technologies
+Language: C++
+Framework: wxWidgets (for GUI, animations, and user interaction).
+Design Patterns: Visitor pattern for item interactions, and observer pattern for real-time updates in-game.
+
+How It Works
+It contains a conveyor belt with products and sensors positioned along the path. Logic gates in the construction of a circuit allow specifying under which conditions Sparty should kick a product. The output of each sensor turns on the circuit connected with it as every product hits it, and thus automatically triggers Sparty to kick if conditions are met. There are higher levels of difficulty that can be advanced with logic.
