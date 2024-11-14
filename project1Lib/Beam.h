@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "Product.h"
 #include "PinOutput.h"
+#include <memory>
 
 /**
  * class for the beam
